@@ -57,21 +57,21 @@ jobs:
       - run: yarn test:renderer
 
 
-  e2e:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ windows-latest, ubuntu-latest, macos-latest ]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: 'yarn'
-      - run: yarn install --frozen-lockfile
-      - run: npx playwright install --with-deps
-      - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn test:e2e
-        if: matrix.os == 'ubuntu-latest'
-      - run: yarn test:e2e
-        if: matrix.os != 'ubuntu-latest'
+#  e2e:
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        os: [ windows-latest, ubuntu-latest, macos-latest ]
+#    runs-on: ${{ matrix.os }}
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: actions/setup-node@v3
+#        with:
+#          node-version: 16
+#          cache: 'yarn'
+#      - run: yarn install --frozen-lockfile
+#      - run: npx playwright install --with-deps
+#      - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn test:e2e
+#        if: matrix.os == 'ubuntu-latest'
+#      - run: yarn test:e2e
+#        if: matrix.os != 'ubuntu-latest'
