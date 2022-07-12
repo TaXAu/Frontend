@@ -52,7 +52,7 @@ const config = {
     preprocessorOptions: {
       scss: {
         charset: false,
-        additionalData: '@import "./packages/renderer/assets/css/index.scss";',
+        additionalData: '@import "/@/../assets/css/index.scss";',
       },
     },
   },
