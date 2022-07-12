@@ -28,9 +28,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run test:main
+          cache: 'yarn'
+      - run: yarn
+      - run: yarn test:main
 
 
   preload:
@@ -40,9 +40,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run test:preload
+          cache: 'yarn'
+      - run: yarn
+      - run: yarn test:preload
 
 
   renderer:
@@ -52,9 +52,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run test:renderer
+          cache: 'yarn'
+      - run: yarn
+      - run: yarn test:renderer
 
 
   e2e:
@@ -68,10 +68,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
-      - run: npm ci
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile
       - run: npx playwright install --with-deps
-      - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npm run test:e2e
+      - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn test:e2e
         if: matrix.os == 'ubuntu-latest'
-      - run: npm run test:e2e
+      - run: yarn test:e2e
         if: matrix.os != 'ubuntu-latest'

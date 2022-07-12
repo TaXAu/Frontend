@@ -1,6 +1,7 @@
 {
-  "name": "vite-electron-builder",
-  "description": "Secure boilerplate for Electron app based on Vite",
+  "name": "taxau-desktop",
+  "description": "text recognition and automation",
+  "version": "0.0.1",
   "private": true,
   "engines": {
     "node": ">=v16.13",
@@ -13,12 +14,12 @@
   },
   "main": "packages/main/dist/index.cjs",
   "scripts": {
-    "build": "npm run build:main && npm run build:preload && npm run build:renderer",
+    "build": "yarn build:main && yarn build:preload && yarn build:renderer",
     "build:main": "cd ./packages/main && vite build",
     "build:preload": "cd ./packages/preload && vite build",
     "build:renderer": "cd ./packages/renderer && vite build",
-    "compile": "cross-env MODE=production npm run build && electron-builder build --config .electron-builder.config.js --dir --config.asar=false",
-    "test": "npm run test:main && npm run test:preload && npm run test:renderer && npm run test:e2e",
+    "compile": "cross-env MODE=production yarn build && electron-builder build --config .electron-builder.config.js --dir --config.asar=false",
+    "test": "yarn test:main && yarn test:preload && yarn test:renderer && yarn test:e2e",
     "test:e2e": "vitest run",
     "test:main": "vitest run -r packages/main --passWithNoTests",
     "test:preload": "vitest run -r packages/preload --passWithNoTests",
@@ -28,11 +29,12 @@
     "typecheck:main": "tsc --noEmit -p packages/main/tsconfig.json",
     "typecheck:preload": "tsc --noEmit -p packages/preload/tsconfig.json",
     "typecheck:renderer": "vue-tsc --noEmit -p packages/renderer/tsconfig.json",
-    "typecheck": "npm run typecheck:main && npm run typecheck:preload && npm run typecheck:renderer",
+    "typecheck": "yarn typecheck:main && yarn typecheck:preload && yarn typecheck:renderer",
     "postinstall": "cross-env ELECTRON_RUN_AS_NODE=1 npx --no-install electron ./scripts/update-electron-vendors.js "
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "5.30.5",
+    "@typescript-eslint/parser": "^5.30.6",
     "@vitejs/plugin-vue": "3.0.0-beta.1",
     "@vue/test-utils": "2.0.2",
     "cross-env": "7.0.3",
@@ -44,12 +46,16 @@
     "happy-dom": "6.0.2",
     "nano-staged": "0.8.0",
     "playwright": "1.23.2",
+    "sass": "^1.53.0",
+    "sass-loader": "^13.0.2",
     "simple-git-hooks": "2.8.0",
-    "typescript": "4.7.4",
+    "typescript": "^4.7.4",
     "unplugin-auto-expose": "0.0.1",
     "vite": "3.0.0-beta.9",
+    "vite-plugin-windicss": "^1.8.6",
     "vitest": "0.18.0",
-    "vue-tsc": "0.38.4"
+    "vue-tsc": "0.38.4",
+    "windicss": "^3.5.6"
   },
   "dependencies": {
     "electron-updater": "5.0.5",
