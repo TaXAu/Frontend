@@ -1,6 +1,7 @@
 {
-  "name": "vite-electron-builder",
-  "description": "Secure boilerplate for Electron app based on Vite",
+  "name": "taxau-desktop",
+  "description": "text recognition and automation",
+  "version": "0.0.1",
   "private": true,
   "engines": {
     "node": ">=v16.13",
