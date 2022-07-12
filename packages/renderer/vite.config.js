@@ -47,6 +47,15 @@ const config = {
       preloadEntry: join(PACKAGE_ROOT, '../preload/src/index.ts'),
     }),
   ],
+
+  css: {
+    preprocessorOptions: {
+      scss: {
+        charset: false,
+        additionalData: '@import "./packages/renderer/assets/css/index.scss";',
+      },
+    },
+  },
 };
 
 export default config;

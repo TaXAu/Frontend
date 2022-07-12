@@ -45,6 +45,8 @@
     "happy-dom": "6.0.2",
     "nano-staged": "0.8.0",
     "playwright": "1.23.2",
+    "sass": "^1.53.0",
+    "sass-loader": "^13.0.2",
     "simple-git-hooks": "2.8.0",
     "typescript": "^4.7.4",
     "unplugin-auto-expose": "0.0.1",
