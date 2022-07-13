@@ -7,3 +7,5 @@ import 'virtual:windi-devtools';
 
 createApp(App).use(createPinia()).use(router).mount('#app');
 
+// load electron api
+import '../electron/api';
