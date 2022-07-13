@@ -1,7 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import home from '../page/HomeView.vue';
-import ocr from '../page/OcrView.vue';
-import rpa from '../page/RpaView.vue';
+import home from '../pages/HomeView.vue';
+import ocr from '../pages/OcrView.vue';
+import rpa from '../pages/RpaView.vue';
+import settings from '../pages/SettingsView.vue';
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: '/rpa',
     name: 'rpa',
     component: rpa,
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: settings,
   },
 ];
 
