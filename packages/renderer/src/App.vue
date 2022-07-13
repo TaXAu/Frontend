@@ -2,9 +2,7 @@
 </script>
 
 <template>
-  <h1 text="5xl">
-    Hello World
-  </h1>
+  <router-view />
 </template>
 
 <style lang="scss">
