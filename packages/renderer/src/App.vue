@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <h1 class="text-5xl">
+  <h1 text="5xl">
     Hello World
   </h1>
 </template>
