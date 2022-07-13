@@ -6,6 +6,7 @@ import vue from '@vitejs/plugin-vue';
 import {renderer} from 'unplugin-auto-expose';
 import WindiCSS from 'vite-plugin-windicss';
 import Components from 'unplugin-vue-components/vite';
+import AutoImport from 'unplugin-auto-import/vite';
 
 const PACKAGE_ROOT = __dirname;
 
@@ -48,6 +49,7 @@ const config = {
       preloadEntry: join(PACKAGE_ROOT, '../preload/src/index.ts'),
     }),
     Components({ /* options */}),
+    AutoImport({ /* options */}),
   ],
 
   css: {
