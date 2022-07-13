@@ -1,16 +1,18 @@
 import {Menu} from 'electron';
-
-//const electron = require('electron');
-//const BrowserWindow = electron.BrowserWindow;
+const { BrowserWindow } = require('electron');
 
 const menuTemplate = [{
-  label: '窗口',
-  submenu: [
-    {label: 'OCR'},
-    {label: 'RPA'},
-  ],
+  label: '主页',
+  click: () => changeRoute('/'),
+},{
+  label: 'OCR',
+  click: () => changeRoute('/ocr'),
+},{
+  label: 'RPA',
+  click: () => changeRoute('/rpa'),
 },{
   label: '设置',
+  click: () => changeRoute('/settings'),
 },{
   label: '更多',
 }];
@@ -27,3 +29,10 @@ function changeMenu() {
 }
 
 export default changeMenu;
+
+function changeRoute(route:string) {
+  const win = BrowserWindow.getAllWindows().find(w => !w.isDestroyed());
+  if (win!==undefined) {
+    win.webContents.send('main-process-menu', route);
+  }
+}
