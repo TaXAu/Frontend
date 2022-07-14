@@ -7,6 +7,7 @@ import {renderer} from 'unplugin-auto-expose';
 import WindiCSS from 'vite-plugin-windicss';
 import Components from 'unplugin-vue-components/vite';
 import AutoImport from 'unplugin-auto-import/vite';
+import svgLoader from 'vite-svg-loader';
 
 const PACKAGE_ROOT = __dirname;
 
@@ -104,6 +105,7 @@ const config = {
         globalsPropValue: true, // Default `true`, (true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
       },
     }),
+    svgLoader({defaultImport: 'component'}),
   ],
 
   css: {

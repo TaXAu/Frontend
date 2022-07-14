@@ -1,6 +1,28 @@
 <template>
-  <h1>OCR</h1>
+  <div
+    class="ocr"
+    flex="~"
+    h="100vh"
+    w="100vw"
+  >
+    <div
+      class="nav"
+      flex="none"
+    >
+      <OcrSideNav />
+    </div>
+    <div
+      class="main"
+      flex="auto"
+    />
+  </div>
 </template>
 
-<style lang="scss">
+<script lang="ts" setup>
+</script>
+
+<style lang="scss" scoped>
+.nav {
+  width: $OcrSubNav;
+}
 </style>
