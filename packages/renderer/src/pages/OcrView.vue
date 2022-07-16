@@ -14,7 +14,9 @@
     <div
       class="main"
       flex="auto"
-    />
+    >
+      <OcrMain />
+    </div>
   </div>
 </template>
 
