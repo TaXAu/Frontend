@@ -1,5 +1,8 @@
 <template>
   <ImgSetView />
+  <AddImgSetDialog
+    v-model:is-show="isShowDialog"
+  />
   <div
     bottom="10"
     class="float-buttons"
@@ -10,6 +13,13 @@
     space="x-4"
   >
     <DelButton />
-    <AddButton />
+    <AddButton @click="addImgSetDialog" />
   </div>
 </template>
+
+<script lang="ts" setup>
+import {ref} from 'vue';
+
+const isShowDialog = ref(false);
+const addImgSetDialog = () => isShowDialog.value = true;
+</script>
