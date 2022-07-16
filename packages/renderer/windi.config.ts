@@ -1,4 +1,4 @@
-import { defineConfig } from 'windicss/helpers';
+import {defineConfig} from 'windicss/helpers';
 import formsPlugin from 'windicss/plugin/forms';
 
 export default defineConfig({
@@ -11,6 +11,13 @@ export default defineConfig({
         teal: {
           100: '#096',
         },
+      },
+      fontFamily: {
+        sans: ['Noto Sans SC', 'ui-sans-serif', 'system-ui'],
+        serif: ['Noto Serif SC', 'ui-serif', 'Georgia'],
+        mono: ['ui-monospace', 'SFMono-Regular'],
+        display: ['Noto Sans SC', 'Oswald'],
+        body: ['Noto Sans SC', 'Open Sans'],
       },
     },
   },
