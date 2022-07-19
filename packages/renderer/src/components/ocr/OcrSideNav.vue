@@ -44,7 +44,7 @@ const clickLinkButton = (key: OcrSubNavItemType['key']) => {
 <style lang="scss" scoped>
 .link-button-group {
   .highlight {
-    @apply hover:bg-light-700;
+    @apply hover:bg-light-500;
   }
 
   .chosen {

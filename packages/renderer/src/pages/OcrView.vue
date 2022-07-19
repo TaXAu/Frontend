@@ -14,6 +14,7 @@
     <div
       class="main"
       flex="auto"
+      overflow="auto"
     >
       <OcrMain />
     </div>
