@@ -1,7 +1,8 @@
-import {app} from 'electron';
+import {app, ipcMain} from 'electron';
 import './security-restrictions';
 import {restoreOrCreateWindow} from '/@/mainWindow';
 import changeMenu from '/@/menu';
+import {openImgSelectorDialog} from '/@/api';
 
 
 /**
@@ -40,7 +41,11 @@ app.on('activate', restoreOrCreateWindow);
  * Create app window when background process will be ready
  */
 app.whenReady()
-  .then(restoreOrCreateWindow)
+  .then(restoreOrCreateWindow).then(() => {
+    // load api from ./api/index.ts
+    ipcMain.handle('dialog:selectImg', (e, args) => openImgSelectorDialog(args));
+  },
+)
   .catch((e) => console.error('Failed create window:', e));
 
 
