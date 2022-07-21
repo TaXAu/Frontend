@@ -72,7 +72,6 @@ async function getImgData() {
   await getDisplayImgInfo().then((value) => {
     if (value !== undefined) {
       imgData.value = value;
-      console.log(value);
     }
   });
 }
