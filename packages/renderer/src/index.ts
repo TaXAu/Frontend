@@ -7,7 +7,7 @@ import 'virtual:windi-devtools';
 import '@fontsource/noto-sans-sc';
 import '@fontsource/noto-serif-sc';
 // load electron api
-import '../electron/api';
+import './electron/api';
 
 createApp(App).use(createPinia()).use(router).mount('#app');
 

@@ -77,7 +77,6 @@ export const imgStore = defineStore({
           setId: this.nowImgSetInfo.id,
           filename: img.name,
           filetype: img.type,
-          size: img.size,
           uploadTime: new Date(),
           lastModifiedTime: new Date(img.lastModified),
           blob: img,

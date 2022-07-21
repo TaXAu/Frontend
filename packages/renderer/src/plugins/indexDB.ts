@@ -3,7 +3,7 @@ import Dexie from 'dexie';
 
 // Image set database
 
-const imgDBVersion = 1;
+const imgDBVersion = 2;
 export const imgDbName = 'imgDB';
 export const imgInfoStoreName = 'info';
 
@@ -11,10 +11,10 @@ export interface img {
   id: string;
   setId: string;
   filename: string;
-  size: number;
   filetype: string;
   uploadTime: Date;
   lastModifiedTime: Date;
+  path?: string,
   blob?: Blob;
   dataUrl?: string;
   url?: string;
@@ -36,7 +36,7 @@ export class myImgDexie extends Dexie {
     super(imgDbName);
     this.version(imgDBVersion).stores({
       info: '&id, *name, description, createdTime, lastModifiedTime',
-      img: '&id, *setId, *filename, size, filetype, createdTime, lastModifiedTime, blob, dataUrl, url',
+      img: '&id, *setId, *filename, size, filetype, createdTime, lastModifiedTime, path, blob, dataUrl, url',
     });
     this.info = this.table('info');
     this.img = this.table('img');

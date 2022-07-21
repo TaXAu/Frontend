@@ -20,6 +20,7 @@
           :description="item.description"
           :is-selected="isSelected(item.id)"
           :name="item.name"
+          @click="clickIn(item.id)"
         />
       </div>
     </div>
@@ -44,7 +45,9 @@
 <script lang="ts" setup>
 import {myImgDB} from '/@/plugins/indexDB';
 import {computed, ref, watch} from 'vue';
+import {ocrMainPageInfo, stateStore} from '/@/stores/state';
 
+const state = stateStore();
 const allImgSetInfo = ref();
 const imgSetDiv = ref();
 const selectedImgSetId = ref(new Set<string>);
@@ -54,6 +57,11 @@ function getImgSetInfo() {
   myImgDB.getAllImgSet().then((imgSetInfo) => {
     allImgSetInfo.value = imgSetInfo!;
   });
+}
+
+function clickIn(id: string) {
+  state.intoSet(id);
+  state.changeOcrMainPage(ocrMainPageInfo.ImgOverview);
 }
 
 // for select multi card
