@@ -56,6 +56,13 @@ export async function getDisplayImgInfo(): Promise<displayImgInfo[] | void> {
     }
     return void 0;
   }
-
 }
 
+export async function delImgSet(id: string) {
+  const allImg = await db.getAllImg(id);
+  if (allImg !== undefined) {
+    const allImgId = allImg.map((img) => img.id);
+    await db.deleteImg(allImgId);
+  }
+  await db.deleteImgSet(id);
+}
