@@ -11,9 +11,9 @@
       <div
         v-for="item in itemData"
         :key="item.key"
-        :class="{'chosen': isHighlight(item.key),'highlight': !isHighlight(item.key)}"
-        class="link-button"
-        cursor="default"
+        :class="{'forbidden': isForbidden(item.key),
+                 'chosen': isChosen(item.key)}"
+        class="link-button highlight"
         font="medium"
         h="3rem"
         leading="3rem"
@@ -30,14 +30,15 @@
 </template>
 
 <script lang="ts" setup>
-import type {OcrSubNavItemType} from '/@/config';
-import {OcrSubNavItem as itemData} from '/@/config';
 import {stateStore} from '/@/stores/state';
+import type {ocrPageKeyType} from '/@//config';
+import {ocrSubNavItem as itemData} from '/@//config';
 
-const isHighlight = (key: OcrSubNavItemType['key']) => key === stateStore().ocr.subNav.chosenKey;
-const clickLinkButton = (key: OcrSubNavItemType['key']) => {
+const isForbidden = (key: ocrPageKeyType) => !stateStore().isOcrSubNavItemEnabled(key);
+const isChosen = (key: ocrPageKeyType) => key === stateStore().ocr.nowPage;
+const clickLinkButton = (key: ocrPageKeyType) => {
   // change the state of chosen key in stateStore
-  stateStore().changeOcrSubNavChosenKey(key);
+  stateStore().changeOcrPage(key);
 };
 </script>
 
@@ -45,6 +46,12 @@ const clickLinkButton = (key: OcrSubNavItemType['key']) => {
 .link-button-group {
   .highlight {
     @apply hover:bg-light-500;
+  }
+
+  .forbidden {
+    @apply pointer-events-none;
+    // forbid click
+    @apply text-gray-400;
   }
 
   .chosen {

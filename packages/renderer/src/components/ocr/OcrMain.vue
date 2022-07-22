@@ -1,12 +1,12 @@
 <template>
   <div
-    v-if="state.isOcrImgSetOverviewPage"
+    v-if="state.isInPage('prj-overview')"
     class="main-components"
   >
     <ImgSetView />
   </div>
   <div
-    v-if="state.isOcrImgOverviewPage"
+    v-if="state.isInPage('img-overview')"
     class="main-components"
   >
     <ImgOverview />

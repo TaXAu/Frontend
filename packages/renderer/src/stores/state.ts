@@ -1,48 +1,62 @@
 import {defineStore} from 'pinia';
-import type {OcrSubNavItemType} from '../config';
-import {OcrSubNavItem} from '../config';
+import type {ocrPageKeyType} from '/@/config';
+import {ocrSubNavItem} from '/@/config';
 
 const NULL_STR = '';
-
-export enum ocrMainPageInfo {
-  None,
-  ImgSetOverview,
-  ImgOverview
-}
+const OCR_DEFAULT_PAGE_KEY = ocrSubNavItem.at(0)!.key;
 
 export const stateStore = defineStore({
   id: 'state-store',
   state: () => {
     return {
       ocr: {
-        subNav: {
-          chosenKey: OcrSubNavItem.at(1)!.key,
-        },
-        main: {
-          nowPage: ocrMainPageInfo.ImgSetOverview,
-          setId: NULL_STR,
-        },
+        setId: NULL_STR,
+        imgId: NULL_STR,
+        nowPage: OCR_DEFAULT_PAGE_KEY,
       },
     };
   },
   getters: {
-    isInSet: (state) => state.ocr.main.setId !== NULL_STR,
-    isOcrImgSetOverviewPage: (state) => state.ocr.main.nowPage === ocrMainPageInfo.ImgSetOverview,
-    isOcrImgOverviewPage: (state) => state.ocr.main.nowPage === ocrMainPageInfo.ImgOverview,
+    /*
+    OCR Page Functions
+     */
+    isInSet: (state) => state.ocr.setId !== NULL_STR,
+    isSelectImg: (state) => state.ocr.imgId !== NULL_STR,
   },
   actions: {
-    changeOcrSubNavChosenKey(key: OcrSubNavItemType['key']) {
-      this.ocr.subNav.chosenKey = key;
+    /*
+    OCR Page Functions
+     */
+    isInPage(key: ocrPageKeyType) {
+      return this.ocr.nowPage === key;
     },
-    changeOcrMainPage(page: ocrMainPageInfo) {
-      this.ocr.main.nowPage = page;
+    isOcrSubNavItemEnabled(key: ocrPageKeyType) {
+      switch (key) {
+        case 'prj-overview':
+          return true;
+        case 'img-overview':
+          return this.isInSet;
+        case 'img-info':
+          return this.isSelectImg;
+        case 'data-management':
+          return true;
+        case 'prj-settings':
+          return true;
+      }
+    },
+    changeOcrPage(key: ocrPageKeyType) {
+      if (this.isOcrSubNavItemEnabled(key)) {
+        this.ocr.nowPage = key;
+        return true;
+      }
+      return false;
     },
     intoSet(id: string) {
-      this.ocr.main.setId = id;
+      this.ocr.setId = id;
     },
     exitSet() {
-      this.ocr.main.setId = NULL_STR;
-      this.ocr.main.nowPage = ocrMainPageInfo.ImgSetOverview;
+      this.ocr.setId = NULL_STR;
+      this.ocr.nowPage = OCR_DEFAULT_PAGE_KEY;
     },
   },
 });

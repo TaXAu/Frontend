@@ -19,7 +19,7 @@ export async function addImgFromDataUrl(img: imgInfoType): Promise<void> {
     const nowDate = new Date;
     const dbImg: imgDBType = {
       id: uuidv1(),
-      setId: stateStore.ocr.main.setId,
+      setId: stateStore.ocr.setId,
       filename: img.filename,
       filetype: img.filetype,
       uploadTime: nowDate,
@@ -34,7 +34,7 @@ export async function addImgFromDataUrl(img: imgInfoType): Promise<void> {
 export async function getDisplayImgInfo(): Promise<displayImgInfo[] | void> {
   const stateStore = stateStore1();
   if (stateStore.isInSet) {
-    const images: imgDBType[] | void = await db.getAllImg(stateStore.ocr.main.setId);
+    const images: imgDBType[] | void = await db.getAllImg(stateStore.ocr.setId);
     const displayImages: displayImgInfo[] = [];
     if (images !== undefined) {
       images.forEach((image) => {

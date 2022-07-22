@@ -45,7 +45,7 @@
 <script lang="ts" setup>
 import {myImgDB} from '/@/plugins/indexDB';
 import {computed, ref, watch} from 'vue';
-import {ocrMainPageInfo, stateStore} from '/@/stores/state';
+import {stateStore} from '/@/stores/state';
 
 const state = stateStore();
 const allImgSetInfo = ref();
@@ -61,7 +61,7 @@ function getImgSetInfo() {
 
 function clickIn(id: string) {
   state.intoSet(id);
-  state.changeOcrMainPage(ocrMainPageInfo.ImgOverview);
+  state.changeOcrPage('img-overview');
 }
 
 // for select multi card

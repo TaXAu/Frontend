@@ -1,15 +1,28 @@
-export interface OcrSubNavItemType {
-  readonly key: string,
+export interface ocrSubNavItemType {
+  readonly key: ocrPageKeyType,
   readonly name: string,
 }
 
-export const OcrSubNavItem: OcrSubNavItemType[] = [
-  {
-    key: '1',
-    name: '图片管理',
-  },
-  {
-    key: '2',
-    name: '数据管理',
-  },
-];
+export type ocrPageKeyType =
+  'prj-overview' |
+  'img-overview' |
+  'img-info' |
+  'data-management' |
+  'prj-settings';
+
+export const ocrSubNavItem: ocrSubNavItemType[] = [{
+  key: 'prj-overview',
+  name: '项目概览',
+}, {
+  key: 'img-overview',
+  name: '图片概览',
+}, {
+  key: 'img-info',
+  name: '图片详情',
+}, {
+  key: 'data-management',
+  name: '数据管理',
+}, {
+  key: 'prj-settings',
+  name: '项目设置',
+}];
