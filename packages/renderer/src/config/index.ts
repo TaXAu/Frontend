@@ -12,7 +12,10 @@ export type ocrPageKeyType =
 
 export const ocrSubNavItem: ocrSubNavItemType[] = [{
   key: 'prj-overview',
-  name: '项目概览',
+  name: '项目总览',
+}, {
+  key: 'prj-settings',
+  name: '项目配置',
 }, {
   key: 'img-overview',
   name: '图片概览',
@@ -22,7 +25,4 @@ export const ocrSubNavItem: ocrSubNavItemType[] = [{
 }, {
   key: 'data-management',
   name: '数据管理',
-}, {
-  key: 'prj-settings',
-  name: '项目设置',
 }];
