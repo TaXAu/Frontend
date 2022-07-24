@@ -39,9 +39,9 @@ export const stateStore = defineStore({
         case 'img-info':
           return this.isSelectImg;
         case 'data-management':
-          return true;
+          return this.isInSet;
         case 'prj-settings':
-          return true;
+          return this.isInSet;
       }
     },
     changeOcrPage(key: ocrPageKeyType) {

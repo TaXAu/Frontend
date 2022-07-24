@@ -1,4 +1,5 @@
 <template>
+  <OcrTopBar />
   <div
     ref="imgSetDiv"
     class="img-sets-overview"

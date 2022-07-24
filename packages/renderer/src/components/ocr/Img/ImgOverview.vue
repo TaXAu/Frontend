@@ -1,4 +1,5 @@
 <template>
+  <OcrTopBar />
   <div
     class="img-view"
     grid="~ cols-3"
