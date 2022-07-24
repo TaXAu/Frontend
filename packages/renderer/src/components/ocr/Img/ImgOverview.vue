@@ -2,7 +2,7 @@
   <OcrTopBar />
   <div
     class="img-view"
-    grid="~ cols-3"
+    grid="~ <sm:cols-1 sm:<md:cols-2 md:<lg:cols-3 lg:<xl:cols-4 xl:<2xl:cols-5 2xl:cols-6"
     p="4"
   >
     <div
@@ -19,6 +19,7 @@
         <ImgCard
           :filename="item.filename"
           :url="item.url"
+          @click="intoImgInfoPage(item.url)"
         />
       </div>
     </div>
@@ -65,8 +66,11 @@ import Folder from '@material-design-icons/svg/round/folder.svg';
 import Image from '@material-design-icons/svg/round/image.svg';
 import type {displayImgInfo} from '/@/plugins/img';
 import {addImgFromDataUrl, getDisplayImgInfo} from '/@/plugins/img';
+import {stateStore} from '/@/stores/state';
 
 const imgData = ref(new Array<displayImgInfo>);
+
+const intoImgInfoPage = (id: string) => stateStore().intoImg(id);
 
 // get img data from indexedDB and display in html
 async function getImgData() {

@@ -1,12 +1,15 @@
 <template>
   <div
-    bg="light-100 hover:light-400"
-    border=""
+    border="1 zinc-400"
     class="img-card relative"
     h="full"
     overflow="hidden"
-    rounded="2xl"
+    duration="200"
     select="none"
+    ease="in-out"
+    hover="translate-x-1/30 translate-y-1/30"
+    rounded="lg"
+    transform="~ gpu"
   >
     <img
       :alt="filename"

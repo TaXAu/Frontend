@@ -53,10 +53,19 @@ export const stateStore = defineStore({
     },
     intoSet(id: string) {
       this.ocr.setId = id;
+      this.ocr.nowPage = 'img-overview';
     },
     exitSet() {
       this.ocr.setId = NULL_STR;
       this.ocr.nowPage = OCR_DEFAULT_PAGE_KEY;
+    },
+    intoImg(id: string) {
+      this.ocr.imgId = id;
+      this.ocr.nowPage = 'img-info';
+    },
+    exitImg() {
+      this.ocr.imgId = NULL_STR;
+      this.ocr.nowPage = 'img-overview';
     },
   },
 });

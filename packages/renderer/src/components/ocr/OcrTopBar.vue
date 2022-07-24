@@ -1,14 +1,15 @@
 <template>
   <div
-    bg="light-100"
+    bg="light-400"
     class="img-top-bar"
     flex="~"
     gap="x-2"
     inset="x-0"
     items="center"
-    m="2"
+    m="y-2 x-4"
     p="x-4"
     rounded="lg"
+    shadow="sm"
     select="none"
     sticky="~"
     top="2"

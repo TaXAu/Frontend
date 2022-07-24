@@ -1,13 +1,13 @@
 <template>
   <div
     :class="{'selected-card': isSelected}"
-    bg="light-100 hover:light-400"
+    bg="zinc-100 hover:zinc-200"
     class="card"
     flex="~ col"
     h="full"
     overflow="hidden"
     p="4"
-    rounded="2xl"
+    rounded="xl"
     select="none"
   >
     <p

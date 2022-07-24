@@ -3,7 +3,7 @@
   <div
     ref="imgSetDiv"
     class="img-sets-overview"
-    grid="~ cols-2"
+    grid="~ <sm:cols-1 sm:<md:cols-2 md:<lg:cols-3 lg:<2xl:cols-4 2xl:cols-5"
     p="4"
   >
     <div
@@ -159,7 +159,7 @@ getImgSetInfo();
 <style lang="scss" scoped>
 .img-set-item {
   height: 0;
-  padding-bottom: 40%;
+  padding-bottom: 50%;
 }
 
 .del-btn-on {
