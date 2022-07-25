@@ -1,23 +1,21 @@
 <template>
-  <div>
-    <div
-      v-if="state.isInPage('prj-overview')"
-      class="main-components"
-    >
-      <ImgSetView />
-    </div>
-    <div
-      v-if="state.isInPage('img-overview')"
-      class="main-components"
-    >
-      <ImgOverview />
-    </div>
-    <div
-      v-if="state.isInPage('img-info')"
-      class="main-components"
-    >
-      <ImgInfoView />
-    </div>
+  <div
+    v-if="state.isInPage('prj-overview')"
+    class="main-components"
+  >
+    <ImgSetView />
+  </div>
+  <div
+    v-if="state.isInPage('img-overview')"
+    class="main-components"
+  >
+    <ImgOverview />
+  </div>
+  <div
+    v-if="state.isInPage('img-info')"
+    class="main-components"
+  >
+    <ImgInfoView />
   </div>
 </template>
 
@@ -29,4 +27,7 @@ const state = stateStore();
 </script>
 
 <style lang="scss" scoped>
+.main-components {
+  @apply h-full;
+}
 </style>
