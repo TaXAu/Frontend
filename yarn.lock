@@ -215,6 +215,11 @@
   dependencies:
     "@types/ms" "*"
 
+"@types/fabric@^4.5.11":
+  version "4.5.11"
+  resolved "https://registry.yarnpkg.com/@types/fabric/-/fabric-4.5.11.tgz#ca7be016c6d803bf1066ce7072836ac1e7f2350d"
+  integrity sha512-JgOnbIm03EDYI+X5/hjstMZUbQ9W3704BQ4Dlu7t9JwWzNSdJE4cTV/4XtIHFCCfiFpcL756re+qCazTA84InA==
+
 "@types/form-data@0.0.33":
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/@types/form-data/-/form-data-0.0.33.tgz#c9ac85b2a5fd18435b8c85d9ecb50e6d6c893ff8"
