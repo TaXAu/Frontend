@@ -11,13 +11,13 @@
     </p>
     <p>/</p>
     <p
-      v-show="isInSet"
+      v-show="isInSet || isInImg"
       class="link-text"
       @click="state.changeOcrPage('img-overview')"
     >
       {{ SetName }}
     </p>
-    <p v-show="isInSet">
+    <p v-show="isInImg">
       /
     </p>
     <p
