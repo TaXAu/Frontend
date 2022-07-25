@@ -19,7 +19,7 @@
         <ImgCard
           :filename="item.filename"
           :url="item.url"
-          @click="intoImgInfoPage(item.url)"
+          @click="intoImgInfoPage(item.id)"
         />
       </div>
     </div>
