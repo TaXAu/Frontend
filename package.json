@@ -8,9 +8,7 @@
     "npm": ">=8.1"
   },
   "author": {
-    "email": "kozackunisoft@gmail.com",
-    "name": "Alex Kozack",
-    "url": "https://kozack.me"
+    "name": "TaXAu"
   },
   "main": "packages/main/dist/index.cjs",
   "scripts": {
