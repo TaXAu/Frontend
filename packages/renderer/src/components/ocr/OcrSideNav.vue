@@ -17,7 +17,7 @@
         font="medium"
         h="3rem"
         leading="3rem"
-        m="2"
+        m="2 first:t-1"
         rounded="2xl"
         select="none"
         text="center"
