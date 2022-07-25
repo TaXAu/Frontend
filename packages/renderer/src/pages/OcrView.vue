@@ -26,6 +26,6 @@
 
 <style lang="scss" scoped>
 .nav {
-  width: $OcrSubNav;
+  width: $OcrSubNavWidth;
 }
 </style>

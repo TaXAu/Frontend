@@ -29,6 +29,6 @@ import ChevronLeft from '@material-design-icons/svg/round/chevron_left.svg';</sc
 
 <style lang="scss" scoped>
 .img-top-bar {
-  height: $OcrTopBar;
+  height: $OcrTopBarHeight;
 }
 </style>
