@@ -31,17 +31,21 @@
 <script lang="ts" setup>
 import {getImgInfo} from '/@/plugins/img';
 import {stateStore} from '/@/stores/state';
-import {ref} from 'vue';
+import {computed, ref, watch} from 'vue';
 import type {img as imgDBType} from '/@/plugins/indexDB';
 
 const imgInfo = ref<imgDBType>();
 const state = stateStore();
+const imgId = computed(() => state.ocr.imgId);
 
-if (state.isSelectImg) {
-  getImgInfo(state.ocr.imgId).then(info => {
-    imgInfo.value = info!;
-  });
-}
+watch(imgId, () => {
+  if (state.isSelectImg) {
+    getImgInfo(state.ocr.imgId).then(info => {
+      imgInfo.value = info!;
+    });
+  }
+});
+
 </script>
 
 <style lang="scss" scoped>

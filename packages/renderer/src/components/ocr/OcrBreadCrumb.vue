@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, ref} from 'vue';
+import {computed, ref, watch} from 'vue';
 import {stateStore} from '/@/stores/state';
 import {getImgInfo, getImgSetInfo} from '/@/plugins/img';
 
@@ -42,11 +42,17 @@ const DEFAULT_NAME = '...';
 const SetName = ref(DEFAULT_NAME);
 const ImgName = ref(DEFAULT_NAME);
 
-getImgInfo(state.ocr.imgId).then((imgInfo) => {
-  ImgName.value = imgInfo?.filename ?? DEFAULT_NAME;
-});
-getImgSetInfo(state.ocr.setId).then((imgSetInfo) => {
-  SetName.value = imgSetInfo?.name ?? DEFAULT_NAME;
+watch([isInImg, isInSet], () => {
+  if (isInImg.value) {
+    getImgInfo(state.ocr.imgId).then((imgInfo) => {
+      ImgName.value = imgInfo?.filename ?? DEFAULT_NAME;
+    });
+  }
+  if (isInSet.value) {
+    getImgSetInfo(state.ocr.setId).then((imgSetInfo) => {
+      SetName.value = imgSetInfo?.name ?? DEFAULT_NAME;
+    });
+  }
 });
 </script>
 
