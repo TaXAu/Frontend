@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref} from 'vue';
+import {computed, ref, watch} from 'vue';
 import {openImgSelectorDialog} from '/@/electron/api';
 import Folder from '@material-design-icons/svg/round/folder.svg';
 import Image from '@material-design-icons/svg/round/image.svg';
@@ -69,20 +69,24 @@ import {addImgFromDataUrl, getDisplayImgInfo} from '/@/plugins/img';
 import {stateStore} from '/@/stores/state';
 
 const imgData = ref(new Array<displayImgInfo>);
-
-const intoImgInfoPage = (id: string) => stateStore().intoImg(id);
+const state = stateStore();
+const setId = computed(() => state.ocr.setId);
+const intoImgInfoPage = (id: string) => state.intoImg(id);
 
 // get img data from indexedDB and display in html
+watch(setId, () => {
+  getImgData();
+});
+
 async function getImgData() {
-  await getDisplayImgInfo().then((value) => {
-    if (value !== undefined) {
-      imgData.value = value;
-    }
-  });
+  if (state.isInSet) {
+    await getDisplayImgInfo(state.ocr.setId).then((value) => {
+      if (value !== undefined) {
+        imgData.value = value;
+      }
+    });
+  }
 }
-
-getImgData();
-
 
 // add img from local files
 // use indexedDB

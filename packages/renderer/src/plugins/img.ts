@@ -31,30 +31,26 @@ export async function addImgFromDataUrl(img: imgInfoType): Promise<void> {
   }
 }
 
-export async function getDisplayImgInfo(): Promise<displayImgInfo[] | void> {
-  const stateStore = stateStore1();
-  if (stateStore.isInSet) {
-    const images: imgDBType[] | void = await db.getAllImg(stateStore.ocr.setId);
-    const displayImages: displayImgInfo[] = [];
-    if (images !== undefined) {
-      images.forEach((image) => {
-        if (('dataUrl' in image && image.dataUrl !== undefined) ||
-          ('url' in image && image.url !== undefined)) {
-          const displayImage: displayImgInfo = {
-            id: image.id,
-            filename: image.filename,
-            uploadTime: image.uploadTime,
-            lastModifiedTime: image.lastModifiedTime,
-            url: 'dataUrl' in image ? image.dataUrl! : image.url!,
-          };
-          displayImages.push(displayImage);
-        }
-        // TODO
-        // 'else if' Blob and Path case
-      });
-      return displayImages;
-    }
-    return void 0;
+export async function getDisplayImgInfo(id: string): Promise<displayImgInfo[] | void> {
+  const images: imgDBType[] | void = await db.getAllImg(id);
+  const displayImages: displayImgInfo[] = [];
+  if (images !== undefined) {
+    images.forEach((image) => {
+      if (('dataUrl' in image && image.dataUrl !== undefined) ||
+        ('url' in image && image.url !== undefined)) {
+        const displayImage: displayImgInfo = {
+          id: image.id,
+          filename: image.filename,
+          uploadTime: image.uploadTime,
+          lastModifiedTime: image.lastModifiedTime,
+          url: 'dataUrl' in image ? image.dataUrl! : image.url!,
+        };
+        displayImages.push(displayImage);
+      }
+      // TODO
+      // 'else if' Blob and Path case
+    });
+    return displayImages;
   }
 }
 
