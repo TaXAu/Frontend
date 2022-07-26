@@ -15,7 +15,7 @@ export default defineConfig({
       fontFamily: {
         sans: ['Noto Sans SC', 'ui-sans-serif', 'system-ui'],
         serif: ['Noto Serif SC', 'ui-serif', 'Georgia'],
-        mono: ['ui-monospace', 'SFMono-Regular'],
+        mono: ['Consolas', 'ui-monospace', 'SFMono-Regular'],
         display: ['Noto Sans SC', 'Oswald'],
         body: ['Noto Sans SC', 'Open Sans'],
       },
