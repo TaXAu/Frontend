@@ -88,6 +88,7 @@ async function getImgData() {
   }
 }
 
+getImgData();
 // add img from local files
 // use indexedDB
 async function addImg(type: 'file' | 'directory') {
