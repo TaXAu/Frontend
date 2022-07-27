@@ -1,18 +1,28 @@
 import {defineStore} from 'pinia';
 import type {ocrPageKeyType} from '/@/config';
-import {ocrSubNavItem} from '/@/config';
+import {ROUTE_NAME} from '/@/config';
 
 const NULL_STR = '';
-const OCR_DEFAULT_PAGE_KEY = ocrSubNavItem.at(0)!.key;
 
 export const stateStore = defineStore({
   id: 'state-store',
   state: () => {
+    const tmpPage: any = null;
     return {
+      page: tmpPage,
+      home: {
+        page: tmpPage,
+      },
       ocr: {
-        setId: NULL_STR,
+        prjId: NULL_STR,
         imgId: NULL_STR,
-        nowPage: OCR_DEFAULT_PAGE_KEY,
+        page: tmpPage,
+      },
+      rpa: {
+        page: tmpPage,
+      },
+      settings: {
+        page: tmpPage,
       },
     };
   },
@@ -20,52 +30,32 @@ export const stateStore = defineStore({
     /*
     OCR Page Functions
      */
-    isInSet: (state) => state.ocr.setId !== NULL_STR,
+    isInSet: (state) => state.ocr.prjId !== NULL_STR,
     isSelectImg: (state) => state.ocr.imgId !== NULL_STR,
   },
   actions: {
     /*
     OCR Page Functions
      */
-    isInPage(key: ocrPageKeyType) {
-      return this.ocr.nowPage === key;
+    clearOcrImgId() {
+      this.ocr.imgId = NULL_STR;
+    },
+    clearOcrPrjId() {
+      this.ocr.prjId = NULL_STR;
     },
     isOcrSubNavItemEnabled(key: ocrPageKeyType) {
       switch (key) {
-        case 'prj-overview':
+        case ROUTE_NAME.OCR_PROJECTS:
           return true;
-        case 'img-overview':
+        case ROUTE_NAME.OCR_PROJECT_IMAGES:
           return this.isInSet;
-        case 'img-info':
+        case ROUTE_NAME.OCR_PROJECT_IMAGE_DETAIL:
           return this.isSelectImg;
-        case 'data-management':
+        case ROUTE_NAME.OCR_PROJECT_DATA:
           return this.isInSet;
-        case 'prj-settings':
+        case ROUTE_NAME.OCR_PROJECT_CONFIG:
           return this.isInSet;
       }
-    },
-    changeOcrPage(key: ocrPageKeyType) {
-      if (this.isOcrSubNavItemEnabled(key)) {
-        this.ocr.nowPage = key;
-        return true;
-      }
-      return false;
-    },
-    intoSet(id: string) {
-      this.ocr.setId = id;
-      this.ocr.nowPage = 'img-overview';
-    },
-    exitSet() {
-      this.ocr.setId = NULL_STR;
-      this.ocr.nowPage = OCR_DEFAULT_PAGE_KEY;
-    },
-    intoImg(id: string) {
-      this.ocr.imgId = id;
-      this.ocr.nowPage = 'img-info';
-    },
-    exitImg() {
-      this.ocr.imgId = NULL_STR;
-      this.ocr.nowPage = 'img-overview';
     },
   },
 });

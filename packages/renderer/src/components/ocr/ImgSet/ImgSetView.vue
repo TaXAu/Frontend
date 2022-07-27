@@ -53,6 +53,7 @@ import {computed, ref, watch} from 'vue';
 import {stateStore} from '/@/stores/state';
 import {onClickOutside, useMagicKeys} from '@vueuse/core';
 import {delImgSet as _delImgSet} from '/@/plugins/img';
+import {useRouter} from 'vue-router';
 
 const state = stateStore();
 const {ctrl} = useMagicKeys();
@@ -65,6 +66,7 @@ const isMultiSelectMode = ref(false);
 const isDelMode = ref(false);
 const clickOutsideRef = ref(null);
 const isSpecialMode = computed(() => isDelMode.value /* || isOtherMode */);
+const router = useRouter();
 
 function getImgSetInfo() {
   myImgDB.getAllImgSet().then((imgSetInfo) => {
@@ -74,8 +76,7 @@ function getImgSetInfo() {
 
 function clickIn(id: string) {
   if (!isDelMode.value) {
-    state.intoSet(id);
-    state.changeOcrPage('img-overview');
+    router.push({name: 'ocr-project-images', params: {prjId: id}});
   }
 }
 
@@ -118,8 +119,9 @@ const delImgSet = async (id: Set<string> | Array<string> | string) => {
   else if (id instanceof Set) _id = <Set<string>>id;
   else _id = new Set<string>();
 
-  if (state.isInSet && _id.has(state.ocr.setId)) {
-    state.exitSet();
+  if (state.isInSet && _id.has(state.ocr.prjId)) {
+    state.clearOcrPrjId();
+    state.clearOcrImgId();
   }
   await _id.forEach(async (v: string) =>
     await _delImgSet(v)
