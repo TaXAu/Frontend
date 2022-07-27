@@ -5,7 +5,7 @@
   >
     <p
       class="link-text"
-      @click="state.changeOcrPage('prj-overview')"
+      @click="router.push({name: ROUTE_NAME.OCR_PROJECTS})"
     >
       项目
     </p>
@@ -13,7 +13,8 @@
     <p
       v-show="isInSet || isInImg"
       class="link-text"
-      @click="state.changeOcrPage('img-overview')"
+      @click="router.push({name: ROUTE_NAME.OCR_PROJECT_IMAGES
+                           , params: {prjId: state.ocr.prjId}})"
     >
       {{ SetName }}
     </p>
@@ -23,7 +24,8 @@
     <p
       v-show="isInImg"
       class="link-text"
-      @click="state.changeOcrPage('img-info')"
+      @click="router.push({name: ROUTE_NAME.OCR_PROJECT_IMAGE_DETAIL
+                           , params:{imgId: state.ocr.imgId}})"
     >
       {{ ImgName }}
     </p>
@@ -31,22 +33,39 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, ref} from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import {stateStore} from '/@/stores/state';
 import {getImgInfo, getImgSetInfo} from '/@/plugins/img';
+import {ROUTE_NAME} from '/@/config';
+import {useRoute, useRouter} from 'vue-router';
 
 const state = stateStore();
-const isInSet = computed(() => state.ocr.nowPage === 'img-overview');
-const isInImg = computed(() => state.ocr.nowPage === 'img-info');
+const route = useRoute();
+const router = useRouter();
+const isInSet = computed(() => route.name === ROUTE_NAME.OCR_PROJECT_IMAGES);
+const isInImg = computed(() => route.name === ROUTE_NAME.OCR_PROJECT_IMAGE_DETAIL);
 const DEFAULT_NAME = '...';
 const SetName = ref(DEFAULT_NAME);
 const ImgName = ref(DEFAULT_NAME);
 
-getImgInfo(state.ocr.imgId).then((imgInfo) => {
-  ImgName.value = imgInfo?.filename ?? DEFAULT_NAME;
+const updateImfo = () => {
+  getImgInfo(state.ocr.imgId).then((imgInfo) => {
+    ImgName.value = imgInfo?.filename ?? DEFAULT_NAME;
+  });
+  getImgSetInfo(state.ocr.prjId).then((imgSetInfo) => {
+    SetName.value = imgSetInfo?.name ?? DEFAULT_NAME;
+  });
+};
+
+watch([
+  () => state.ocr.imgId,
+  () => state.ocr.prjId,
+], () => {
+  updateImfo();
 });
-getImgSetInfo(state.ocr.setId).then((imgSetInfo) => {
-  SetName.value = imgSetInfo?.name ?? DEFAULT_NAME;
+
+onMounted(() => {
+  updateImfo();
 });
 </script>
 

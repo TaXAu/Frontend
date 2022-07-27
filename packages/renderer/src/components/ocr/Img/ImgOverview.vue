@@ -60,27 +60,33 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, ref, watch} from 'vue';
+import {defineProps, ref, watch} from 'vue';
 import {openImgSelectorDialog} from '/@/electron/api';
 import Folder from '@material-design-icons/svg/round/folder.svg';
 import Image from '@material-design-icons/svg/round/image.svg';
 import type {displayImgInfo} from '/@/plugins/img';
 import {addImgFromDataUrl, getDisplayImgInfo} from '/@/plugins/img';
-import {stateStore} from '/@/stores/state';
+import {useRoute, useRouter} from 'vue-router';
+
+const route = useRoute();
+const router = useRouter();
+const props = defineProps({prjId: String});
 
 const imgData = ref(new Array<displayImgInfo>);
-const state = stateStore();
-const setId = computed(() => state.ocr.setId);
-const intoImgInfoPage = (id: string) => state.intoImg(id);
+const intoImgInfoPage = (id: string) =>
+  router.push({name: 'ocr-project-image-detail', params: {imgId: id}});
 
-// get img data from indexedDB and display in html
-watch(setId, () => {
+// get Project ID from route and props
+const prjId = ref<string>(props.prjId!);
+watch(() => route.params.prjId, () => {
+  if (route.params?.prjId) prjId.value = <string>route.params.prjId;
   getImgData();
 });
 
+// get img data from indexedDB and display in html
 async function getImgData() {
-  if (state.isInSet) {
-    await getDisplayImgInfo(state.ocr.setId).then((value) => {
+  if (prjId.value) {
+    await getDisplayImgInfo(prjId.value).then((value) => {
       if (value !== undefined) {
         imgData.value = value;
       }
@@ -88,7 +94,9 @@ async function getImgData() {
   }
 }
 
-getImgData();
+getImgData();// get image date the first time get in the component
+
+
 // add img from local files
 // use indexedDB
 async function addImg(type: 'file' | 'directory') {
