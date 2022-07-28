@@ -2,6 +2,7 @@ import {createRouter, createWebHashHistory} from 'vue-router';
 import home from '../pages/HomeView.vue';
 import ocr from '../pages/OcrView.vue';
 import rpa from '../pages/RpaView.vue';
+import PrjConfig from '../components/ocr/Prj/PrjConfig.vue';
 import PrjView from '../components/ocr/Prj/PrjView.vue';
 import ImgInfoView from '../components/ocr/ImgInfo/ImgInfoView.vue';
 import ImgOverview from '../components/ocr/Img/ImgView.vue';
@@ -29,7 +30,7 @@ const routes = [{
   }, {
     path: 'project/config/:prjId',
     name: ROUTE_NAME.OCR_PROJECT_CONFIG,
-    component: ImgInfoView,
+    component: PrjConfig,
     meta: {
       keepAlive: true,
     },
