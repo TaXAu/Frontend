@@ -36,30 +36,30 @@ export const imgStore = defineStore({
         createdTime: date, // 创建时间
         lastModifiedTime: date, // 最后修改时间
       };
-      await db.addImgSet(newSet);
+      await db.addPrj(newSet);
       return newSet.id;
     },
 
     // 修改图片集
     async updateSet(id: string, {name, description}: { name?: string, description?: string }) {
-      const set = await db.getImgSet(id);
+      const set = await db.getPrj(id);
       if (typeof set !== 'undefined') {
         set.lastModifiedTime = new Date();
         set.name = name || set.name;
         set.description = description || set.description;
-        await db.updateImgSet(set);
+        await db.updatePrj(set);
       }
 
     },
 
     // 删除图片集
     async deleteSet(id: string) {
-      await db.deleteImgSet(id);
+      await db.deletePrj(id);
     },
 
     // 选中图片集
     async selectSet(id: string) {
-      if (await db.hasImgSet(id)) {
+      if (await db.hasPrj(id)) {
         this.nowImgSetInfo.id = id;
         this.nowImgSetInfo.isSelected = true;
         return true;

@@ -42,23 +42,23 @@ export class myImgDexie extends Dexie {
     this.img = this.table('img');
   }
 
-  async getImgSet(id: string): Promise<void | prjInfo> {
+  async getPrj(id: string): Promise<void | prjInfo> {
     return this.info.get(id);
   }
 
-  async getAllImgSet(): Promise<void | prjInfo[]> {
+  async getAllPrj(): Promise<void | prjInfo[]> {
     return this.info.toArray();
   }
 
-  async addImgSet(info: prjInfo): Promise<void> {
+  async addPrj(info: prjInfo): Promise<void> {
     await this.info.add(info);
   }
 
-  async updateImgSet(info: prjInfo): Promise<void> {
+  async updatePrj(info: prjInfo): Promise<void> {
     await this.info.update(info.id, info);
   }
 
-  async deleteImgSet(id: string): Promise<void> {
+  async deletePrj(id: string): Promise<void> {
     await this.info.delete(id);
   }
 
@@ -100,7 +100,7 @@ export class myImgDexie extends Dexie {
     }
   }
 
-  async hasImgSet(id: string): Promise<boolean> {
+  async hasPrj(id: string): Promise<boolean> {
     return await this.info.where('id').equals(id).count() > 0;
   }
 }

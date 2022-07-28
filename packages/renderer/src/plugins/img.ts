@@ -60,7 +60,7 @@ export async function delImgSet(id: string) {
     const allImgId = allImg.map((img) => img.id);
     await db.deleteImg(allImgId);
   }
-  await db.deleteImgSet(id);
+  await db.deletePrj(id);
 }
 
 // get an image object from the img id.

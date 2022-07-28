@@ -69,7 +69,7 @@ const isSpecialMode = computed(() => isDelMode.value /* || isOtherMode */);
 const router = useRouter();
 
 function getImgSetInfo() {
-  myImgDB.getAllImgSet().then((prjInfo) => {
+  myImgDB.getAllPrj().then((prjInfo) => {
     allImgSetInfo.value = prjInfo!;
   });
 }
