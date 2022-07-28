@@ -40,7 +40,7 @@
       :class="{'del-btn-on': isDelMode}"
       @click="clickDelBtn"
     />
-    <AddButton @click="addImgSetDialog" />
+    <AddButton @click="addPrjDialog" />
   </div>
   <AddImgSetDialog
     v-model:is-show="isShowDialog"
@@ -52,7 +52,7 @@ import {myImgDB} from '/@/plugins/indexDB';
 import {computed, ref, watch} from 'vue';
 import {stateStore} from '/@/stores/state';
 import {onClickOutside, useMagicKeys} from '@vueuse/core';
-import {delPrj as _delImgSet} from '/@/plugins/img';
+import {delPrj as _delPrj} from '/@/plugins/img';
 import {useRouter} from 'vue-router';
 
 const state = stateStore();
@@ -98,7 +98,7 @@ const isSelected = computed(() => {
   return (id: string) => selectedPrjId.value.has(id);
 });
 
-const addImgSetDialog = () => isShowDialog.value = true;
+const addPrjDialog = () => isShowDialog.value = true;
 
 // Operations when click `DelButton`
 const clickDelBtn = () => {
@@ -123,7 +123,7 @@ const delPrj = async (id: Set<string> | Array<string> | string) => {
     state.clearOcrImgId();
   }
   await _id.forEach(async (v: string) =>
-    await _delImgSet(v)
+    await _delPrj(v)
       .then(() => _id.clear())
       .finally(() => getPrjInfo()));
 

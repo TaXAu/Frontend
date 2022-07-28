@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia';
 import {v1 as uuidv1} from 'uuid'; // uuid v1 使用时间戳
-import type {img as imgDBType, prjInfo as imgSetInfoDBType} from '../plugins/indexDB';
+import type {img as imgDBType, prjInfo as prjInfoDBType} from '../plugins/indexDB';
 import {myImgDB as db} from '../plugins/indexDB';
 
 interface displayImgType {
@@ -20,7 +20,7 @@ export const imgStore = defineStore({
     };
   },
   getters: {
-    nowImgSet: (state) => {
+    nowPrj: (state) => {
       return state.nowImgSetInfo.isSelected ? state.nowImgSetInfo.id : null;
     },
   },
@@ -29,7 +29,7 @@ export const imgStore = defineStore({
     // 添加图片集
     async addSet(name: string, description: string) {
       const date = new Date(); // 当前时间
-      const newSet: imgSetInfoDBType = {
+      const newSet: prjInfoDBType = {
         id: uuidv1(), // 图片集唯一标识uuid
         name: name, // 用户定义的名称
         description: description, // 描述
@@ -108,7 +108,7 @@ export const imgStore = defineStore({
     },
 
     async getDisplayImgs() {
-      const imgs: void | imgDBType[] = await db.getAllImg(this.nowImgSet!);
+      const imgs: void | imgDBType[] = await db.getAllImg(this.nowPrj!);
       if (typeof imgs === 'undefined') {
         return [];
       } else {
