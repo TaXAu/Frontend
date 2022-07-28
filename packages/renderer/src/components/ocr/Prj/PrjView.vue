@@ -52,8 +52,9 @@ import {myImgDB} from '/@/plugins/indexDB';
 import {computed, ref, watch} from 'vue';
 import {stateStore} from '/@/stores/state';
 import {onClickOutside, useMagicKeys} from '@vueuse/core';
-import {delPrj as _delPrj} from '/@/plugins/img';
+import {delPrj as _delPrj} from '/@/plugins/prjDb';
 import {useRouter} from 'vue-router';
+import {ROUTE_NAME} from '/@/config';
 
 const state = stateStore();
 const {ctrl} = useMagicKeys();
@@ -76,7 +77,7 @@ function getPrjInfo() {
 
 function clickIn(id: string) {
   if (!isDelMode.value) {
-    router.push({name: 'ocr-project-images', params: {prjId: id}});
+    router.push({name: ROUTE_NAME.OCR_PROJECT_CONFIG, params: {prjId: id}});
   }
 }
 

@@ -8,7 +8,7 @@ import ImgInfoView from '../components/ocr/ImgInfo/ImgInfoView.vue';
 import ImgOverview from '../components/ocr/Img/ImgView.vue';
 import settings from '../pages/SettingsView.vue';
 import {stateStore} from '/@/stores/state';
-import {getImgInfo} from '/@/plugins/img';
+import {getImgInfo} from '/@/plugins/prjDb';
 import {ROUTE_NAME} from '/@/config';
 
 const routes = [{
@@ -31,6 +31,7 @@ const routes = [{
     path: 'project/config/:prjId',
     name: ROUTE_NAME.OCR_PROJECT_CONFIG,
     component: PrjConfig,
+    props: true,
     meta: {
       keepAlive: true,
     },
@@ -54,6 +55,7 @@ const routes = [{
     path: 'project/data/:prjId?',
     name: ROUTE_NAME.OCR_PROJECT_DATA,
     component: ImgInfoView,
+    props: true,
     meta: {
       keepAlive: true,
     },

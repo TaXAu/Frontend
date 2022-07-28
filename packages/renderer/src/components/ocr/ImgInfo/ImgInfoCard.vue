@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import {getImgInfo} from '/@/plugins/img';
+import {getImgInfo} from '/@/plugins/prjDb';
 import {stateStore} from '/@/stores/state';
 import {onMounted, ref, watch} from 'vue';
 import type {img as imgDBType} from '/@/plugins/indexDB';

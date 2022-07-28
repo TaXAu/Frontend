@@ -35,7 +35,7 @@
 <script lang="ts" setup>
 import {computed, onMounted, ref, watch} from 'vue';
 import {stateStore} from '/@/stores/state';
-import {getImgInfo, getPrjInfo} from '/@/plugins/img';
+import {getImgInfo, getPrjInfo} from '/@/plugins/prjDb';
 import {ROUTE_NAME} from '/@/config';
 import {useRoute, useRouter} from 'vue-router';
 
