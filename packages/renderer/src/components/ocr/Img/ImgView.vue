@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts" setup>
-import {defineProps, ref, watch} from 'vue';
+import {ref, watch} from 'vue';
 import {openImgSelectorDialog} from '/@/electron/api';
 import Folder from '@material-design-icons/svg/round/folder.svg';
 import Image from '@material-design-icons/svg/round/image.svg';
