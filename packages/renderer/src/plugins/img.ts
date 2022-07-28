@@ -4,7 +4,7 @@ import {myImgDB as db} from '../plugins/indexDB';
 import {stateStore as stateStore1} from '/@/stores/state';
 import type {imgInfoType} from '../../../../types/bridge';
 
-// for display basic info of images in ImgOverview.vue
+// for display basic info of images in ImgView.vue
 export interface displayImgInfo {
   id: string,
   filename: string,

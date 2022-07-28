@@ -18,7 +18,7 @@
         p="4"
         w="full"
       >
-        <ImgSetCard
+        <PrjCard
           :description="item.description"
           :is-selected="isSelected(item.id)"
           :name="item.name"
@@ -42,7 +42,7 @@
     />
     <AddButton @click="addPrjDialog" />
   </div>
-  <AddImgSetDialog
+  <AddPrjDialog
     v-model:is-show="isShowDialog"
   />
 </template>

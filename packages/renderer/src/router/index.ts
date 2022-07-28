@@ -2,9 +2,9 @@ import {createRouter, createWebHashHistory} from 'vue-router';
 import home from '../pages/HomeView.vue';
 import ocr from '../pages/OcrView.vue';
 import rpa from '../pages/RpaView.vue';
-import ImgSetView from '../components/ocr/ImgSet/ImgSetView.vue';
+import PrjView from '../components/ocr/Prj/PrjView.vue';
 import ImgInfoView from '../components/ocr/ImgInfo/ImgInfoView.vue';
-import ImgOverview from '../components/ocr/Img/ImgOverview.vue';
+import ImgOverview from '../components/ocr/Img/ImgView.vue';
 import settings from '../pages/SettingsView.vue';
 import {stateStore} from '/@/stores/state';
 import {getImgInfo} from '/@/plugins/img';
@@ -22,7 +22,7 @@ const routes = [{
   children: [{
     path: 'project',
     name: ROUTE_NAME.OCR_PROJECTS,
-    component: ImgSetView,
+    component: PrjView,
     meta: {
       keepAlive: true,
     },
