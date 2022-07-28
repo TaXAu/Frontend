@@ -3,7 +3,7 @@ import Dexie from 'dexie';
 
 // Image set database
 
-const imgDBVersion = 2;
+const imgDBVersion = 1;
 export const imgDbName = 'imgDB';
 export const imgInfoStoreName = 'info';
 
@@ -62,8 +62,8 @@ export class myImgDexie extends Dexie {
     await this.info.delete(id);
   }
 
-  async getAllImg(imgSetId: string): Promise<void | img[]> {
-    return this.img.where('setId').equals(imgSetId).toArray();
+  async getAllImg(imgPrjId: string): Promise<void | img[]> {
+    return this.img.where('prjId').equals(imgPrjId).toArray();
   }
 
   async getImg(imgId: string | Array<string>): Promise<void | img | Array<img>> {
