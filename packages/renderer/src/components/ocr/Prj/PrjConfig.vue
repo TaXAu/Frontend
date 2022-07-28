@@ -3,7 +3,17 @@
     h="full"
     overflow="auto"
   >
-    <OcrTopBar class="sticky" />
+    <OcrTopBar>
+      <div
+        :class="{'edit-mode': isEditMode}"
+        bg="hover:light-700"
+        class="icon"
+        rounded="lg"
+        @click="changeEditMode"
+      >
+        <Edit />
+      </div>
+    </OcrTopBar>
     <div
       class="main"
       p="x-4 b-2"
@@ -30,15 +40,27 @@
           <p class="key">
             项目名称
           </p>
-          <p class="name">
-            {{ prjInfo?.name ?? '...' }}
+          <EditP
+            v-model:text="editPrjName"
+            :editable="isEditMode"
+            class="name"
+          />
+          <p class="key">
+            创建时间
           </p>
+          <p>{{ prjInfo?.createdTime.toLocaleString() }}</p>
+          <p class="key">
+            修改时间
+          </p>
+          <p>{{ prjInfo?.lastModifiedTime.toLocaleString() }}</p>
           <p class="key">
             项目描述
           </p>
-          <p class="description">
-            {{ prjInfo?.description ?? '...' }}
-          </p>
+          <EditP
+            v-model:text="editPrjDescription"
+            :editable="isEditMode"
+            class="description"
+          />
         </div>
       </div>
       <div class="card">
@@ -49,31 +71,115 @@
         <div class="content" />
       </div>
     </div>
+    <!--    hover buttons-->
+    <div
+      bottom="5"
+      class="float-buttons"
+      fixed="~"
+      right="5"
+      select="none"
+      z="10"
+    >
+      <div
+        v-if="isEditMode"
+        class="edit-mode"
+        p="x-4 y-2"
+        rounded="lg"
+        shadow="lg"
+      >
+        <p
+          leading="loose"
+          text="xl center"
+        >
+          编辑模式
+        </p>
+        <div
+          text="center"
+        >
+          <button @click="cancelEditMode">
+            取消
+          </button>
+          <button @click="submitEdit">
+            确定
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import {ref, watch} from 'vue';
-import {getPrjInfo as _getPrjInfo} from '/@/plugins/prjDb';
+import Edit from '@material-design-icons/svg/round/edit_note.svg';
+import {onMounted, ref, watch} from 'vue';
+import {getPrjInfo as _getPrjInfo, updatePrj} from '/@/plugins/prjDb';
+import type {prjInfo as prjInfoType} from '/@/plugins/indexDB';
 import {stateStore} from '/@/stores/state';
 
 defineProps({prjId: String});
 const store = stateStore();
-const prjInfo = ref();
+const prjInfo = ref<prjInfoType>();
+const isEditMode = ref<boolean>(false);
+const editPrjName = ref<string>('');
+const editPrjDescription = ref<string>('');
 
-
+// get current project info
 function getPrjInfo() {
   if (store.ocr.prjId) {
     _getPrjInfo(store.ocr.prjId).then((info) => {
       if (info) {
         prjInfo.value = info;
+        updateEditFromPrjInfo();
       }
     });
   }
 }
 
-getPrjInfo();
+function updatePrjInfoFromEdit() {
+  if (prjInfo.value && editPrjName && editPrjDescription) {
+    prjInfo.value.name = editPrjName.value;
+    prjInfo.value.description = editPrjDescription.value;
+    prjInfo.value.lastModifiedTime = new Date;
+  }
+}
+
+function updateEditFromPrjInfo() {
+  if (prjInfo.value && editPrjName && editPrjDescription) {
+    editPrjName.value = prjInfo.value.name;
+    editPrjDescription.value = prjInfo.value.description;
+  }
+}
+
+onMounted(() => {
+  getPrjInfo();
+});
 watch(() => store.ocr.prjId, getPrjInfo);
+
+/*
+  Edit Logic
+ */
+function changeEditMode() {
+  if (prjInfo.value) {
+    if (!isEditMode.value) {
+      isEditMode.value = true;
+    } else {
+      cancelEditMode();
+    }
+  } else {
+    console.warn('no prj info');
+    isEditMode.value = false;
+  }
+}
+
+function cancelEditMode() {
+  isEditMode.value = false;
+  updateEditFromPrjInfo();
+}
+
+function submitEdit() {
+  isEditMode.value = false;
+  updatePrjInfoFromEdit();
+  updatePrj(prjInfo.value!);
+}
 </script>
 
 <style lang="scss" scoped>
@@ -110,9 +216,40 @@ watch(() => store.ocr.prjId, getPrjInfo);
   .key {
     @apply font-semibold;
   }
+
+  p {
+    @apply px-1
+  }
 }
 
 hr {
   @apply my-1 mx-0 h-1px border-none bg-gray-400;
+}
+
+// top bar icon style
+.icon {
+  height: $OcrTopBarHeight - 2rem;
+  width: $OcrTopBarHeight - 2rem;
+}
+
+.edit-mode {
+  @apply bg-yellow-400;
+  &.icon {
+    @apply bg-yellow-400 hover:bg-yellow-500;
+  }
+
+  p {
+    @apply light-300;
+  }
+
+  svg {
+    @apply fill-gray-800/80;
+  }
+
+  button {
+    @apply hover:bg-light-400/40;
+    @apply light-300;
+    @apply mx-1 px-3 py-0.5 rounded-full;
+  }
 }
 </style>

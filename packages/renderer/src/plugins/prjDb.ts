@@ -76,6 +76,10 @@ export async function delPrj(id: string) {
   await db.deletePrj(id);
 }
 
+export async function updatePrj(info: prjInfo) {
+  await db.updatePrj(info);
+}
+
 // get an image object from the img id.
 export async function getImgInfo(id: string): Promise<imgDBType | void> {
   const img = db.img.get(id);

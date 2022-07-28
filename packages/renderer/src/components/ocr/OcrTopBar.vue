@@ -18,18 +18,15 @@
       select="none"
       shadow="sm"
     >
-      <ChevronLeft
-        class="transform"
-        fill="hover:blue-600/80"
-        scale="100"
-      />
       <OcrBreadCrumb />
+      <div flex="auto" />
+      <slot />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import ChevronLeft from '@material-design-icons/svg/round/chevron_left.svg';</script>
+</script>
 
 <style lang="scss" scoped>
 .img-top-bar {

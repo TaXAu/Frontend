@@ -21,3 +21,9 @@ $OcrTopBarHeight: 4rem;
   background: rgba(0, 0, 0, 0.12);
   -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
 }
+
+.icon {
+  display: -webkit-box; /*兼容FSafari、Chrome*/
+  -webkit-box-align: center; /*兼容FSafari、Chrome */
+  -webkit-box-pack: center; /*兼容FSafari、Chrome */
+}
