@@ -72,7 +72,7 @@ onMounted(() => {
 });
 </script>
 
-<style>
+<style lang="scss" scoped>
 p {
   @apply text-base font-semibold text-blue-600/80
   @apply align-middle
