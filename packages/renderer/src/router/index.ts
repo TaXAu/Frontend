@@ -105,7 +105,7 @@ router.beforeEach(async (to, from) => {
         getImgInfo(<string>to.params?.imgId).then((img) => {
           if (img) {
             store.ocr.imgId = <string>to.params.imgId;
-            store.ocr.prjId = img.setId;
+            store.ocr.prjId = img.prjId;
           } else {
             return {path: from.path};
           }

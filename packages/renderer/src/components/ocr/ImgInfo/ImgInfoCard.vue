@@ -15,7 +15,7 @@
       <p>图片id</p>
       <p>{{ imgInfo?.id }}</p>
       <p>项目id</p>
-      <p>{{ imgInfo?.setId }}</p>
+      <p>{{ imgInfo?.prjId }}</p>
       <p>文件类型</p>
       <p>{{ imgInfo?.filetype }}</p>
       <p>文件路径</p>

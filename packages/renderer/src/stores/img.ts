@@ -74,7 +74,7 @@ export const imgStore = defineStore({
         const reader = new FileReader();
         const db: imgDBType = {
           id: uuidv1(),
-          setId: this.nowImgSetInfo.id,
+          prjId: this.nowImgSetInfo.id,
           filename: img.name,
           filetype: img.type,
           uploadTime: new Date(),

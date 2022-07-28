@@ -9,7 +9,7 @@ export const imgInfoStoreName = 'info';
 
 export interface img {
   id: string;
-  setId: string;
+  prjId: string;
   filename: string;
   filetype: string;
   uploadTime: Date;
@@ -36,7 +36,7 @@ export class myImgDexie extends Dexie {
     super(imgDbName);
     this.version(imgDBVersion).stores({
       info: '&id, *name, description, createdTime, lastModifiedTime',
-      img: '&id, *setId, *filename, size, filetype, createdTime, lastModifiedTime, path, blob, dataUrl, url',
+      img: '&id, *prjId, *filename, size, filetype, createdTime, lastModifiedTime, path, blob, dataUrl, url',
     });
     this.info = this.table('info');
     this.img = this.table('img');
