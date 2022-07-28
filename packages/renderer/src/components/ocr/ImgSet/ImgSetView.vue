@@ -1,13 +1,13 @@
 <template>
   <OcrTopBar />
   <div
-    ref="imgSetDiv"
+    ref="prjDiv"
     class="img-sets-overview"
     grid="~ <sm:cols-1 sm:<md:cols-2 md:<lg:cols-3 lg:<2xl:cols-4 2xl:cols-5"
     p="4"
   >
     <div
-      v-for="item in allImgSetInfo"
+      v-for="item in allPrjInfo"
       ref="clickOutsideRef"
       :key="item.id"
       class="img-set-item relative"
@@ -58,9 +58,9 @@ import {useRouter} from 'vue-router';
 const state = stateStore();
 const {ctrl} = useMagicKeys();
 
-const allImgSetInfo = ref();
-const imgSetDiv = ref();
-const selectedImgSetId = ref(new Set<string>);
+const allPrjInfo = ref();
+const prjDiv = ref();
+const selectedPrjId = ref(new Set<string>);
 const isShowDialog = ref(false);
 const isMultiSelectMode = ref(false);
 const isDelMode = ref(false);
@@ -70,7 +70,7 @@ const router = useRouter();
 
 function getPrjInfo() {
   myImgDB.getAllPrj().then((prjInfo) => {
-    allImgSetInfo.value = prjInfo!;
+    allPrjInfo.value = prjInfo!;
   });
 }
 
@@ -83,9 +83,9 @@ function clickIn(id: string) {
 // for select multi card
 function click(id: string) {
   if (isMultiSelectMode.value) {
-    selectedImgSetId.value.has(id)
-      ? selectedImgSetId.value.delete(id)
-      : selectedImgSetId.value.add(id);
+    selectedPrjId.value.has(id)
+      ? selectedPrjId.value.delete(id)
+      : selectedPrjId.value.add(id);
   } else if (isDelMode.value) {
     delPrj(id);
   } else {
@@ -95,7 +95,7 @@ function click(id: string) {
 
 // for buttons
 const isSelected = computed(() => {
-  return (id: string) => selectedImgSetId.value.has(id);
+  return (id: string) => selectedPrjId.value.has(id);
 });
 
 const addImgSetDialog = () => isShowDialog.value = true;
@@ -142,12 +142,12 @@ watch(isShowDialog, getPrjInfo);
 
 //
 watch(isMultiSelectMode, (v) => {
-  if (!v && isDelMode.value) delPrj(selectedImgSetId.value);
+  if (!v && isDelMode.value) delPrj(selectedPrjId.value);
 });
 
 // Cancel all selected items when click outside the items.
 onClickOutside(clickOutsideRef, () => {
-  if (!isMultiSelectMode.value) selectedImgSetId.value.clear();
+  if (!isMultiSelectMode.value) selectedPrjId.value.clear();
 });
 
 /*

@@ -15,7 +15,7 @@
           名称：
         </p>
         <input
-          v-model="imgSetName"
+          v-model="prjName"
           class="input-area"
           type="text"
           @keyup="checkNameInput"
@@ -24,7 +24,7 @@
           描述：
         </p>
         <textarea
-          v-model="imgSetDescription"
+          v-model="prjDescription"
           class="input-area row-span-2"
           resize="none"
         />
@@ -51,8 +51,8 @@ import {imgStore} from '/@/stores/img';
 defineProps({isShow: Boolean});
 const emit = defineEmits(['update:isShow']);
 
-const imgSetName = ref('');
-const imgSetDescription = ref('');
+const prjName = ref('');
+const prjDescription = ref('');
 
 const checkNameInput = () => {
   return true;
@@ -63,14 +63,14 @@ const checkDescriptionInput = () => {
 };
 
 const clearForm = () => {
-  imgSetName.value = '';
-  imgSetDescription.value = '';
+  prjName.value = '';
+  prjDescription.value = '';
 };
 
 const submit = () => {
   if (checkNameInput() && checkDescriptionInput()) {
     const store = imgStore();
-    store.addSet(imgSetName.value, imgSetDescription.value);
+    store.addSet(prjName.value, prjDescription.value);
     emit('update:isShow', false);
     clearForm();
   }
