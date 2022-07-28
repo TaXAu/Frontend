@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import {ref} from 'vue';
-import {imgStore} from '/@/stores/img';
+import {addPrj} from '/@/plugins/img';
 
 defineProps({isShow: Boolean});
 const emit = defineEmits(['update:isShow']);
@@ -69,8 +69,7 @@ const clearForm = () => {
 
 const submit = () => {
   if (checkNameInput() && checkDescriptionInput()) {
-    const store = imgStore();
-    store.addSet(prjName.value, prjDescription.value);
+    addPrj(prjName.value, prjDescription.value);
     emit('update:isShow', false);
     clearForm();
   }

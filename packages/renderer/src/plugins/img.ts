@@ -54,6 +54,19 @@ export async function getDisplayImgInfo(id: string): Promise<displayImgInfo[] | 
   }
 }
 
+export async function addPrj(name: string, description?: string) {
+  const _description = description ?? '';
+  const nowDate = new Date();
+  const newPrj: prjInfo = {
+    id: uuidv1(),
+    name: name,
+    description: _description,
+    createdTime: nowDate,
+    lastModifiedTime: nowDate,
+  };
+  await db.addPrj(newPrj);
+}
+
 export async function delPrj(id: string) {
   const allImg = await db.getAllImg(id);
   if (allImg !== undefined) {
