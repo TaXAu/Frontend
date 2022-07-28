@@ -11,7 +11,7 @@
     </p>
     <p>/</p>
     <p
-      v-show="isInSet || isInImg"
+      v-show="isInPrj || isInImg"
       class="link-text"
       @click="router.push({name: ROUTE_NAME.OCR_PROJECT_IMAGES
                            , params: {prjId: state.ocr.prjId}})"
@@ -42,7 +42,7 @@ import {useRoute, useRouter} from 'vue-router';
 const state = stateStore();
 const route = useRoute();
 const router = useRouter();
-const isInSet = computed(() =>
+const isInPrj = computed(() =>
   route.name === ROUTE_NAME.OCR_PROJECT_IMAGES ||
   route.name === ROUTE_NAME.OCR_PROJECT_CONFIG ||
   route.name === ROUTE_NAME.OCR_PROJECT_DATA);
