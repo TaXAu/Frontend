@@ -42,7 +42,10 @@ import {useRoute, useRouter} from 'vue-router';
 const state = stateStore();
 const route = useRoute();
 const router = useRouter();
-const isInSet = computed(() => route.name === ROUTE_NAME.OCR_PROJECT_IMAGES);
+const isInSet = computed(() =>
+  route.name === ROUTE_NAME.OCR_PROJECT_IMAGES ||
+  route.name === ROUTE_NAME.OCR_PROJECT_CONFIG ||
+  route.name === ROUTE_NAME.OCR_PROJECT_DATA);
 const isInImg = computed(() => route.name === ROUTE_NAME.OCR_PROJECT_IMAGE_DETAIL);
 const DEFAULT_NAME = '...';
 const SetName = ref(DEFAULT_NAME);
