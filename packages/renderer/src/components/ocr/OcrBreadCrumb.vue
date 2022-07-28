@@ -55,8 +55,8 @@ const updateImfo = () => {
   getImgInfo(state.ocr.imgId).then((imgInfo) => {
     ImgName.value = imgInfo?.filename ?? DEFAULT_NAME;
   });
-  getImgSetInfo(state.ocr.prjId).then((imgSetInfo) => {
-    SetName.value = imgSetInfo?.name ?? DEFAULT_NAME;
+  getImgSetInfo(state.ocr.prjId).then((prjInfo) => {
+    SetName.value = prjInfo?.name ?? DEFAULT_NAME;
   });
 };
 

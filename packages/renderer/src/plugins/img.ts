@@ -1,5 +1,5 @@
 import {v1 as uuidv1} from 'uuid'; // uuid v1 使用时间戳
-import type {img as imgDBType, imgSetInfo} from '../plugins/indexDB';
+import type {img as imgDBType, prjInfo} from '../plugins/indexDB';
 import {myImgDB as db} from '../plugins/indexDB';
 import {stateStore as stateStore1} from '/@/stores/state';
 import type {imgInfoType} from '../../../../types/bridge';
@@ -72,7 +72,7 @@ export async function getImgInfo(id: string): Promise<imgDBType | void> {
 }
 
 // get a img set object from the img set id.
-export async function getImgSetInfo(id: string): Promise<imgSetInfo | void> {
+export async function getImgSetInfo(id: string): Promise<prjInfo | void> {
   const imgSet = db.info.get(id);
   if (imgSet !== undefined) {
     return imgSet;

@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia';
 import {v1 as uuidv1} from 'uuid'; // uuid v1 使用时间戳
-import type {img as imgDBType, imgSetInfo as imgSetInfoDBType} from '../plugins/indexDB';
+import type {img as imgDBType, prjInfo as imgSetInfoDBType} from '../plugins/indexDB';
 import {myImgDB as db} from '../plugins/indexDB';
 
 interface displayImgType {

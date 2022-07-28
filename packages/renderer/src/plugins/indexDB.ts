@@ -20,7 +20,7 @@ export interface img {
   url?: string;
 }
 
-export interface imgSetInfo {
+export interface prjInfo {
   id: string;
   name: string;
   description: string;
@@ -30,7 +30,7 @@ export interface imgSetInfo {
 
 export class myImgDexie extends Dexie {
   img!: Table<img>;
-  info!: Table<imgSetInfo>;
+  info!: Table<prjInfo>;
 
   constructor() {
     super(imgDbName);
@@ -42,19 +42,19 @@ export class myImgDexie extends Dexie {
     this.img = this.table('img');
   }
 
-  async getImgSet(id: string): Promise<void | imgSetInfo> {
+  async getImgSet(id: string): Promise<void | prjInfo> {
     return this.info.get(id);
   }
 
-  async getAllImgSet(): Promise<void | imgSetInfo[]> {
+  async getAllImgSet(): Promise<void | prjInfo[]> {
     return this.info.toArray();
   }
 
-  async addImgSet(info: imgSetInfo): Promise<void> {
+  async addImgSet(info: prjInfo): Promise<void> {
     await this.info.add(info);
   }
 
-  async updateImgSet(info: imgSetInfo): Promise<void> {
+  async updateImgSet(info: prjInfo): Promise<void> {
     await this.info.update(info.id, info);
   }
 
