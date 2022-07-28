@@ -52,7 +52,7 @@ import {myImgDB} from '/@/plugins/indexDB';
 import {computed, ref, watch} from 'vue';
 import {stateStore} from '/@/stores/state';
 import {onClickOutside, useMagicKeys} from '@vueuse/core';
-import {delImgSet as _delImgSet} from '/@/plugins/img';
+import {delPrj as _delImgSet} from '/@/plugins/img';
 import {useRouter} from 'vue-router';
 
 const state = stateStore();
@@ -68,7 +68,7 @@ const clickOutsideRef = ref(null);
 const isSpecialMode = computed(() => isDelMode.value /* || isOtherMode */);
 const router = useRouter();
 
-function getImgSetInfo() {
+function getPrjInfo() {
   myImgDB.getAllPrj().then((prjInfo) => {
     allImgSetInfo.value = prjInfo!;
   });
@@ -87,7 +87,7 @@ function click(id: string) {
       ? selectedImgSetId.value.delete(id)
       : selectedImgSetId.value.add(id);
   } else if (isDelMode.value) {
-    delImgSet(id);
+    delPrj(id);
   } else {
     clickIn(id);
   }
@@ -112,12 +112,11 @@ const clickDelBtn = () => {
 
 // async del img set
 // TODO: CONFIRM dialog
-const delImgSet = async (id: Set<string> | Array<string> | string) => {
+const delPrj = async (id: Set<string> | Array<string> | string) => {
   let _id: Set<string>;
   if (typeof id === 'string') _id = new Set([<string>id]);
   else if (id instanceof Array) _id = new Set(<Array<string>>id);
-  else if (id instanceof Set) _id = <Set<string>>id;
-  else _id = new Set<string>();
+  else _id = <Set<string>>id;
 
   if (state.isInSet && _id.has(state.ocr.prjId)) {
     state.clearOcrPrjId();
@@ -126,7 +125,7 @@ const delImgSet = async (id: Set<string> | Array<string> | string) => {
   await _id.forEach(async (v: string) =>
     await _delImgSet(v)
       .then(() => _id.clear())
-      .finally(() => getImgSetInfo()));
+      .finally(() => getPrjInfo()));
 
   isDelMode.value = false;
 };
@@ -139,11 +138,11 @@ Listen to Events
 watch(ctrl, (v) => isMultiSelectMode.value = isSpecialMode.value && v);
 
 // Refresh img set data after adding new img set.
-watch(isShowDialog, getImgSetInfo);
+watch(isShowDialog, getPrjInfo);
 
 //
 watch(isMultiSelectMode, (v) => {
-  if (!v && isDelMode.value) delImgSet(selectedImgSetId.value);
+  if (!v && isDelMode.value) delPrj(selectedImgSetId.value);
 });
 
 // Cancel all selected items when click outside the items.
@@ -155,7 +154,7 @@ onClickOutside(clickOutsideRef, () => {
 exec once
  */
 
-getImgSetInfo();
+getPrjInfo();
 </script>
 
 <style lang="scss" scoped>

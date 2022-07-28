@@ -54,7 +54,7 @@ export async function getDisplayImgInfo(id: string): Promise<displayImgInfo[] | 
   }
 }
 
-export async function delImgSet(id: string) {
+export async function delPrj(id: string) {
   const allImg = await db.getAllImg(id);
   if (allImg !== undefined) {
     const allImgId = allImg.map((img) => img.id);
@@ -72,7 +72,7 @@ export async function getImgInfo(id: string): Promise<imgDBType | void> {
 }
 
 // get a img set object from the img set id.
-export async function getImgSetInfo(id: string): Promise<prjInfo | void> {
+export async function getPrjInfo(id: string): Promise<prjInfo | void> {
   const imgSet = db.info.get(id);
   if (imgSet !== undefined) {
     return imgSet;

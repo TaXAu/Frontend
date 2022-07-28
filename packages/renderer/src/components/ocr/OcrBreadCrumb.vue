@@ -35,7 +35,7 @@
 <script lang="ts" setup>
 import {computed, onMounted, ref, watch} from 'vue';
 import {stateStore} from '/@/stores/state';
-import {getImgInfo, getImgSetInfo} from '/@/plugins/img';
+import {getImgInfo, getPrjInfo} from '/@/plugins/img';
 import {ROUTE_NAME} from '/@/config';
 import {useRoute, useRouter} from 'vue-router';
 
@@ -55,7 +55,7 @@ const updateImfo = () => {
   getImgInfo(state.ocr.imgId).then((imgInfo) => {
     ImgName.value = imgInfo?.filename ?? DEFAULT_NAME;
   });
-  getImgSetInfo(state.ocr.prjId).then((prjInfo) => {
+  getPrjInfo(state.ocr.prjId).then((prjInfo) => {
     SetName.value = prjInfo?.name ?? DEFAULT_NAME;
   });
 };
