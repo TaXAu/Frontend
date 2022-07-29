@@ -17,8 +17,9 @@ export async function compressImage(file: Buffer): Promise<any> {
 
   const encodeOptions = {
     mozjpeg: 'auto',
+    webp: 'auto',
   };
 
   await image.encode(encodeOptions);
-  return await image.encodedWith.mozjpeg;
+  return image.encodedWith.webp;
 }

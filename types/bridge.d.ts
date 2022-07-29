@@ -1,4 +1,4 @@
-export interface imgInfoType {
+export interface imgInfoDataUrlType {
   filename: string,
   filetype: string,
   path: string,
