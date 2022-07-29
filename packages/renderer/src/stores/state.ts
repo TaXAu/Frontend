@@ -1,28 +1,31 @@
 import {defineStore} from 'pinia';
 import type {ocrPageKeyType} from '/@/config';
 import {ROUTE_NAME} from '/@/config';
-
-const NULL_STR = '';
+import {getImgInfo, getPrjInfo} from '/@/utils/prjDb';
+import type {img, prjInfo} from '/@/utils/indexDB';
 
 export const stateStore = defineStore({
   id: 'state-store',
   state: () => {
-    const tmpPage: any = null;
     return {
-      page: tmpPage,
+      page: <any>null,
       home: {
-        page: tmpPage,
+        page: <any>null,
       },
       ocr: {
-        prjId: NULL_STR,
-        imgId: NULL_STR,
-        page: tmpPage,
+        prjId: <string | null>null,
+        imgId: <string | null>null,
+        prj: <prjInfo | null>null,
+        img: <img | null>null,
+        changedImgId: <string | string[] | null>null,
+        changedPrjId: <string | string[] | null>null,
+        page: <any>null,
       },
       rpa: {
-        page: tmpPage,
+        page: <any>null,
       },
       settings: {
-        page: tmpPage,
+        page: <any>null,
       },
     };
   },
@@ -30,18 +33,18 @@ export const stateStore = defineStore({
     /*
     OCR Page Functions
      */
-    isInSet: (state) => state.ocr.prjId !== NULL_STR,
-    isSelectImg: (state) => state.ocr.imgId !== NULL_STR,
+    isInSet: (state) => state.ocr.prjId !== null,
+    isSelectImg: (state) => state.ocr.imgId !== null,
   },
   actions: {
     /*
     OCR Page Functions
      */
     clearOcrImgId() {
-      this.ocr.imgId = NULL_STR;
+      this.ocr.imgId = null;
     },
     clearOcrPrjId() {
-      this.ocr.prjId = NULL_STR;
+      this.ocr.prjId = null;
     },
     isOcrSubNavItemEnabled(key: ocrPageKeyType) {
       switch (key) {
@@ -55,6 +58,24 @@ export const stateStore = defineStore({
           return this.isInSet;
         case ROUTE_NAME.OCR_PROJECT_CONFIG:
           return this.isInSet;
+      }
+    },
+    _updateStorePrjInfo() {
+      if (this.isInSet) {
+        getPrjInfo(<string>this.ocr.prjId).then((info) => {
+          if (info) {
+            this.ocr.prj = info;
+          }
+        });
+      }
+    },
+    _updateStoreImgInfo() {
+      if (this.isSelectImg) {
+        getImgInfo(<string>this.ocr.imgId).then((info) => {
+          if (info) {
+            this.ocr.img = info;
+          }
+        });
       }
     },
   },

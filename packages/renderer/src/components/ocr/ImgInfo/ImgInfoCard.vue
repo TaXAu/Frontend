@@ -29,25 +29,20 @@
 </template>
 
 <script lang="ts" setup>
-import {getImgInfo} from '/@/plugins/prjDb';
 import {stateStore} from '/@/stores/state';
 import {onMounted, ref, watch} from 'vue';
-import type {img as imgDBType} from '/@/plugins/indexDB';
+import type {img as imgDBType} from '/@/utils/indexDB';
 
 const imgInfo = ref<imgDBType>();
 const state = stateStore();
 
 const updateImgInfo = () => {
-  if (state.isSelectImg) {
-    getImgInfo(state.ocr.imgId).then((res) => {
-      if (res) {
-        imgInfo.value = res;
-      }
-    });
+  if (state.ocr.img) {
+    imgInfo.value = state.ocr.img;
   }
 };
 
-watch(() => state.ocr.imgId, () => {
+watch(() => state.ocr.img, () => {
   updateImgInfo();
 });
 

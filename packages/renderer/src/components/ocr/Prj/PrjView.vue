@@ -48,11 +48,11 @@
 </template>
 
 <script lang="ts" setup>
-import {myImgDB} from '/@/plugins/indexDB';
+import {myImgDB} from '/@/utils/indexDB';
 import {computed, ref, watch} from 'vue';
 import {stateStore} from '/@/stores/state';
 import {onClickOutside, useMagicKeys} from '@vueuse/core';
-import {delPrj as _delPrj} from '/@/plugins/prjDb';
+import {delPrj as _delPrj} from '/@/utils/prjDb';
 import {useRouter} from 'vue-router';
 import {ROUTE_NAME} from '/@/config';
 
@@ -119,7 +119,7 @@ const delPrj = async (id: Set<string> | Array<string> | string) => {
   else if (id instanceof Array) _id = new Set(<Array<string>>id);
   else _id = <Set<string>>id;
 
-  if (state.isInSet && _id.has(state.ocr.prjId)) {
+  if (state.isInSet && _id.has(<string>state.ocr.prjId)) {
     state.clearOcrPrjId();
     state.clearOcrImgId();
   }

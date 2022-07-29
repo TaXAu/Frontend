@@ -64,8 +64,8 @@ import {ref, watch} from 'vue';
 import {openImgSelectorDialog} from '/@/electron/api';
 import Folder from '@material-design-icons/svg/round/folder.svg';
 import Image from '@material-design-icons/svg/round/image.svg';
-import type {displayImgInfo} from '/@/plugins/prjDb';
-import {addImgFromDataUrl, getDisplayImgInfo} from '/@/plugins/prjDb';
+import type {displayImgInfo} from '/@/utils/prjDb';
+import {getDisplayImgInfo} from '/@/utils/prjDb';
 import {useRoute, useRouter} from 'vue-router';
 
 const route = useRoute();
@@ -100,13 +100,7 @@ getImgData();// get image date the first time get in the component
 // add img from local files
 // use indexedDB
 async function addImg(type: 'file' | 'directory') {
-  const result = await openImgSelectorDialog(type);
-  if (result !== undefined) {
-    for (const img of result) {
-      await addImgFromDataUrl(img);
-    }
-    await getImgData();
-  }
+  await openImgSelectorDialog(type);
 }
 </script>
 

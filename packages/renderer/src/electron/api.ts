@@ -1,5 +1,6 @@
 import {router} from '../router';
-import type {imgInfoType} from '../../../../types/bridge';
+import type {imgInfoDataUrlType} from '../../../../types/bridge';
+import {addImgFromNode} from '/@/utils/prjDb';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -43,10 +44,18 @@ electronAPI.changeRouteFromMenu((event: any, route: any) => {
     }
   });
 });
+// add image to indexedDB from Node (main process)
+electronAPI.addImageFromNode((event: any, img: imgInfoDataUrlType) => addImgFromNode(img));
 
+// open image selector dialog
+// after getting the result
+//    in main process the image(s) will be compressed
+//    and then be added to indexedDB uses electronAPI.addImageFromNode
 export async function openImgSelectorDialog(type?: 'file' | 'directory')
-  : Promise<imgInfoType[] | void> {
+  : Promise<imgInfoDataUrlType[] | void> {
   type = type || 'file';
-  const result: imgInfoType[] | void = await electronAPI.openImgSelectorDialog(type);
+  const result: imgInfoDataUrlType[] | void = await electronAPI.openImgSelectorDialog(type);
   return result;
 }
+
+
