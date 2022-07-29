@@ -13,7 +13,7 @@
     <p
       v-show="isInPrj || isInImg"
       class="link-text"
-      @click="router.push({name: ROUTE_NAME.OCR_PROJECT_IMAGES
+      @click="router.push({name: ROUTE_NAME.OCR_PROJECT_CONFIG
                            , params: {prjId: state.ocr.prjId}})"
     >
       {{ SetName }}
@@ -24,8 +24,8 @@
     <p
       v-show="isInImg"
       class="link-text"
-      @click="router.push({name: ROUTE_NAME.OCR_PROJECT_IMAGE_DETAIL
-                           , params:{imgId: state.ocr.imgId}})"
+      @click="router.push({name: ROUTE_NAME.OCR_PROJECT_IMAGES
+                           , params:{prjId: state.ocr.prjId}})"
     >
       {{ ImgName }}
     </p>
