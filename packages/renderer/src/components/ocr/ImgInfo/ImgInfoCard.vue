@@ -29,10 +29,10 @@
 </template>
 
 <script lang="ts" setup>
-import {getImgInfo} from '/@/plugins/prjDb';
+import {getImgInfo} from '/@/utils/prjDb';
 import {stateStore} from '/@/stores/state';
 import {onMounted, ref, watch} from 'vue';
-import type {img as imgDBType} from '/@/plugins/indexDB';
+import type {img as imgDBType} from '/@/utils/indexDB';
 
 const imgInfo = ref<imgDBType>();
 const state = stateStore();

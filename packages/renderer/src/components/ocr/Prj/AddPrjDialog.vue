@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import {ref} from 'vue';
-import {addPrj} from '/@/plugins/prjDb';
+import {addPrj} from '/@/utils/prjDb';
 
 defineProps({isShow: Boolean});
 const emit = defineEmits(['update:isShow']);

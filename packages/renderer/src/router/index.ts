@@ -8,7 +8,7 @@ import ImgInfoView from '../components/ocr/ImgInfo/ImgInfoView.vue';
 import ImgOverview from '../components/ocr/Img/ImgView.vue';
 import settings from '../pages/SettingsView.vue';
 import {stateStore} from '/@/stores/state';
-import {getImgInfo} from '/@/plugins/prjDb';
+import {getImgInfo} from '/@/utils/prjDb';
 import {ROUTE_NAME} from '/@/config';
 
 const routes = [{

@@ -111,8 +111,8 @@
 <script lang="ts" setup>
 import Edit from '@material-design-icons/svg/round/edit_note.svg';
 import {onMounted, ref, watch} from 'vue';
-import {getPrjInfo as _getPrjInfo, updatePrj} from '/@/plugins/prjDb';
-import type {prjInfo as prjInfoType} from '/@/plugins/indexDB';
+import {getPrjInfo as _getPrjInfo, updatePrj} from '/@/utils/prjDb';
+import type {prjInfo as prjInfoType} from '/@/utils/indexDB';
 import {stateStore} from '/@/stores/state';
 
 defineProps({prjId: String});

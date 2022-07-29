@@ -48,11 +48,11 @@
 </template>
 
 <script lang="ts" setup>
-import {myImgDB} from '/@/plugins/indexDB';
+import {myImgDB} from '/@/utils/indexDB';
 import {computed, ref, watch} from 'vue';
 import {stateStore} from '/@/stores/state';
 import {onClickOutside, useMagicKeys} from '@vueuse/core';
-import {delPrj as _delPrj} from '/@/plugins/prjDb';
+import {delPrj as _delPrj} from '/@/utils/prjDb';
 import {useRouter} from 'vue-router';
 import {ROUTE_NAME} from '/@/config';
 

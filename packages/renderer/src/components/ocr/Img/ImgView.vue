@@ -64,8 +64,8 @@ import {ref, watch} from 'vue';
 import {openImgSelectorDialog} from '/@/electron/api';
 import Folder from '@material-design-icons/svg/round/folder.svg';
 import Image from '@material-design-icons/svg/round/image.svg';
-import type {displayImgInfo} from '/@/plugins/prjDb';
-import {addImgFromDataUrl, getDisplayImgInfo} from '/@/plugins/prjDb';
+import type {displayImgInfo} from '/@/utils/prjDb';
+import {addImgFromDataUrl, getDisplayImgInfo} from '/@/utils/prjDb';
 import {useRoute, useRouter} from 'vue-router';
 
 const route = useRoute();
