@@ -81,6 +81,7 @@ export async function delPrj(id: string) {
 
 export async function updatePrj(info: prjInfo) {
   await db.updatePrj(info);
+  _updatePrjInfo(info.id);
 }
 
 // get an image object from the img id.

@@ -23,9 +23,26 @@ stateStore.$subscribe((mutation, state) => {
 
       case 'imgId':
         stateStore._updateStoreImgInfo();
+        break;
+
+      case 'changedPrjId':
+        if ((typeof state.ocr.changedPrjId === 'string'
+            && state.ocr.changedPrjId === state.ocr.prjId) ||
+          (state.ocr.changedPrjId instanceof Array
+            && new Set(state.ocr.changedPrjId).has(state.ocr.prjId ?? ''))) {
+          stateStore._updateStoreImgInfo();
+        }
+        break;
+
+      case 'changedImgId':
+        if ((typeof state.ocr.changedImgId === 'string'
+            && state.ocr.changedImgId === state.ocr.imgId) ||
+          (state.ocr.changedImgId instanceof Array
+            && new Set(state.ocr.changedImgId).has(state.ocr.imgId ?? ''))) {
+          stateStore._updateStoreImgInfo();
+        }
+        break;
     }
   }
-  console.log(mutation.events);
-  console.log(state);
 });
 

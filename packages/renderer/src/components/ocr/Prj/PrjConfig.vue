@@ -111,7 +111,7 @@
 <script lang="ts" setup>
 import Edit from '@material-design-icons/svg/round/edit_note.svg';
 import {onMounted, ref, watch} from 'vue';
-import {getPrjInfo as _getPrjInfo, updatePrj} from '/@/utils/prjDb';
+import {updatePrj} from '/@/utils/prjDb';
 import type {prjInfo as prjInfoType} from '/@/utils/indexDB';
 import {stateStore} from '/@/stores/state';
 
@@ -124,13 +124,9 @@ const editPrjDescription = ref<string>('');
 
 // get current project info
 function getPrjInfo() {
-  if (store.ocr.prjId) {
-    _getPrjInfo(store.ocr.prjId).then((info) => {
-      if (info) {
-        prjInfo.value = info;
-        updateEditFromPrjInfo();
-      }
-    });
+  if (store.ocr.prj) {
+    prjInfo.value = store.ocr.prj;
+    updateEditFromPrjInfo();
   }
 }
 
@@ -152,7 +148,7 @@ function updateEditFromPrjInfo() {
 onMounted(() => {
   getPrjInfo();
 });
-watch(() => store.ocr.prjId, getPrjInfo);
+watch(() => store.ocr.prj, getPrjInfo);
 
 /*
   Edit Logic

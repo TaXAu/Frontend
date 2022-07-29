@@ -53,12 +53,11 @@ const ImgName = ref(DEFAULT_NAME);
 const updateInfo = () => {
   if (state.ocr.img) ImgName.value = state.ocr.img.filename ?? DEFAULT_NAME;
   if (state.ocr.prj) SetName.value = state.ocr.prj.name ?? DEFAULT_NAME;
-
 };
 
 watch([
-  () => state.ocr.img,
-  () => state.ocr.prj,
+  () => state.ocr.img?.filename,
+  () => state.ocr.prj?.name,
 ], () => {
   updateInfo();
 });
