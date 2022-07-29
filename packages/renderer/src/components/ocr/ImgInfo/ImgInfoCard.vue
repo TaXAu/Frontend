@@ -39,7 +39,7 @@ const state = stateStore();
 
 const updateImgInfo = () => {
   if (state.isSelectImg) {
-    getImgInfo(state.ocr.imgId).then((res) => {
+    getImgInfo(<string>state.ocr.imgId).then((res) => {
       if (res) {
         imgInfo.value = res;
       }

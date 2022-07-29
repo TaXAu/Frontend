@@ -35,7 +35,6 @@
 <script lang="ts" setup>
 import {computed, onMounted, ref, watch} from 'vue';
 import {stateStore} from '/@/stores/state';
-import {getImgInfo, getPrjInfo} from '/@/utils/prjDb';
 import {ROUTE_NAME} from '/@/config';
 import {useRoute, useRouter} from 'vue-router';
 
@@ -51,24 +50,21 @@ const DEFAULT_NAME = '...';
 const SetName = ref(DEFAULT_NAME);
 const ImgName = ref(DEFAULT_NAME);
 
-const updateImfo = () => {
-  getImgInfo(state.ocr.imgId).then((imgInfo) => {
-    ImgName.value = imgInfo?.filename ?? DEFAULT_NAME;
-  });
-  getPrjInfo(state.ocr.prjId).then((prjInfo) => {
-    SetName.value = prjInfo?.name ?? DEFAULT_NAME;
-  });
+const updateInfo = () => {
+  if (state.ocr.img) ImgName.value = state.ocr.img.filename ?? DEFAULT_NAME;
+  if (state.ocr.prj) SetName.value = state.ocr.prj.name ?? DEFAULT_NAME;
+
 };
 
 watch([
-  () => state.ocr.imgId,
-  () => state.ocr.prjId,
+  () => state.ocr.img,
+  () => state.ocr.prj,
 ], () => {
-  updateImfo();
+  updateInfo();
 });
 
 onMounted(() => {
-  updateImfo();
+  updateInfo();
 });
 </script>
 

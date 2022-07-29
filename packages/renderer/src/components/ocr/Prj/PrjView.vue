@@ -119,7 +119,7 @@ const delPrj = async (id: Set<string> | Array<string> | string) => {
   else if (id instanceof Array) _id = new Set(<Array<string>>id);
   else _id = <Set<string>>id;
 
-  if (state.isInSet && _id.has(state.ocr.prjId)) {
+  if (state.isInSet && _id.has(<string>state.ocr.prjId)) {
     state.clearOcrPrjId();
     state.clearOcrImgId();
   }

@@ -4,31 +4,28 @@ import {ROUTE_NAME} from '/@/config';
 import {getImgInfo, getPrjInfo} from '/@/utils/prjDb';
 import type {img, prjInfo} from '/@/utils/indexDB';
 
-const NULL_STR = '';
-
 export const stateStore = defineStore({
   id: 'state-store',
   state: () => {
-    const tmpPage: any = null;
     return {
-      page: tmpPage,
+      page: <any>null,
       home: {
-        page: tmpPage,
+        page: <any>null,
       },
       ocr: {
-        prjId: NULL_STR,
-        imgId: NULL_STR,
+        prjId: <string | null>null,
+        imgId: <string | null>null,
         prj: <prjInfo | null>null,
         img: <img | null>null,
         changedImgId: <string | string[] | null>null,
         changedPrjId: <string | string[] | null>null,
-        page: tmpPage,
+        page: <any>null,
       },
       rpa: {
-        page: tmpPage,
+        page: <any>null,
       },
       settings: {
-        page: tmpPage,
+        page: <any>null,
       },
     };
   },
@@ -36,18 +33,18 @@ export const stateStore = defineStore({
     /*
     OCR Page Functions
      */
-    isInSet: (state) => state.ocr.prjId !== NULL_STR,
-    isSelectImg: (state) => state.ocr.imgId !== NULL_STR,
+    isInSet: (state) => state.ocr.prjId !== null,
+    isSelectImg: (state) => state.ocr.imgId !== null,
   },
   actions: {
     /*
     OCR Page Functions
      */
     clearOcrImgId() {
-      this.ocr.imgId = NULL_STR;
+      this.ocr.imgId = null;
     },
     clearOcrPrjId() {
-      this.ocr.prjId = NULL_STR;
+      this.ocr.prjId = null;
     },
     isOcrSubNavItemEnabled(key: ocrPageKeyType) {
       switch (key) {
@@ -65,7 +62,7 @@ export const stateStore = defineStore({
     },
     _updateStorePrjInfo() {
       if (this.isInSet) {
-        getPrjInfo(this.ocr.prjId).then((info) => {
+        getPrjInfo(<string>this.ocr.prjId).then((info) => {
           if (info) {
             this.ocr.prj = info;
           }
@@ -74,7 +71,7 @@ export const stateStore = defineStore({
     },
     _updateStoreImgInfo() {
       if (this.isSelectImg) {
-        getImgInfo(this.ocr.imgId).then((info) => {
+        getImgInfo(<string>this.ocr.imgId).then((info) => {
           if (info) {
             this.ocr.img = info;
           }

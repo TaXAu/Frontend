@@ -19,7 +19,7 @@ export async function addImgFromNode(img: imgInfoDataUrlType): Promise<void> {
     const nowDate = new Date;
     const dbImg: imgDBType = {
       id: uuidv1(),
-      prjId: stateStore.ocr.prjId,
+      prjId: <string>stateStore.ocr.prjId,
       filename: img.filename,
       filetype: img.filetype,
       uploadTime: nowDate,
