@@ -2,8 +2,7 @@ import {app, ipcMain} from 'electron';
 import './security-restrictions';
 import {restoreOrCreateWindow} from '/@/mainWindow';
 import changeMenu from '/@/menu';
-import {openImgSelectorDialog} from '/@/api';
-
+import {openImgSelectorDialog, readImgFromPath} from '/@/api';
 
 /**
  * Prevent multiple instances
@@ -43,7 +42,8 @@ app.on('activate', restoreOrCreateWindow);
 app.whenReady()
   .then(restoreOrCreateWindow).then(() => {
     // load api from ./api/index.ts
-    ipcMain.handle('dialog:selectImg', (e, args) => openImgSelectorDialog(args));
+  ipcMain.handle('dialog:selectImg', (e, args) => openImgSelectorDialog(args));
+  ipcMain.handle('node:readImgFromPath', (e, args) => readImgFromPath(args));
   },
 )
   .catch((e) => console.error('Failed create window:', e));

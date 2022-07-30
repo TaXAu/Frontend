@@ -4,11 +4,11 @@ import {lstat, readdir, readFile} from 'node:fs/promises';
 import {basename, join} from 'path';
 import {compressImage} from '/@/api/image';
 import type {imgInfoDataUrlType} from '../../../../types/bridge';
+import {READ_IMG_FROM_FS_CODE as CODE} from '../../../../config/code';
 
 const SUPPORT_IMAGE_MIME = new Set(['image/jpg', 'image/jpeg', 'image/png']);
 
 export async function readImgFromFileOrDirectory(filePath: string[] | void): Promise<imgInfoDataUrlType[] | void> {
-
   let result: imgInfoDataUrlType[] = [];
   if (typeof filePath !== 'undefined') {
     for (const i in filePath) {
@@ -78,5 +78,23 @@ export function addImgToIndexedDB(img: imgInfoDataUrlType) {
   const win = BrowserWindow.getAllWindows().find(w => !w.isDestroyed());
   if (win !== undefined) {
     win.webContents.send('node:addImage', img);
+  }
+}
+
+export async function readImgFromPath(path: string):
+  Promise<{ result: imgInfoDataUrlType | void; code: number }> {
+
+  const fileType = mime.lookup(path);
+  const data = await readFile(path).catch((err) => console.log(err));
+  if (data) {
+    const result = {
+      filename: basename(path),
+      filetype: fileType,
+      path: path,
+      dataUrl: `data:${fileType};base64,${data.toString('base64')}`,
+    };
+    return {result, code: CODE.SUCCESS};
+  } else {
+    return {result: void 0, code: CODE.FAIL};
   }
 }

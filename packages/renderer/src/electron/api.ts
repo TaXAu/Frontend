@@ -1,6 +1,7 @@
 import {router} from '../router';
 import type {imgInfoDataUrlType} from '../../../../types/bridge';
 import {addImgFromNode} from '/@/utils/prjDb';
+import type {READ_IMG_FROM_FS_CODE} from '../../../../config/code';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -58,4 +59,11 @@ export async function openImgSelectorDialog(type?: 'file' | 'directory')
   return result;
 }
 
+// read image from file system
+export async function readImgFromPath(path: string):
+  Promise<{ result: imgInfoDataUrlType | void, code: READ_IMG_FROM_FS_CODE }> {
+  const result: { result: imgInfoDataUrlType, code: READ_IMG_FROM_FS_CODE }
+    = await electronAPI.readImgFromPath(path);
+  return result;
+}
 
