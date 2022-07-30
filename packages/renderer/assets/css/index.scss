@@ -37,3 +37,35 @@ $OcrTopBarHeight: 4rem;
     @apply fill-dark-50
   }
 }
+
+// right-bottom popup
+.mode-popup {
+  & {
+    @apply fixed bottom-5 right-5 z-10;
+    @apply select-none
+  }
+
+  .bkg {
+    & {
+      @apply px-4 py-2;
+      @apply rounded-lg shadow-lg;
+    }
+
+    .tip-text {
+      @apply text-xl text-center leading-loose;
+    }
+
+    .line-btn {
+      & {
+        @apply text-center;
+        @apply my-1
+      }
+
+      button {
+        @apply hover:bg-light-100/30;
+        @apply mx-1 px-3 py-0.5 rounded-full;
+      }
+    }
+
+  }
+}

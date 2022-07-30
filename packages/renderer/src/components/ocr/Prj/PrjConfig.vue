@@ -71,28 +71,19 @@
     </div>
     <!--    hover buttons-->
     <div
-      bottom="5"
-      class="float-buttons"
-      fixed="~"
-      right="5"
-      select="none"
-      z="10"
+      class="float-buttons mode-popup"
     >
       <div
         v-if="isEditMode"
-        class="edit-mode"
-        p="x-4 y-2"
-        rounded="lg"
-        shadow="lg"
+        class="edit-mode bkg"
       >
         <p
-          leading="loose"
-          text="xl center"
+          class="tip-text"
         >
           编辑模式
         </p>
         <div
-          text="center"
+          class="line-btn"
         >
           <button @click="cancelEditMode">
             取消
@@ -232,12 +223,6 @@ hr {
 
   svg {
     @apply fill-gray-800/80;
-  }
-
-  button {
-    @apply hover:bg-light-400/40;
-    @apply light-300;
-    @apply mx-1 px-3 py-0.5 rounded-full;
   }
 }
 </style>

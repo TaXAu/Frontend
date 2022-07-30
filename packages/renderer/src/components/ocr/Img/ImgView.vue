@@ -1,5 +1,12 @@
 <template>
-  <OcrTopBar />
+  <OcrTopBar>
+    <div
+      :class="{'del-mode': isDelMode}"
+      class="icon"
+    >
+      <Delete @click="changeDelMode" />
+    </div>
+  </OcrTopBar>
   <div
     :key="prjId"
     class="img-view"
@@ -13,19 +20,43 @@
     >
       <div
         class="absolute"
+        :class="{'del-mode': isImgInDelMode(item.id)}"
         h="full"
         p="4"
         w="full"
       >
         <ImgCard
+          class="img-card"
           :filename="item.filename"
           :url="item.url"
-          @click="intoImgInfoPage(item.id)"
+          @click="clickImg(item.id)"
         />
       </div>
     </div>
   </div>
   <div
+    v-if="isDelMode"
+    bottom="10"
+    class="mode-popup del-mode"
+  >
+    <div
+      class="bkg"
+    >
+      <p class="tip-text">
+        删除模式
+      </p>
+      <div class="line-btn">
+        <button @click="cancelDelMode">
+          取消
+        </button>
+        <button @click="submitDelMode">
+          删除
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    v-if="isNormalMode"
     bottom="10"
     class="float-buttons"
     fixed="~"
@@ -34,26 +65,25 @@
     space="x-4"
     z="10"
   >
-    <DelButton />
     <RoundedButton
-      bg="blue-200/50"
+      bg="blue-200"
       size="3rem"
       @click="addImg('directory')"
     >
       <Folder
         class="transform"
-        fill="blue-600/80"
+        fill="blue-500"
         scale="100"
       />
     </RoundedButton>
     <RoundedButton
-      bg="blue-200/50"
+      bg="blue-200"
       size="3rem"
       @click="addImg('file')"
     >
       <Image
         class="transform"
-        fill="blue-600/80"
+        fill="blue-500"
         scale="100"
       />
     </RoundedButton>
@@ -65,6 +95,7 @@ import {computed, ref, watch} from 'vue';
 import {openImgSelectorDialog} from '/@/electron/api';
 import Folder from '@material-design-icons/svg/round/folder.svg';
 import Image from '@material-design-icons/svg/round/image.svg';
+import Delete from '@material-design-icons/svg/round/delete.svg';
 import {useRouter} from 'vue-router';
 import {stateStore} from '/@/stores/state';
 import type {img as imgDBType} from '/@/utils/indexDB';
@@ -75,8 +106,6 @@ const state = stateStore();
 defineProps({prjId: String});
 
 const imgData = ref(new Array<displayImgInfo>);
-const intoImgInfoPage = (id: string) =>
-  router.push({name: 'ocr-project-image-detail', params: {imgId: id}});
 
 // get Project ID from props and store
 const prjId = computed(() => state.ocr.prjId);
@@ -139,11 +168,82 @@ watch(() => state.ocr.changedImgId, (value) => {
 async function addImg(type: 'file' | 'directory') {
   await openImgSelectorDialog(type);
 }
+
+
+/* Del Mode */
+const isDelMode = ref(false);
+const toDelImgId = ref(new Set<string>([]));
+const isImgInDelMode = (id: string) => toDelImgId.value.has(id);
+
+const changeDelMode = () => {
+  if (isDelMode.value) {
+    cancelDelMode();
+  } else {
+    isDelMode.value = true;
+  }
+};
+
+const submitDelMode = () => {
+  db.img.where('id').anyOf(Array.from(toDelImgId.value)).delete()
+    .then(() => {
+      toDelImgId.value = new Set<string>([]);
+      isDelMode.value = false;
+      getImgData();
+    });
+};
+
+const cancelDelMode = () => {
+  toDelImgId.value = new Set<string>([]);
+  isDelMode.value = false;
+};
+
+/* Normal Mode */
+const isNormalMode = computed(() => !isDelMode.value);
+
+
+/* Click Image Event */
+function clickImg(id: string) {
+  if (isDelMode.value) {
+    if (toDelImgId.value.has(id)) {
+      toDelImgId.value.delete(id);
+    } else {
+      toDelImgId.value.add(id);
+    }
+  } else {
+    intoImgInfoPage(id);
+  }
+}
+
+// into img info page
+const intoImgInfoPage = (id: string) =>
+  router.push({name: 'ocr-project-image-detail', params: {imgId: id}});
+
 </script>
 
 <style lang="scss" scoped>
 .img-card-bkg {
   height: 0;
   padding-bottom: 100%;
+}
+
+.del-mode {
+
+  &.icon {
+    @apply bg-red-400 hover:bg-red-500;
+  }
+
+  svg {
+    @apply fill-white;
+  }
+
+  &.mode-popup {
+    .bkg {
+      @apply bg-red-400;
+    }
+  }
+
+  .img-card {
+    @apply ring ring-red-500 ring-offset-2 border-none;
+  }
 }
 </style>
