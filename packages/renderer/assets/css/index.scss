@@ -23,7 +23,17 @@ $OcrTopBarHeight: 4rem;
 }
 
 .icon {
-  display: -webkit-box; /*兼容FSafari、Chrome*/
-  -webkit-box-align: center; /*兼容FSafari、Chrome */
-  -webkit-box-pack: center; /*兼容FSafari、Chrome */
+  & {
+    height: $OcrTopBarHeight - 2rem;
+    width: $OcrTopBarHeight - 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @apply rounded-lg;
+    @apply hover:bg-light-900
+  }
+
+  svg {
+    @apply fill-dark-50
+  }
 }

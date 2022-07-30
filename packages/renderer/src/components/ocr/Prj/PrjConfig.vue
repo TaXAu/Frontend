@@ -6,9 +6,7 @@
     <OcrTopBar>
       <div
         :class="{'edit-mode': isEditMode}"
-        bg="hover:light-700"
         class="icon"
-        rounded="lg"
         @click="changeEditMode"
       >
         <Edit />
@@ -220,12 +218,6 @@ function submitEdit() {
 
 hr {
   @apply my-1 mx-0 h-1px border-none bg-gray-400;
-}
-
-// top bar icon style
-.icon {
-  height: $OcrTopBarHeight - 2rem;
-  width: $OcrTopBarHeight - 2rem;
 }
 
 .edit-mode {
