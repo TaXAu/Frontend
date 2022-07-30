@@ -101,12 +101,12 @@ watch(() => state.ocr.img?.id, () => {
 
 function updateImgFromFs() {
   if (state.ocr.img && canvas) {
+    if (image) {
+      canvas.remove(image);
+    }
     readImgFromPath(state.ocr.img.path!).then((result) => {
       if (result.code === READ_IMG_FROM_FS_CODE.SUCCESS) {
         const img = result.result!;
-        if (image) {
-          canvas.remove(image);
-        }
         fabric.Image.fromURL(img.dataUrl, (img) => {
           if (img) {
             resizeCanvasImage(img);
