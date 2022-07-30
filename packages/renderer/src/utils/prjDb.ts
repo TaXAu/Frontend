@@ -4,15 +4,6 @@ import {myImgDB as db} from './/indexDB';
 import {stateStore, stateStore as stateStore1} from '/@/stores/state';
 import type {imgInfoDataUrlType} from '../../../../types/bridge';
 
-// for display basic info of images in ImgView.vue
-export interface displayImgInfo {
-  id: string,
-  filename: string,
-  uploadTime: Date,
-  lastModifiedTime: Date,
-  url: string
-}
-
 export async function addImgFromNode(img: imgInfoDataUrlType): Promise<void> {
   const stateStore = stateStore1();
   if (stateStore.isInSet) {
@@ -29,29 +20,6 @@ export async function addImgFromNode(img: imgInfoDataUrlType): Promise<void> {
     };
     await db.addImg(dbImg);
     _updateImgInfo(dbImg.id);
-  }
-}
-
-export async function getDisplayImgInfo(id: string): Promise<displayImgInfo[] | void> {
-  const images: imgDBType[] | void = await db.getAllImg(id);
-  const displayImages: displayImgInfo[] = [];
-  if (images !== undefined) {
-    images.forEach((image) => {
-      if (('dataUrl' in image && image.dataUrl !== undefined) ||
-        ('url' in image && image.url !== undefined)) {
-        const displayImage: displayImgInfo = {
-          id: image.id,
-          filename: image.filename,
-          uploadTime: image.uploadTime,
-          lastModifiedTime: image.lastModifiedTime,
-          url: 'dataUrl' in image ? image.dataUrl! : image.url!,
-        };
-        displayImages.push(displayImage);
-      }
-      // TODO
-      // 'else if' Blob and Path case
-    });
-    return displayImages;
   }
 }
 

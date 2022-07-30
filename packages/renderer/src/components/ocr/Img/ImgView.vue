@@ -1,6 +1,7 @@
 <template>
   <OcrTopBar />
   <div
+    :key="prjId"
     class="img-view"
     grid="~ <sm:cols-1 sm:<md:cols-2 md:<lg:cols-3 lg:<xl:cols-4 xl:<2xl:cols-5 2xl:cols-6"
     p="4"
@@ -60,28 +61,25 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, watch} from 'vue';
+import {computed, ref, watch} from 'vue';
 import {openImgSelectorDialog} from '/@/electron/api';
 import Folder from '@material-design-icons/svg/round/folder.svg';
 import Image from '@material-design-icons/svg/round/image.svg';
-import type {displayImgInfo} from '/@/utils/prjDb';
-import {getDisplayImgInfo} from '/@/utils/prjDb';
-import {useRoute, useRouter} from 'vue-router';
+import {useRouter} from 'vue-router';
+import {stateStore} from '/@/stores/state';
+import type {img as imgDBType} from '/@/utils/indexDB';
+import {myImgDB as db} from '/@/utils/indexDB';
 
-const route = useRoute();
 const router = useRouter();
-const props = defineProps({prjId: String});
+const state = stateStore();
+defineProps({prjId: String});
 
 const imgData = ref(new Array<displayImgInfo>);
 const intoImgInfoPage = (id: string) =>
   router.push({name: 'ocr-project-image-detail', params: {imgId: id}});
 
-// get Project ID from route and props
-const prjId = ref<string>(props.prjId!);
-watch(() => route.params.prjId, () => {
-  if (route.params?.prjId) prjId.value = <string>route.params.prjId;
-  getImgData();
-});
+// get Project ID from props and store
+const prjId = computed(() => state.ocr.prjId);
 
 // get img data from indexedDB and display in html
 async function getImgData() {
@@ -94,7 +92,46 @@ async function getImgData() {
   }
 }
 
-getImgData();// get image date the first time get in the component
+// for display basic info of images in ImgView.vue
+interface displayImgInfo {
+  id: string,
+  filename: string,
+  uploadTime: Date,
+  lastModifiedTime: Date,
+  url: string
+}
+
+async function getDisplayImgInfo(prjId: string): Promise<displayImgInfo[] | void> {
+  const images: imgDBType[] | void = await db.getAllImg(prjId);
+  const displayImages: displayImgInfo[] = [];
+  if (images !== undefined) {
+    images.forEach((image) => {
+      if (('dataUrl' in image && image.dataUrl !== undefined) ||
+        ('url' in image && image.url !== undefined)) {
+        const displayImage: displayImgInfo = {
+          id: image.id,
+          filename: image.filename,
+          uploadTime: image.uploadTime,
+          lastModifiedTime: image.lastModifiedTime,
+          url: 'dataUrl' in image ? image.dataUrl! : image.url!,
+        };
+        displayImages.push(displayImage);
+      }
+      // TODO
+      // 'else if' Blob and Path case
+    });
+    return displayImages;
+  }
+}
+
+// get image date the first time get in the component
+getImgData();
+watch(prjId, getImgData);
+watch(() => state.ocr.changedImgId, (value) => {
+  if (value) {
+    getImgData();
+  }
+});
 
 
 // add img from local files
