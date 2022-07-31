@@ -1,4 +1,5 @@
 import {Menu} from 'electron';
+
 const { BrowserWindow } = require('electron');
 
 const menuTemplate = [{
@@ -15,6 +16,13 @@ const menuTemplate = [{
   click: () => changeRoute('/settings'),
 },{
   label: '更多',
+  submenu: [
+    {
+      label: '打开调试窗口',
+      accelerator: 'f12',
+      click: () => openDevTools(),
+    },
+  ],
 }];
 
 function changeMenu() {
@@ -30,9 +38,16 @@ function changeMenu() {
 
 export default changeMenu;
 
-function changeRoute(route:string) {
+function changeRoute(route: string) {
   const win = BrowserWindow.getAllWindows().find(w => !w.isDestroyed());
-  if (win!==undefined) {
+  if (win !== undefined) {
     win.webContents.send('main-process-menu', route);
+  }
+}
+
+function openDevTools() {
+  const win = BrowserWindow.getAllWindows().find(w => !w.isDestroyed());
+  if (win !== undefined) {
+    win.webContents.openDevTools();
   }
 }
