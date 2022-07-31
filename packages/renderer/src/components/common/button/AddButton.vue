@@ -1,11 +1,11 @@
 <template>
   <RoundedButton
-    bg="blue-200/50"
+    bg="blue-200"
     size="3rem"
   >
     <Add
       class="transform"
-      fill="blue-600/80"
+      fill="blue-600"
       scale="100"
     />
   </RoundedButton>
