@@ -1,5 +1,13 @@
 <template>
-  <OcrTopBar />
+  <OcrTopBar>
+    <div
+      :class="{'del-mode': isDelMode}"
+      class="icon"
+      @click="changeDelMode"
+    >
+      <Delete />
+    </div>
+  </OcrTopBar>
   <div
     ref="prjDiv"
     class="img-sets-overview"
@@ -8,9 +16,9 @@
   >
     <div
       v-for="item in allPrjInfo"
-      ref="clickOutsideRef"
       :key="item.id"
       class="img-set-item relative"
+      :class="{'del-mode': isPrjSelectedToDel(item.id)}"
     >
       <div
         class="absolute"
@@ -19,15 +27,16 @@
         w="full"
       >
         <PrjCard
+          class="prj-card"
           :description="item.description"
-          :is-selected="isSelected(item.id)"
           :name="item.name"
-          @click="click(item.id)"
+          @click="clickPrj(item.id)"
         />
       </div>
     </div>
   </div>
   <div
+    v-if="isNormalMode"
     bottom="10"
     class="float-buttons"
     fixed="~"
@@ -36,126 +45,114 @@
     space="x-4"
     z="10"
   >
-    <DelButton
-      :class="{'del-btn-on': isDelMode}"
-      @click="clickDelBtn"
-    />
-    <AddButton @click="addPrjDialog" />
+    <AddButton @click="clickAddPrjButton" />
   </div>
   <AddPrjDialog
     v-model:is-show="isShowDialog"
   />
+  <div
+    v-if="isDelMode"
+    bottom="10"
+    class="mode-popup del-mode"
+  >
+    <div
+      class="bkg"
+    >
+      <p class="tip-text">
+        删除模式
+      </p>
+      <div class="line-btn">
+        <button @click="cancelDelMode">
+          取消
+        </button>
+        <button @click="submitDelMode">
+          删除
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import {myImgDB} from '/@/utils/indexDB';
+import Delete from '@material-design-icons/svg/round/delete.svg';
+import type {prjInfo} from '/@/utils/indexDB';
+import {myImgDB as db} from '/@/utils/indexDB';
 import {computed, ref, watch} from 'vue';
-import {stateStore} from '/@/stores/state';
-import {onClickOutside, useMagicKeys} from '@vueuse/core';
-import {delPrj as _delPrj} from '/@/utils/prjDb';
 import {useRouter} from 'vue-router';
 import {ROUTE_NAME} from '/@/config';
 
-const state = stateStore();
-const {ctrl} = useMagicKeys();
-
-const allPrjInfo = ref();
-const prjDiv = ref();
-const selectedPrjId = ref(new Set<string>);
-const isShowDialog = ref(false);
-const isMultiSelectMode = ref(false);
-const isDelMode = ref(false);
-const clickOutsideRef = ref(null);
-const isSpecialMode = computed(() => isDelMode.value /* || isOtherMode */);
 const router = useRouter();
 
-function getPrjInfo() {
-  myImgDB.getAllPrj().then((prjInfo) => {
-    allPrjInfo.value = prjInfo!;
+/* Get All Project Info */
+
+const allPrjInfo = ref<Array<prjInfo>>([]);
+
+function getAllPrjInfo() {
+  db.info.toArray().then(res => {
+    allPrjInfo.value = res;
   });
 }
 
-function clickIn(id: string) {
-  if (!isDelMode.value) {
-    router.push({name: ROUTE_NAME.OCR_PROJECT_CONFIG, params: {prjId: id}});
-  }
-}
+getAllPrjInfo();
 
-// for select multi card
-function click(id: string) {
-  if (isMultiSelectMode.value) {
-    selectedPrjId.value.has(id)
-      ? selectedPrjId.value.delete(id)
-      : selectedPrjId.value.add(id);
-  } else if (isDelMode.value) {
-    delPrj(id);
+
+/* Delete Project */
+/* Del Mode */
+
+const isDelMode = ref(false);
+const toDelPrjIdSet = ref<Set<string>>(new Set());
+const isPrjSelectedToDel = (id: string) => toDelPrjIdSet.value.has(id);
+
+function changeDelMode() {
+  if (isDelMode.value) {
+    cancelDelMode();
   } else {
-    clickIn(id);
-  }
-}
-
-// for buttons
-const isSelected = computed(() => {
-  return (id: string) => selectedPrjId.value.has(id);
-});
-
-const addPrjDialog = () => isShowDialog.value = true;
-
-// Operations when click `DelButton`
-const clickDelBtn = () => {
-  // Change DelMode
-  if (!isDelMode.value) {
     isDelMode.value = true;
-  } else {
-    isDelMode.value = false;
   }
-};
+}
 
-// async del img set
-// TODO: CONFIRM dialog
-const delPrj = async (id: Set<string> | Array<string> | string) => {
-  let _id: Set<string>;
-  if (typeof id === 'string') _id = new Set([<string>id]);
-  else if (id instanceof Array) _id = new Set(<Array<string>>id);
-  else _id = <Set<string>>id;
-
-  if (state.isInSet && _id.has(<string>state.ocr.prjId)) {
-    state.clearOcrPrjId();
-    state.clearOcrImgId();
-  }
-  await _id.forEach(async (v: string) =>
-    await _delPrj(v)
-      .then(() => _id.clear())
-      .finally(() => getPrjInfo()));
-
+function cancelDelMode() {
   isDelMode.value = false;
-};
+  toDelPrjIdSet.value = new Set();
+}
 
-/*
-Listen to Events
- */
+function submitDelMode() {
+  const toDelPrjIdArr = Array.from(toDelPrjIdSet.value);
+  db.info.where('id').anyOf(toDelPrjIdArr).delete();
+  cancelDelMode();
+  getAllPrjInfo();
+}
 
-// Only in `Special Mode` can you choose multiply files.
-watch(ctrl, (v) => isMultiSelectMode.value = isSpecialMode.value && v);
 
-// Refresh img set data after adding new img set.
-watch(isShowDialog, getPrjInfo);
+/* Add Project */
+/* Normal Mode */
 
-//
-watch(isMultiSelectMode, (v) => {
-  if (!v && isDelMode.value) delPrj(selectedPrjId.value);
+const isNormalMode = computed(() => !isDelMode.value);
+const isShowDialog = ref(false);
+
+function clickAddPrjButton() {
+  isShowDialog.value = true;
+}
+
+watch(isShowDialog, (val) => {
+  if (!val) getAllPrjInfo();
 });
 
-// Cancel all selected items when click outside the items.
-onClickOutside(clickOutsideRef, () => {
-  if (!isMultiSelectMode.value) selectedPrjId.value.clear();
-});
 
-/*
-exec once
- */
-
-getPrjInfo();
+/* Click Project Action */
+/* Normal Mode: to Project Info Page */
+/* Del Mode: selected image */
+function clickPrj(id: string) {
+  if (isNormalMode.value) {
+    router.push({name: ROUTE_NAME.OCR_PROJECT_CONFIG, params: {prjId: id}});
+  } else if (isDelMode.value) {
+    if (toDelPrjIdSet.value.has(id)) {
+      toDelPrjIdSet.value.delete(id);
+    } else {
+      toDelPrjIdSet.value.add(id);
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -164,7 +161,24 @@ getPrjInfo();
   padding-bottom: 50%;
 }
 
-.del-btn-on {
-  @apply bg-red-300/50;
+.del-mode {
+
+  &.icon {
+    @apply bg-red-400 hover:bg-red-500;
+  }
+
+  svg {
+    @apply fill-white;
+  }
+
+  &.mode-popup {
+    .bkg {
+      @apply bg-red-400;
+    }
+  }
+
+  .prj-card {
+    @apply ring ring-red-500 ring-offset-2 border-none;
+  }
 }
 </style>
