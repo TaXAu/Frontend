@@ -1,7 +1,7 @@
 import {v1 as uuidv1} from 'uuid'; // uuid v1 使用时间戳
 import type {img as imgDBType, prjInfo} from './/indexDB';
 import {myImgDB as db} from './/indexDB';
-import {stateStore, stateStore as stateStore1} from '/@/stores/state';
+import {stateStore as stateStore1} from '/@/stores/state';
 import type {imgInfoDataUrlType} from '../../../../types/bridge';
 
 export async function addImgFromNode(img: imgInfoDataUrlType): Promise<void> {
@@ -19,7 +19,6 @@ export async function addImgFromNode(img: imgInfoDataUrlType): Promise<void> {
       dataUrl: img.dataUrl,
     };
     await db.addImg(dbImg);
-    _updateImgInfo(dbImg.id);
   }
 }
 
@@ -34,7 +33,6 @@ export async function addPrj(name: string, description?: string) {
     lastModifiedTime: nowDate,
   };
   await db.addPrj(newPrj);
-  _updatePrjInfo(newPrj.id);
 }
 
 export async function delPrj(id: string) {
@@ -44,12 +42,10 @@ export async function delPrj(id: string) {
     await db.deleteImg(allImgId);
   }
   await db.deletePrj(id);
-  _updatePrjInfo(id);
 }
 
 export async function updatePrj(info: prjInfo) {
   await db.updatePrj(info);
-  _updatePrjInfo(info.id);
 }
 
 // get an image object from the img id.
@@ -66,14 +62,4 @@ export async function getPrjInfo(id: string): Promise<prjInfo | void> {
   if (prj !== undefined) {
     return prj;
   }
-}
-
-/* Hooks */
-
-function _updatePrjInfo(prjId: string | string[]) {
-  stateStore().ocr.changedPrjId = prjId;
-}
-
-function _updateImgInfo(imgId: string | string[]) {
-  stateStore().ocr.changedImgId = imgId;
 }

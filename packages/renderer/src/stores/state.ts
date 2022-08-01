@@ -17,8 +17,6 @@ export const stateStore = defineStore({
         imgId: <string | null>null,
         prj: <prjInfo | null>null,
         img: <img | null>null,
-        changedImgId: <string | string[] | null>null,
-        changedPrjId: <string | string[] | null>null,
         page: <any>null,
       },
       rpa: {

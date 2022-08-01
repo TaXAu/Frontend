@@ -156,11 +156,6 @@ async function getDisplayImgInfo(prjId: string): Promise<displayImgInfo[] | void
 // get image date the first time get in the component
 getImgData();
 watch(prjId, getImgData);
-watch(() => state.ocr.changedImgId, (value) => {
-  if (value) {
-    getImgData();
-  }
-});
 
 
 // add img from local files
