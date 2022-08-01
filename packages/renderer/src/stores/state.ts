@@ -1,8 +1,8 @@
 import {defineStore} from 'pinia';
 import type {ocrPageKeyType} from '/@/config';
 import {ROUTE_NAME} from '/@/config';
-import {getImgInfo, getPrjInfo} from '/@/utils/prjDb';
 import type {img, prjInfo} from '/@/utils/indexDB';
+import {myImgDB as db} from '/@/utils/indexDB';
 
 export const stateStore = defineStore({
   id: 'state-store',
@@ -60,19 +60,19 @@ export const stateStore = defineStore({
     },
     _updateStorePrjInfo() {
       if (this.isInSet) {
-        getPrjInfo(<string>this.ocr.prjId).then((info) => {
-          if (info) {
-            this.ocr.prj = info;
-          }
+        db.info.get(<string>this.ocr.prjId).then((prj) => {
+          if (prj) this.ocr.prj = prj;
+        }).catch((err) => {
+          console.error(err);
         });
       }
     },
     _updateStoreImgInfo() {
       if (this.isSelectImg) {
-        getImgInfo(<string>this.ocr.imgId).then((info) => {
-          if (info) {
-            this.ocr.img = info;
-          }
+        db.img.get(<string>this.ocr.imgId).then((img) => {
+          if (img) this.ocr.img = img;
+        }).catch((err) => {
+          console.error(err);
         });
       }
     },
