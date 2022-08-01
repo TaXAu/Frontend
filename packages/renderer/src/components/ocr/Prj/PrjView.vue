@@ -118,9 +118,16 @@ function cancelDelMode() {
 
 function submitDelMode() {
   const toDelPrjIdArr = Array.from(toDelPrjIdSet.value);
-  db.info.where('id').anyOf(toDelPrjIdArr).delete();
-  cancelDelMode();
-  getAllPrjInfo();
+  db.transaction('rw', db.img, db.info, () => {
+    db.info.where('id').anyOf(toDelPrjIdArr).delete();
+    db.img.where('prjId').anyOf(toDelPrjIdArr).delete();
+  }).then(() => {
+    getAllPrjInfo();
+  }).catch(err => {
+    console.error(err);
+  }).finally(() => {
+    cancelDelMode();
+  });
 }
 
 
