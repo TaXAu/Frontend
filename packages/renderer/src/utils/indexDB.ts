@@ -5,7 +5,7 @@ import Dexie from 'dexie';
 
 const imgDBVersion = 1;
 export const imgDbName = 'imgDB';
-export const imgInfoStoreName = 'info';
+export const imgInfoStoreName = 'prj';
 
 export interface img {
   id: string;
@@ -30,36 +30,36 @@ export interface prjInfo {
 
 export class myImgDexie extends Dexie {
   img!: Table<img>;
-  info!: Table<prjInfo>;
+  prj!: Table<prjInfo>;
 
   constructor() {
     super(imgDbName);
     this.version(imgDBVersion).stores({
-      info: '&id, *name, description, createdTime, lastModifiedTime',
+      prj: '&id, *name, description, createdTime, lastModifiedTime',
       img: '&id, *prjId, *filename, size, filetype, createdTime, lastModifiedTime, path, blob, dataUrl, url',
     });
-    this.info = this.table('info');
+    this.prj = this.table('prj');
     this.img = this.table('img');
   }
 
   async getPrj(id: string): Promise<void | prjInfo> {
-    return this.info.get(id);
+    return this.prj.get(id);
   }
 
   async getAllPrj(): Promise<void | prjInfo[]> {
-    return this.info.toArray();
+    return this.prj.toArray();
   }
 
-  async addPrj(info: prjInfo): Promise<void> {
-    await this.info.add(info);
+  async addPrj(prj: prjInfo): Promise<void> {
+    await this.prj.add(prj);
   }
 
-  async updatePrj(info: prjInfo): Promise<void> {
-    await this.info.update(info.id, info);
+  async updatePrj(prj: prjInfo): Promise<void> {
+    await this.prj.update(prj.id, prj);
   }
 
   async deletePrj(id: string): Promise<void> {
-    await this.info.delete(id);
+    await this.prj.delete(id);
   }
 
   async getAllImg(imgPrjId: string): Promise<void | img[]> {
@@ -101,7 +101,7 @@ export class myImgDexie extends Dexie {
   }
 
   async hasPrj(id: string): Promise<boolean> {
-    return await this.info.where('id').equals(id).count() > 0;
+    return await this.prj.where('id').equals(id).count() > 0;
   }
 }
 

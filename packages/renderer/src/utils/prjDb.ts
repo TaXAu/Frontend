@@ -58,7 +58,7 @@ export async function getImgInfo(id: string): Promise<imgDBType | void> {
 
 // get a img set object from the img set id.
 export async function getPrjInfo(id: string): Promise<prjInfo | void> {
-  const prj = db.info.get(id);
+  const prj = db.prj.get(id);
   if (prj !== undefined) {
     return prj;
   }

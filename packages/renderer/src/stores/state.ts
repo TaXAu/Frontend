@@ -60,7 +60,7 @@ export const stateStore = defineStore({
     },
     _updateStorePrjInfo() {
       if (this.isInSet) {
-        db.info.get(<string>this.ocr.prjId).then((prj) => {
+        db.prj.get(<string>this.ocr.prjId).then((prj) => {
           if (prj) this.ocr.prj = prj;
         }).catch((err) => {
           console.error(err);

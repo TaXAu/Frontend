@@ -88,7 +88,7 @@ const router = useRouter();
 const allPrjInfo = ref<Array<prjInfo>>([]);
 
 function getAllPrjInfo() {
-  db.info.toArray().then(res => {
+  db.prj.toArray().then(res => {
     allPrjInfo.value = res;
   });
 }
@@ -118,8 +118,8 @@ function cancelDelMode() {
 
 function submitDelMode() {
   const toDelPrjIdArr = Array.from(toDelPrjIdSet.value);
-  db.transaction('rw', db.img, db.info, () => {
-    db.info.where('id').anyOf(toDelPrjIdArr).delete();
+  db.transaction('rw', db.img, db.prj, () => {
+    db.prj.where('id').anyOf(toDelPrjIdArr).delete();
     db.img.where('prjId').anyOf(toDelPrjIdArr).delete();
   }).then(() => {
     getAllPrjInfo();
