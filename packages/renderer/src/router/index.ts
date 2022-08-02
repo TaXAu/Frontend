@@ -124,25 +124,25 @@ router.beforeEach(async (to, from) => {
 
 
 // store the top level of route in state store
-router.afterEach((to, from) => {
+router.afterEach((to) => {
   const store = stateStore();
-  store.page = from;
-  from.matched.find(item => {
+  store.page = to;
+  to.matched.find(item => {
     switch (item.name) {
       case ROUTE_NAME.HOME:
-        store.home.page = from;
+        store.home.page = to;
         break;
 
       case ROUTE_NAME.OCR:
-        store.ocr.page = from;
+        store.ocr.page = to;
         break;
 
       case ROUTE_NAME.RPA:
-        store.rpa.page = from;
+        store.rpa.page = to;
         break;
 
       case ROUTE_NAME.SETTINGS:
-        store.settings.page = from;
+        store.settings.page = to;
         break;
     }
   });
