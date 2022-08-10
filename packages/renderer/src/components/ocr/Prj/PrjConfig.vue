@@ -13,16 +13,12 @@
       </div>
     </OcrTopBar>
     <div
-      class="main"
-      p="x-4 b-2"
+      class="main px-4"
     >
-      <div
-        class="card"
+      <InfoCard
+        header="项目基本信息"
+        m="t-0"
       >
-        <div class="title">
-          项目基本信息
-        </div>
-        <hr>
         <div
           class="content prj-info"
           gap="x-4"
@@ -60,15 +56,11 @@
             class="description"
           />
         </div>
-      </div>
-      <div class="card">
-        <div class="title">
-          OCR 配置
-        </div>
-        <hr>
-        <div class="content" />
-      </div>
+      </InfoCard>
+
+      <InfoCard header="OCR配置" />
     </div>
+
     <!--    hover buttons-->
     <div
       class="float-buttons mode-popup"
@@ -168,30 +160,19 @@ function submitEdit() {
 </script>
 
 <style lang="scss" scoped>
-.card {
-  @apply bg-light-400;
-  @apply rounded-lg;
-  @apply overflow-hidden;
-  @apply px-10 py-5;
-  @apply mb-2;
-}
-
 .main {
   height: calc(100% - $OcrTopBarHeight);
 }
 
-.prj-info {
+.prj-info, .prj-config {
   grid-template-columns: max-content auto;
 }
 
-.title {
-  @apply leading-loose font-semibold text-xl tracking-wide;
-}
-
 .content {
-  p {
+  p, select {
     @apply text-sm
     @apply leading-loose
+    @apply px-1
   }
 
   .id {
@@ -201,14 +182,6 @@ function submitEdit() {
   .key {
     @apply font-semibold;
   }
-
-  p {
-    @apply px-1
-  }
-}
-
-hr {
-  @apply my-1 mx-0 h-1px border-none bg-gray-400;
 }
 
 .edit-mode {
