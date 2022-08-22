@@ -1,7 +1,7 @@
 {
   "name": "taxau-desktop",
   "description": "text recognition and automation",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "private": true,
   "engines": {
     "node": ">=v16.13",
@@ -34,7 +34,7 @@
     "@fontsource/noto-sans-sc": "4.5.11",
     "@fontsource/noto-serif-sc": "4.5.11",
     "@material-design-icons/svg": "0.11.8",
-    "@types/fabric": "^4.5.11",
+    "@types/fabric": "4.5.11",
     "@types/node": "18.0.5",
     "@types/uuid": "8.3.4",
     "@typescript-eslint/eslint-plugin": "5.32.0",
@@ -49,7 +49,7 @@
     "electron-devtools-installer": "3.2.0",
     "eslint": "8.21.0",
     "eslint-plugin-vue": "9.3.0",
-    "fabric": "^5.2.1",
+    "fabric": "5.2.1",
     "happy-dom": "6.0.4",
     "nano-staged": "0.8.0",
     "pinia": "2.0.17",
