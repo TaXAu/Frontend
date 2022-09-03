@@ -1,5 +1,5 @@
 <template>
-  <h1>RPA</h1>
+  <RpaFlow />
 </template>
 
 <style lang="scss">
