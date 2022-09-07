@@ -4,7 +4,7 @@
       <FlowGallery />
     </div>
     <div class="center">
-      <div class="flow-block" />
+      <FlowEditor />
     </div>
     <div class="right" />
   </div>
@@ -21,5 +21,9 @@
 
 .left, .center, .right {
   @apply w-full;
+}
+
+.center {
+  @apply bg-gray-100;
 }
 </style>
