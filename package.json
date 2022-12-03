@@ -1,7 +1,7 @@
 {
   "name": "taxau-desktop",
   "description": "text recognition and automation",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "private": true,
   "engines": {
     "node": ">=v16.13",
@@ -50,7 +50,7 @@
     "eslint": "8.25.0",
     "eslint-plugin-vue": "9.6.0",
     "fabric": "5.2.4",
-    "happy-dom": "6.0.4",
+    "happy-dom": "7.7.2",
     "nano-staged": "0.8.0",
     "pinia": "2.0.23",
     "playwright": "1.27.0",
