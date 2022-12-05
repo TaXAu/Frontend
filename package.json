@@ -1,7 +1,7 @@
 {
   "name": "taxau-desktop",
   "description": "text recognition and automation",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "private": true,
   "engines": {
     "node": ">=v16.13",
@@ -44,7 +44,7 @@
     "@vueuse/core": "9.3.0",
     "cross-env": "7.0.3",
     "dexie": "3.2.2",
-    "electron": "21.1.0",
+    "electron": "22.0.0",
     "electron-builder": "23.6.0",
     "electron-devtools-installer": "3.2.0",
     "eslint": "8.25.0",
