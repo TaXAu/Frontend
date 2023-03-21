@@ -1,4 +1,5 @@
 import {createApp, watch} from 'vue';
+// import { plugin, defaultConfig } from '@formkit/vue';
 import App from '/@/App.vue';
 import {createPinia} from 'pinia';
 import {router} from '/@/router';

@@ -1,5 +1,15 @@
 const url = 'http://localhost:8000';
 
+export enum StatueCode {
+  INITIAL = 0,
+  INIT_ERROR = 1,
+  READY = 2,
+  RUNNING = 3,
+  PENDING = 4,
+  SUCCESS = 5,
+  FAILED = 6,
+}
+
 export interface ModuleInfo {
   id: string,
   name: string,
@@ -8,6 +18,24 @@ export interface ModuleInfo {
   param: unknown
   args: unknown
   rtns: unknown
+}
+
+export async function testConnection(): Promise<boolean> {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 1000);
+    const response = await fetch(url + '/api/test', {
+      method: 'GET',
+      redirect: 'follow',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    clearTimeout(timeout);
+    return response.status === 200;
+  } catch (error) {
+    return false;
+  }
 }
 
 export async function getModuleInfo(moduleId = null): Promise<ModuleInfo[] | null> {
@@ -122,46 +150,69 @@ export class Workflow {
 
 export class Task {
 
-  async add(task: BodyInit) {
-    return fetch(url + '/api/tasks/add/', {
+  async add(task: WorkflowData) {
+    const result = await fetch(url + '/api/tasks/add/', {
       method: 'POST',
       redirect: 'follow',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: task,
+      body: JSON.stringify(task),
     });
+    if (result.ok) {
+      return result.json();
+    }
   }
 
   async list() {
-    return fetch(url + '/api/tasks/info/', {
+    const result = await fetch(url + '/api/tasks/info/', {
       method: 'GET',
       redirect: 'follow',
       headers: {
         'Content-Type': 'application/json',
       },
     });
+    if (result.ok) {
+      return result.json();
+    }
   }
 
   async run(taskId: string) {
-    return fetch(url + '/api/tasks/run/', {
-      method: 'POST',
-      redirect: 'follow',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({id: taskId}),
-    });
-  }
-
-  async status(taskId: string) {
-    return fetch(url + '/api/tasks/status/', {
+    const result = await fetch(url + '/api/tasks/run?id=' + taskId, {
       method: 'GET',
       redirect: 'follow',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({id: taskId}),
     });
+    if (result.ok) {
+      return result.json();
+    }
+  }
+
+  async status(id: null | string = null): Promise<[]> {
+    const result = await fetch(url + '/api/tasks/status' + (id === null ? '' : `?id=${id}`), {
+      method: 'GET',
+      redirect: 'follow',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (result.ok) {
+      return result.json();
+    } else {
+      return [];
+    }
+  }
+
+  async delete(taskId: string) {
+    const result = await fetch(url + '/api/tasks/delete?id=' + taskId, {
+      method: 'GET',
+      redirect: 'follow',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return result.ok;
   }
 }

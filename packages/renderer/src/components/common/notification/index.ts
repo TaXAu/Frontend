@@ -18,7 +18,7 @@ export function notify(
     id: uuidv1(),
     type: type ?? 'info',
     message,
-    timeout: timeout ?? 5000,
+    timeout: timeout ?? 3000,
   };
   notificationInstances.value.push(instance);
   setTimeout(() => {

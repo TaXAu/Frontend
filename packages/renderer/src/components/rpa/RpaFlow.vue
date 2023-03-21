@@ -26,16 +26,16 @@
           模块信息
         </div>
         <div v-if="selectedModuleInList !== null">
-          <div class="text-sm my-1 mx-2">
+          <div class="text-xs my-1 mx-2">
             模块ID：{{ moduleMap.get(selectedModuleInList).id }}
           </div>
-          <div class="text-sm my-1 mx-2">
+          <div class="text-xs my-1 mx-2">
             模块版本：{{ moduleMap.get(selectedModuleInList).version }}
           </div>
-          <div class="text-sm my-1 mx-2">
+          <div class="text-xs my-1 mx-2">
             模块名称：{{ moduleMap.get(selectedModuleInList).name }}
           </div>
-          <div class="text-sm my-1 mx-2">
+          <div class="text-xs my-1 mx-2">
             模块描述：{{ moduleMap.get(selectedModuleInList).description }}
           </div>
         </div>
@@ -69,7 +69,7 @@
         </div>
         <div v-if="curAction!==null">
           <div class="text-sm">
-            变量名：
+            动作名：
           </div>
           <input
             v-model="curAction.name"
@@ -154,6 +154,12 @@
             重置
           </button>
           <button
+            class="default-btn"
+            @click="clickStatusButton()"
+          >
+            状态
+          </button>
+          <button
             v-if="false"
             class="default-btn"
             @click="clickSaveButton()"
@@ -174,15 +180,27 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, ref, watch} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import type {ModuleInfo} from '/@/utils/rpa';
-import {getModuleInfo, Workflow} from '/@/utils/rpa';
+import {getModuleInfo, StatueCode, Task, testConnection, Workflow} from '/@/utils/rpa';
+import {notify} from '/@/components/common/notification';
 
 const modules = ref<ModuleInfo[] | null>([]);
 const moduleMap = ref(new Map());
 const selectedModuleInList = ref<null | string>(null);
 const selectedActionInFlow = ref<null | number>(null);
 const workflowConstructor = ref(new Workflow('tmp'));
+const rpaTask = new Task();
+
+onMounted(async () => {
+  const connection = await testConnection();
+  if (connection) {
+    notify('RPA连接成功', 'success');
+  } else {
+    notify('RPA连接失败', 'error');
+  }
+});
+
 
 const clickModuleList = (id: string) => {
   selectedModuleInList.value = id;
@@ -202,7 +220,7 @@ const clickAddButton = () => {
     }
     return Object.fromEntries(Object.keys(obj).map((k) => [k, '']));
   };
-  if (selectedModuleInList.value) {
+  if (selectedModuleInList.value !== null) {
     workflowConstructor.value.addModule(selectedModuleInList.value,
       `module ${workflowConstructor.value.data.program.length + 1}`,
       clearInput(moduleMap.value.get(selectedModuleInList.value).param),
@@ -213,7 +231,7 @@ const clickAddButton = () => {
 };
 
 const clickDelButton = () => {
-  if (selectedActionInFlow.value) {
+  if (selectedActionInFlow.value !== null) {
     workflowConstructor.value.deleteModule(selectedActionInFlow.value);
     selectedActionInFlow.value = null;
   }
@@ -239,9 +257,81 @@ const clickMoveDown = () => {
   }
 };
 
-const clickRunButton = () => {
-  console.log('run');
-  // TODO
+const clickRunButton = async () => {
+  console.log('Run Module');
+  console.log(workflowConstructor.value.data);
+
+  const id = workflowConstructor.value.data.id;
+
+  if (workflowConstructor.value && workflowConstructor.value.data.program.length === 0) {
+    notify('请添加任务', 'info');
+    return;
+  }
+
+  const status = await rpaTask.status(id);
+  console.log('status', status);
+  if (status.length > 0 && (status.at(0)![1] === StatueCode.RUNNING || status.at(0)![1] === StatueCode.PENDING)) {
+    notify('任务正在运行', 'info');
+    return;
+  } else if (status.length > 0) {
+    const delResult = await rpaTask.delete(id);
+    if (!delResult) {
+      notify('删除重复任务失败', 'error');
+      return;
+    }
+  }
+
+  const addResult = await rpaTask.add(workflowConstructor.value.data);
+  if (addResult === null) {
+    notify('添加任务失败', 'error');
+    return;
+  }
+  const runResult = await rpaTask.run(id);
+  if (runResult === null) {
+    notify('运行任务失败', 'error');
+    return;
+  } else {
+    notify('运行任务成功', 'success');
+  }
+  console.log(await rpaTask.status());
+};
+
+const clickStatusButton = async () => {
+  const id = workflowConstructor.value.data.id;
+  console.log('Status');
+  const status = await rpaTask.status(id);
+  console.log(status);
+  if (status.length === 0) {
+    notify('任务不存在', 'info');
+    return;
+  } else {
+    switch (status.at(0)![1]) {
+      case StatueCode.READY:
+        notify('任务就绪', 'info');
+        break;
+      case StatueCode.INITIAL:
+        notify('任务初始化中', 'info');
+        break;
+      case StatueCode.INIT_ERROR:
+        notify('任务初始化失败', 'info');
+        break;
+      case StatueCode.PENDING:
+        notify('任务等待中', 'info');
+        break;
+      case StatueCode.RUNNING:
+        notify('任务运行中', 'info');
+        break;
+      case StatueCode.SUCCESS:
+        notify('任务运行成功', 'success');
+        break;
+      case StatueCode.FAILED:
+        notify('任务运行失败', 'error');
+        break;
+      default:
+        notify('任务状态未知', 'info');
+        break;
+    }
+  }
 };
 
 const clickSaveButton = () => {
@@ -255,6 +345,8 @@ const clickLoadButton = () => {
 };
 
 const clickResetButton = () => {
+  selectedActionInFlow.value = null;
+  selectedModuleInList.value = null;
   workflowConstructor.value = new Workflow('tmp');
 };
 
@@ -280,10 +372,10 @@ const curAction = computed({
   },
 });
 
-watch(workflowConstructor.value, (newValue) => {
-  console.log(newValue);
-  console.log(newValue.data.program[0].param);
-});
+// watch(workflowConstructor.value, (newValue) => {
+//   console.log(newValue);
+//   console.log(newValue.data.program[0].param);
+// });
 
 // const curActionParams = computed({
 //   get() {
