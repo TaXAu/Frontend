@@ -1,13 +1,13 @@
 <template>
   <div class="rpa-flow h-full">
     <div class="left flex flex-col">
-      <div class="flex-auto my-2 bg-zinc-300/40 text-sm rounded-md leading-loose mx-2">
+      <div class="flex-auto my-2 bg-zinc-300/40 text-sm rounded-md leading-loose mx-2 overflow-y-auto">
         <div
           class="text-center my-2 font-bold"
         >
           模块列表
         </div>
-        <div class="py-1 ">
+        <div class="py-1">
           <div
             v-for="module in modules"
             :key="module.id"
