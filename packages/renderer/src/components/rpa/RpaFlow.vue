@@ -160,14 +160,12 @@
             状态
           </button>
           <button
-            v-if="false"
             class="default-btn"
             @click="clickSaveButton()"
           >
             保存
           </button>
           <button
-            v-if="false"
             class="default-btn"
             @click="clickLoadButton()"
           >
@@ -335,13 +333,13 @@ const clickStatusButton = async () => {
 };
 
 const clickSaveButton = () => {
-  console.log('save');
-  // TODO
+  console.log('save file');
+  workflowConstructor.value.toFile();
 };
 
 const clickLoadButton = () => {
   console.log('load');
-  // TODO
+  workflowConstructor.value.fromFile();
 };
 
 const clickResetButton = () => {

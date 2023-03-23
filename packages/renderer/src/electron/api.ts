@@ -67,3 +67,14 @@ export async function readImgFromPath(path: string):
   return result;
 }
 
+type FileTypes = 'json';
+
+// read text file from file system
+export async function readTextFile(path: string | null = null, type: FileTypes): Promise<{ path: string | null, data: string | null }> {
+  return electronAPI.readTextFile(path, type);
+}
+
+// save text file to file system
+export async function writeTextFile(path: string | null = null, data: string, type: FileTypes): Promise<{ path: string | null, success: boolean }> {
+  return electronAPI.writeTextFile(path, data, type);
+}

@@ -3,6 +3,7 @@ import './security-restrictions';
 import {restoreOrCreateWindow} from '/@/mainWindow';
 import changeMenu from '/@/menu';
 import {openImgSelectorDialog, readImgFromPath} from '/@/api';
+import {readTextFile, writeTextFile} from '/@/api/file';
 
 /**
  * Prevent multiple instances
@@ -42,8 +43,10 @@ app.on('activate', restoreOrCreateWindow);
 app.whenReady()
   .then(restoreOrCreateWindow).then(() => {
     // load api from ./api/index.ts
-  ipcMain.handle('dialog:selectImg', (e, args) => openImgSelectorDialog(args));
-  ipcMain.handle('node:readImgFromPath', (e, args) => readImgFromPath(args));
+    ipcMain.handle('dialog:selectImg', (e, args) => openImgSelectorDialog(args));
+    ipcMain.handle('node:readImgFromPath', (e, args) => readImgFromPath(args));
+    ipcMain.handle('node:readTextFile', (e, args1, args2) => readTextFile(args1, args2));
+    ipcMain.handle('node:writeTextFile', (e, args1, args2, args3) => writeTextFile(args1, args2, args3));
   },
 )
   .catch((e) => console.error('Failed create window:', e));

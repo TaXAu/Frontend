@@ -1,3 +1,7 @@
+import {readTextFile, writeTextFile} from '/@/electron/api';
+import {notify} from '/@/components/common/notification';
+
+
 const url = 'http://localhost:8000';
 
 export enum StatueCode {
@@ -73,12 +77,26 @@ interface WorkflowData {
 export class Workflow {
   data: WorkflowData;
 
+  // res: UseFileSystemAccessReturn<string|ArrayBuffer|Blob>;
+
+
   constructor(name: string) {
     this.data = {
       name,
       id: crypto.randomUUID(),
       program: [],
     };
+    // const dataType = ref('Text') as Ref<'Text' | 'ArrayBuffer' | 'Blob'>;
+    // this.res = useFileSystemAccess({
+    //   dataType,
+    //   types: [{
+    //     description: 'TaXAu Workflow File',
+    //     accept: {
+    //       'text/plain': ['.txt', '.json'],
+    //     },
+    //   }],
+    //   // excludeAcceptAllOption: true,
+    // });
   }
 
   addModule(moduleID: string, name: string, param: Record<string, unknown> = {},
@@ -123,6 +141,38 @@ export class Workflow {
       const temp = this.data.program[index];
       this.data.program[index] = this.data.program[index + 1];
       this.data.program[index + 1] = temp;
+    }
+  }
+
+  // async fromFile() {
+  //   this.file.open().then((file) => {
+  //
+  //   }
+  //
+  // }
+
+  async toFile() {
+    const result = await writeTextFile(null, JSON.stringify(this.data), 'json');
+    if (result.success) {
+      notify('保存成功', 'success');
+    } else {
+      notify('保存失败', 'error');
+    }
+  }
+
+  async fromFile() {
+    const result = await readTextFile(null, 'json');
+    if (result.data) {
+      try {
+        const tmpData = JSON.parse(result.data);
+        if (tmpData.name && tmpData.id && tmpData.program) {
+          this.data = tmpData;
+          notify('打开成功', 'success');
+        }
+      } catch (e) {
+        notify('打开失败', 'error');
+        console.error(e);
+      }
     }
   }
 

@@ -18,5 +18,11 @@ interface ImportMetaEnv {
 }
 
 interface ImportMeta {
-  readonly env: ImportMetaEnv
+  readonly env: ImportMetaEnv;
+}
+
+declare global {
+  interface Window {
+    example: any; // 👈️ turn off type checking
+  }
 }
