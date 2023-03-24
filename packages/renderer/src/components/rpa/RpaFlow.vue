@@ -45,7 +45,10 @@
     <div class="center">
       <div class="flex flex-col h-full">
         <div class="my-2 pb-2 bg-zinc-300/40 text-sm rounded-md leading-loose mx-2 flex-auto flex flex-col">
-          <div class="text-center my-2 font-bold">
+          <div
+            :key="centerKey"
+            class="text-center my-2 font-bold"
+          >
             动作流
           </div>
           <div class="py-1 flex-auto scroll">
@@ -180,15 +183,17 @@
 <script lang="ts" setup>
 import {computed, onMounted, ref} from 'vue';
 import type {ModuleInfo} from '/@/utils/rpa';
-import {getModuleInfo, StatueCode, Task, testConnection, Workflow} from '/@/utils/rpa';
+import {getModuleInfo, StatueCode, Task, testConnection} from '/@/utils/rpa';
 import {notify} from '/@/components/common/notification';
+import {rpaStore} from '/@/stores/rpa';
 
 const modules = ref<ModuleInfo[] | null>([]);
 const moduleMap = ref(new Map());
 const selectedModuleInList = ref<null | string>(null);
 const selectedActionInFlow = ref<null | number>(null);
-const workflowConstructor = ref(new Workflow('tmp'));
+const workflowConstructor = rpaStore().workflow;
 const rpaTask = new Task();
+const centerKey = ref(0);
 
 onMounted(async () => {
   const connection = await testConnection();
@@ -219,8 +224,8 @@ const clickAddButton = () => {
     return Object.fromEntries(Object.keys(obj).map((k) => [k, '']));
   };
   if (selectedModuleInList.value !== null) {
-    workflowConstructor.value.addModule(selectedModuleInList.value,
-      `module ${workflowConstructor.value.data.program.length + 1}`,
+    workflowConstructor.addModule(selectedModuleInList.value,
+      `module ${workflowConstructor.data.program.length + 1}`,
       clearInput(moduleMap.value.get(selectedModuleInList.value).param),
       clearInput(moduleMap.value.get(selectedModuleInList.value).args),
       '',
@@ -230,72 +235,49 @@ const clickAddButton = () => {
 
 const clickDelButton = () => {
   if (selectedActionInFlow.value !== null) {
-    workflowConstructor.value.deleteModule(selectedActionInFlow.value);
+    workflowConstructor.deleteModule(selectedActionInFlow.value);
     selectedActionInFlow.value = null;
   }
 };
 
 const clickMoveUp = () => {
   if (selectedActionInFlow.value !== null) {
-    if (selectedActionInFlow.value <= 0) {
-      return;
-    }
-    workflowConstructor.value.moveModule(selectedActionInFlow.value, 'up');
-    selectedActionInFlow.value -= 1;
+    const result = workflowConstructor.moveModule(selectedActionInFlow.value, 'up');
+    if (result) selectedActionInFlow.value -= 1;
   }
 };
 
 const clickMoveDown = () => {
   if (selectedActionInFlow.value !== null) {
-    if (selectedActionInFlow.value >= workflowConstructor.value.data.program.length - 1) {
-      return;
-    }
-    workflowConstructor.value.moveModule(selectedActionInFlow.value, 'down');
-    selectedActionInFlow.value += 1;
+    const result = workflowConstructor.moveModule(selectedActionInFlow.value, 'down');
+    if (result) selectedActionInFlow.value += 1;
   }
 };
 
 const clickRunButton = async () => {
+  workflowConstructor.newID();
+  const id = workflowConstructor.data.id;
   console.log('Run Module');
-  console.log(workflowConstructor.value.data);
+  console.log(workflowConstructor.data);
 
-  const id = workflowConstructor.value.data.id;
-
-  if (workflowConstructor.value && workflowConstructor.value.data.program.length === 0) {
-    notify('请添加任务', 'info');
+  // add task
+  const result1 = await rpaTask.add(workflowConstructor.data);
+  if (!result1) {
+    notify('任务添加失败', 'error');
     return;
   }
-
-  const status = await rpaTask.status(id);
-  console.log('status', status);
-  if (status.length > 0 && (status.at(0)![1] === StatueCode.RUNNING || status.at(0)![1] === StatueCode.PENDING)) {
-    notify('任务正在运行', 'info');
-    return;
-  } else if (status.length > 0) {
-    const delResult = await rpaTask.delete(id);
-    if (!delResult) {
-      notify('删除重复任务失败', 'error');
-      return;
-    }
-  }
-
-  const addResult = await rpaTask.add(workflowConstructor.value.data);
-  if (addResult === null) {
-    notify('添加任务失败', 'error');
-    return;
-  }
-  const runResult = await rpaTask.run(id);
-  if (runResult === null) {
-    notify('运行任务失败', 'error');
+  // run task
+  const result2 = await rpaTask.run(id);
+  if (!result2) {
+    notify('任务添加失败', 'error');
     return;
   } else {
-    notify('运行任务成功', 'success');
+    notify('任务添加成功', 'success');
   }
-  console.log(await rpaTask.status());
 };
 
 const clickStatusButton = async () => {
-  const id = workflowConstructor.value.data.id;
+  const id = workflowConstructor.data.id;
   console.log('Status');
   const status = await rpaTask.status(id);
   console.log(status);
@@ -334,18 +316,19 @@ const clickStatusButton = async () => {
 
 const clickSaveButton = () => {
   console.log('save file');
-  workflowConstructor.value.toFile();
+  workflowConstructor.toFile();
 };
 
 const clickLoadButton = () => {
   console.log('load');
-  workflowConstructor.value.fromFile();
+  workflowConstructor.fromFile();
 };
 
 const clickResetButton = () => {
   selectedActionInFlow.value = null;
   selectedModuleInList.value = null;
-  workflowConstructor.value = new Workflow('tmp');
+  workflowConstructor.clear();
+  centerKey.value += 1;
 };
 
 getModuleInfo().then(value => {
@@ -359,13 +342,13 @@ getModuleInfo().then(value => {
 const curAction = computed({
   get() {
     if (selectedActionInFlow.value !== null) {
-      return workflowConstructor.value.data.program[selectedActionInFlow.value];
+      return workflowConstructor.data.program[selectedActionInFlow.value];
     }
     return null;
   },
   set(value) {
     if (selectedActionInFlow.value !== null) {
-      workflowConstructor.value.data.program[selectedActionInFlow.value] = value!;
+      workflowConstructor.data.program[selectedActionInFlow.value] = value!;
     }
   },
 });

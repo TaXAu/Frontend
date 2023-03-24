@@ -99,6 +99,10 @@ export class Workflow {
     // });
   }
 
+  newID() {
+    this.data.id = crypto.randomUUID();
+  }
+
   addModule(moduleID: string, name: string, param: Record<string, unknown> = {},
             args: Record<string, unknown> = {}, rtns = '') {
     const moduleData: ModuleData = {
@@ -126,22 +130,29 @@ export class Workflow {
     this.data.program.splice(index, 1);
   }
 
-  moveModule(index: number, direction: 'up' | 'down') {
+  moveModule(index: number, direction: 'up' | 'down'): boolean {
     if (direction === 'up') {
       if (index === 0) {
-        return;
+        return false;
       }
       const temp = this.data.program[index];
       this.data.program[index] = this.data.program[index - 1];
       this.data.program[index - 1] = temp;
     } else {
       if (index >= this.data.program.length - 1) {
-        return;
+        return false;
       }
       const temp = this.data.program[index];
       this.data.program[index] = this.data.program[index + 1];
       this.data.program[index + 1] = temp;
     }
+
+    return true;
+  }
+
+  clear() {
+    this.data.id = crypto.randomUUID();
+    this.data.program = [];
   }
 
   // async fromFile() {
@@ -200,7 +211,7 @@ export class Workflow {
 
 export class Task {
 
-  async add(task: WorkflowData) {
+  async add(task: WorkflowData): Promise<boolean> {
     const result = await fetch(url + '/api/tasks/add/', {
       method: 'POST',
       redirect: 'follow',
@@ -210,7 +221,9 @@ export class Task {
       body: JSON.stringify(task),
     });
     if (result.ok) {
-      return result.json();
+      return await result.json() as Promise<boolean>;
+    } else {
+      return false;
     }
   }
 
@@ -227,7 +240,7 @@ export class Task {
     }
   }
 
-  async run(taskId: string) {
+  async run(taskId: string): Promise<boolean> {
     const result = await fetch(url + '/api/tasks/run?id=' + taskId, {
       method: 'GET',
       redirect: 'follow',
@@ -236,7 +249,9 @@ export class Task {
       },
     });
     if (result.ok) {
-      return result.json();
+      return await result.json() as Promise<boolean>;
+    } else {
+      return false;
     }
   }
 
