@@ -1,15 +1,16 @@
-import {createRouter, createWebHashHistory} from 'vue-router';
-import home from '../pages/HomeView.vue';
-import ocr from '../pages/OcrView.vue';
-import rpa from '../pages/RpaView.vue';
-import PrjConfig from '../components/ocr/Prj/PrjConfig.vue';
-import PrjView from '../components/ocr/Prj/PrjView.vue';
-import ImgInfoView from '../components/ocr/ImgInfo/ImgInfoView.vue';
-import ImgOverview from '../components/ocr/Img/ImgView.vue';
-import settings from '../pages/SettingsView.vue';
-import {stateStore} from '/@/stores/state';
-import {getImgInfo} from '/@/utils/prjDb';
-import {ROUTE_NAME} from '/@/config';
+import { createRouter, createWebHashHistory } from 'vue-router'
+import home from '../pages/HomeView.vue'
+import ocr from '../pages/OcrView.vue'
+import rpa from '../pages/RpaView.vue'
+import PrjConfig from '../components/ocr/Prj/PrjConfig.vue'
+import PrjView from '../components/ocr/Prj/PrjView.vue'
+import ImgInfoView from '../components/ocr/ImgInfo/ImgInfoView.vue'
+import ImgOverview from '../components/ocr/Img/ImgView.vue'
+import OcrData from '/@/components/ocr/data/OcrData.vue'
+import settings from '../pages/SettingsView.vue'
+import { stateStore } from '/@/stores/state'
+import { getImgInfo } from '/@/utils/prjDb'
+import { ROUTE_NAME } from '/@/config'
 
 const routes = [{
   path: '/',
@@ -18,7 +19,7 @@ const routes = [{
 }, {
   path: '/ocr',
   name: ROUTE_NAME.OCR,
-  redirect: {name: ROUTE_NAME.OCR_PROJECTS},
+  redirect: { name: ROUTE_NAME.OCR_PROJECTS },
   component: ocr,
   children: [{
     path: 'project',
@@ -54,96 +55,101 @@ const routes = [{
   }, {
     path: 'project/data/:prjId?',
     name: ROUTE_NAME.OCR_PROJECT_DATA,
-    component: ImgInfoView,
+    component: OcrData,
     props: true,
     meta: {
       keepAlive: true,
     },
   }],
 },
-  {
-    path: '/rpa',
-    name: ROUTE_NAME.RPA,
-    component: rpa,
-  },
-  {
-    path: '/settings',
-    name: ROUTE_NAME.SETTINGS,
-    component: settings,
-  },
-];
+{
+  path: '/rpa',
+  name: ROUTE_NAME.RPA,
+  component: rpa,
+},
+{
+  path: '/settings',
+  name: ROUTE_NAME.SETTINGS,
+  component: settings,
+},
+]
 
 export const router = createRouter({
   history: createWebHashHistory(),
   routes,
-});
+})
 
 // store image id and project id in state store
 router.beforeEach(async (to, from) => {
-  const store = stateStore();
+  const store = stateStore()
   switch (to.name) {
     case ROUTE_NAME.OCR:
-      break;
+      break
 
     case ROUTE_NAME.OCR_PROJECTS:
-      break;
+      break
 
     case ROUTE_NAME.OCR_PROJECT_CONFIG:
     case ROUTE_NAME.OCR_PROJECT_DATA:
     case ROUTE_NAME.OCR_PROJECT_IMAGES:
       if (to.params?.prjId) {
-        if (store.ocr.prjId !== to.params.prjId) {
-          store.clearOcrImgId();
-        }
-        store.ocr.prjId = <string>to.params.prjId;
-      } else if (store.ocr.prjId) {
-        return {name: to.name, params: {prjId: store.ocr.prjId}};
-      } else {
-        return from;
+        if (store.ocr.prjId !== to.params.prjId)
+          store.clearOcrImgId()
+
+        store.ocr.prjId = <string>to.params.prjId
       }
-      break;
+      else if (store.ocr.prjId) {
+        return { name: to.name, params: { prjId: store.ocr.prjId } }
+      }
+      else {
+        return from
+      }
+      break
 
     case ROUTE_NAME.OCR_PROJECT_IMAGE_DETAIL:
       if (to.params?.imgId) {
         getImgInfo(<string>to.params?.imgId).then((img) => {
           if (img) {
-            store.ocr.imgId = <string>to.params.imgId;
-            store.ocr.prjId = img.prjId;
-          } else {
-            return {path: from.path};
+            store.ocr.imgId = <string>to.params.imgId
+            store.ocr.prjId = img.prjId
           }
-        });
-      } else if (store.ocr.imgId) {
-        return {name: to.name, params: {imgId: store.ocr.imgId}};
-      } else {
-        return from;
+          else {
+            return { path: from.path }
+          }
+        })
       }
-      break;
+      else if (store.ocr.imgId) {
+        return { name: to.name, params: { imgId: store.ocr.imgId } }
+      }
+      else {
+        return from
+      }
+      break
   }
-});
-
+})
 
 // store the top level of route in state store
 router.afterEach((to) => {
-  const store = stateStore();
-  store.page = to;
-  to.matched.find(item => {
+  const store = stateStore()
+  store.page = to
+  // eslint-disable-next-line array-callback-return
+  to.matched.find((item) => {
     switch (item.name) {
       case ROUTE_NAME.HOME:
-        store.home.page = to;
-        break;
+        store.home.page = to
+        break
 
       case ROUTE_NAME.OCR:
-        store.ocr.page = to;
-        break;
+        store.ocr.page = to
+        break
 
       case ROUTE_NAME.RPA:
-        store.rpa.page = to;
-        break;
+        store.rpa.page = to
+        break
 
       case ROUTE_NAME.SETTINGS:
-        store.settings.page = to;
-        break;
+        store.settings.page = to
+        break
     }
-  });
-});
+  })
+})
