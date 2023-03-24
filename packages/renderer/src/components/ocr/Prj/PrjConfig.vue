@@ -1,3 +1,73 @@
+<script lang="ts" setup>
+import Edit from '@material-design-icons/svg/round/edit_note.svg'
+import { onMounted, ref, watch } from 'vue'
+import { updatePrj } from '/@/utils/prjDb'
+import type { prjInfo as prjInfoType } from '/@/utils/indexDB'
+import { stateStore } from '/@/stores/state'
+
+defineProps({ prjId: String })
+const store = stateStore()
+const prjInfo = ref<prjInfoType>()
+const isEditMode = ref<boolean>(false)
+const editPrjName = ref<string>('')
+const editPrjDescription = ref<string>('')
+
+// get current project info
+function getPrjInfo() {
+  if (store.ocr.prj) {
+    prjInfo.value = store.ocr.prj
+    updateEditFromPrjInfo()
+  }
+}
+
+function updatePrjInfoFromEdit() {
+  if (prjInfo.value && editPrjName && editPrjDescription) {
+    prjInfo.value.name = editPrjName.value
+    prjInfo.value.description = editPrjDescription.value
+    prjInfo.value.lastModifiedTime = new Date()
+  }
+}
+
+function updateEditFromPrjInfo() {
+  if (prjInfo.value && editPrjName && editPrjDescription) {
+    editPrjName.value = prjInfo.value.name
+    editPrjDescription.value = prjInfo.value.description
+  }
+}
+
+onMounted(() => {
+  getPrjInfo()
+})
+watch(() => store.ocr.prj, getPrjInfo)
+
+/*
+  Edit Logic
+ */
+function changeEditMode() {
+  if (prjInfo.value) {
+    if (!isEditMode.value)
+      isEditMode.value = true
+    else
+      cancelEditMode()
+  }
+  else {
+    console.warn('no prj info')
+    isEditMode.value = false
+  }
+}
+
+function cancelEditMode() {
+  isEditMode.value = false
+  updateEditFromPrjInfo()
+}
+
+function submitEdit() {
+  isEditMode.value = false
+  updatePrjInfoFromEdit()
+  updatePrj(prjInfo.value!)
+}
+</script>
+
 <template>
   <div
     h="full"
@@ -5,7 +75,7 @@
   >
     <OcrTopBar>
       <div
-        :class="{'edit-mode': isEditMode}"
+        :class="{ 'edit-mode': isEditMode }"
         class="icon"
         @click="changeEditMode"
       >
@@ -61,7 +131,7 @@
       <InfoCard header="OCR配置" />
     </div>
 
-    <!--    hover buttons-->
+    <!--    hover buttons -->
     <div
       class="float-buttons mode-popup"
     >
@@ -88,76 +158,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import Edit from '@material-design-icons/svg/round/edit_note.svg';
-import {onMounted, ref, watch} from 'vue';
-import {updatePrj} from '/@/utils/prjDb';
-import type {prjInfo as prjInfoType} from '/@/utils/indexDB';
-import {stateStore} from '/@/stores/state';
-
-defineProps({prjId: String});
-const store = stateStore();
-const prjInfo = ref<prjInfoType>();
-const isEditMode = ref<boolean>(false);
-const editPrjName = ref<string>('');
-const editPrjDescription = ref<string>('');
-
-// get current project info
-function getPrjInfo() {
-  if (store.ocr.prj) {
-    prjInfo.value = store.ocr.prj;
-    updateEditFromPrjInfo();
-  }
-}
-
-function updatePrjInfoFromEdit() {
-  if (prjInfo.value && editPrjName && editPrjDescription) {
-    prjInfo.value.name = editPrjName.value;
-    prjInfo.value.description = editPrjDescription.value;
-    prjInfo.value.lastModifiedTime = new Date;
-  }
-}
-
-function updateEditFromPrjInfo() {
-  if (prjInfo.value && editPrjName && editPrjDescription) {
-    editPrjName.value = prjInfo.value.name;
-    editPrjDescription.value = prjInfo.value.description;
-  }
-}
-
-onMounted(() => {
-  getPrjInfo();
-});
-watch(() => store.ocr.prj, getPrjInfo);
-
-/*
-  Edit Logic
- */
-function changeEditMode() {
-  if (prjInfo.value) {
-    if (!isEditMode.value) {
-      isEditMode.value = true;
-    } else {
-      cancelEditMode();
-    }
-  } else {
-    console.warn('no prj info');
-    isEditMode.value = false;
-  }
-}
-
-function cancelEditMode() {
-  isEditMode.value = false;
-  updateEditFromPrjInfo();
-}
-
-function submitEdit() {
-  isEditMode.value = false;
-  updatePrjInfoFromEdit();
-  updatePrj(prjInfo.value!);
-}
-</script>
 
 <style lang="scss" scoped>
 .main {

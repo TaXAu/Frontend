@@ -1,8 +1,7 @@
-import {node} from '../../.electron-vendors.cache.json';
-import {join} from 'path';
+import { join } from 'node:path'
+import { node } from '../../.electron-vendors.cache.json'
 
-const PACKAGE_ROOT = __dirname;
-
+const PACKAGE_ROOT = __dirname
 
 /**
  * @type {import('vite').UserConfig}
@@ -14,7 +13,7 @@ const config = {
   envDir: process.cwd(),
   resolve: {
     alias: {
-      '/@/': join(PACKAGE_ROOT, 'src') + '/',
+      '/@/': `${join(PACKAGE_ROOT, 'src')}/`,
     },
   },
   build: {
@@ -36,6 +35,6 @@ const config = {
     emptyOutDir: true,
     brotliSize: false,
   },
-};
+}
 
-export default config;
+export default config

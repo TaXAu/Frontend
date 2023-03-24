@@ -3,10 +3,5 @@
     "browser": true,
     "node": false
   },
-  "extends": "@antfu",
-  "parserOptions": {
-    "parser": "@typescript-eslint/parser",
-    "ecmaVersion": 12,
-    "sourceType": "module"
-  }
+  "extends": "@antfu"
 }

@@ -1,3 +1,11 @@
+<script lang="ts" setup>
+import { computed } from 'vue'
+
+const props = defineProps({ header: String })
+const hasHeader = computed(() => !!props.header)
+const _header = computed(() => props.header ?? '')
+</script>
+
 <template>
   <div
     bg="light-400"
@@ -25,11 +33,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import {computed} from 'vue';
-
-const props = defineProps({header: String});
-const hasHeader = computed(() => props.header ? true : false);
-const _header = computed(() => props.header ?? '');
-</script>

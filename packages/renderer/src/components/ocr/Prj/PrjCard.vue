@@ -1,6 +1,12 @@
+<script lang="ts" setup>
+defineProps({
+  name: String, description: String, isSelected: Boolean,
+})
+</script>
+
 <template>
   <div
-    :class="{'selected-card': isSelected}"
+    :class="{ 'selected-card': isSelected }"
     bg="zinc-100 hover:zinc-200"
     class="card"
     flex="~ col"
@@ -30,12 +36,6 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-defineProps({
-  name: String, description: String, isSelected: Boolean,
-});
-</script>
-
 <style lang="scss" scoped>
 .card-name {
   overflow: hidden;
@@ -55,5 +55,3 @@ defineProps({
 //  -webkit-box-orient:vertical;
 //}
 </style>
-
-

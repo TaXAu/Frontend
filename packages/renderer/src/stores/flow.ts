@@ -1,5 +1,5 @@
-import {defineStore} from 'pinia';
-import type {FlowType} from '../../types/rpa';
+import { defineStore } from 'pinia'
+import type { FlowType } from '../../types/rpa'
 
 export const flowStore = defineStore({
   id: 'flow-store',
@@ -22,6 +22,6 @@ export const flowStore = defineStore({
         modules: [],
       }, {}],
       editData: <FlowType | null>null,
-    };
+    }
   },
-});
+})

@@ -14,7 +14,6 @@
 </template>
 
 <style lang="scss" scoped>
-
 // Font style
 h1, h2, h3, h4, h5, h6 {
   @apply select-none;
@@ -28,5 +27,4 @@ h1 {
 h2 {
   @apply text-xl font-normal;
 }
-
 </style>

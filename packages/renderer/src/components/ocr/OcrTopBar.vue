@@ -1,3 +1,6 @@
+<script lang="ts" setup>
+</script>
+
 <template>
   <div
     class="img-top-bar"
@@ -24,9 +27,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-</script>
 
 <style lang="scss" scoped>
 .img-top-bar {

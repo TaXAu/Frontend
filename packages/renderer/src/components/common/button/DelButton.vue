@@ -1,3 +1,7 @@
+<script lang="ts" setup>
+import Close from '@material-design-icons/svg/round/close.svg'
+</script>
+
 <template>
   <RoundedButton
     bg="light-600/50"
@@ -10,5 +14,3 @@
     />
   </RoundedButton>
 </template>
-<script lang="ts" setup>
-import Close from '@material-design-icons/svg/round/close.svg';</script>

@@ -3,4 +3,4 @@
  */
 
 // load context bridge
-import './bridge';
+import './bridge'

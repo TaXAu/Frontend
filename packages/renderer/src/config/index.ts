@@ -11,8 +11,8 @@ export enum ROUTE_NAME {
 }
 
 interface ocrSubNavItemType {
-  readonly key: ocrPageKeyType,
-  readonly name: string,
+  readonly key: ocrPageKeyType
+  readonly name: string
 }
 
 export type ocrPageKeyType =
@@ -20,7 +20,7 @@ export type ocrPageKeyType =
   ROUTE_NAME.OCR_PROJECT_IMAGES |
   ROUTE_NAME.OCR_PROJECT_IMAGE_DETAIL |
   ROUTE_NAME.OCR_PROJECT_DATA |
-  ROUTE_NAME.OCR_PROJECT_CONFIG;
+  ROUTE_NAME.OCR_PROJECT_CONFIG
 
 export const ocrSubNavItem: ocrSubNavItemType[] = [{
   key: ROUTE_NAME.OCR_PROJECTS,
@@ -37,4 +37,4 @@ export const ocrSubNavItem: ocrSubNavItemType[] = [{
 }, {
   key: ROUTE_NAME.OCR_PROJECT_DATA,
   name: '数据管理',
-}];
+}]

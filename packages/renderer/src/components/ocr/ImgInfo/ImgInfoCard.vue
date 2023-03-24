@@ -1,3 +1,25 @@
+<script lang="ts" setup>
+import { stateStore } from '/@/stores/state'
+import { onMounted, ref, watch } from 'vue'
+import type { img as imgDBType } from '/@/utils/indexDB'
+
+const imgInfo = ref<imgDBType>()
+const state = stateStore()
+
+const updateImgInfo = () => {
+  if (state.ocr.img)
+    imgInfo.value = state.ocr.img
+}
+
+watch(() => state.ocr.img, () => {
+  updateImgInfo()
+})
+
+onMounted(() => {
+  updateImgInfo()
+})
+</script>
+
 <template>
   <div
     bg="light-400"
@@ -5,7 +27,7 @@
     rounded="lg"
   >
     <div
-      v-if="imgInfo!==undefined"
+      v-if="imgInfo !== undefined"
       class="info-grid"
       grid="~ cols-2"
       p="4"
@@ -28,29 +50,6 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import {stateStore} from '/@/stores/state';
-import {onMounted, ref, watch} from 'vue';
-import type {img as imgDBType} from '/@/utils/indexDB';
-
-const imgInfo = ref<imgDBType>();
-const state = stateStore();
-
-const updateImgInfo = () => {
-  if (state.ocr.img) {
-    imgInfo.value = state.ocr.img;
-  }
-};
-
-watch(() => state.ocr.img, () => {
-  updateImgInfo();
-});
-
-onMounted(() => {
-  updateImgInfo();
-});
-</script>
-
 <style lang="scss" scoped>
 .info-grid {
   grid-template-columns: 4rem auto;
@@ -70,5 +69,4 @@ onMounted(() => {
     @apply font-semibold text-dark-200 select-none
   }
 }
-
 </style>

@@ -1,3 +1,17 @@
+<script lang="ts" setup>
+import ExpandMore from '@material-design-icons/svg/round/arrow_drop_up.svg'
+import ExpandLess from '@material-design-icons/svg/round/arrow_drop_down.svg'
+import { flowStore } from '/@/stores/flow'
+import { ref } from 'vue'
+
+const modules = ref(flowStore().modules.map((item) => {
+  return {
+    isExpand: false,
+    ...item,
+  }
+}))
+</script>
+
 <template>
   <div class="flow-gallery">
     <div
@@ -30,21 +44,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import ExpandMore from '@material-design-icons/svg/round/arrow_drop_up.svg';
-import ExpandLess from '@material-design-icons/svg/round/arrow_drop_down.svg';
-import {flowStore} from '/@/stores/flow';
-import {ref} from 'vue';
-
-const modules = ref(flowStore().modules.map((item) => {
-  return {
-    isExpand: false,
-    ...item,
-  };
-}));
-
-</script>
 
 <style lang="scss" scoped>
 .module-category {

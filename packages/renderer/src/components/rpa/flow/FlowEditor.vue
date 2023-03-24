@@ -1,3 +1,22 @@
+<script lang="ts" setup>
+// import {flowStore} from '/@/stores/flow';
+
+// const store = flowStore();
+const editData = {
+  program: [
+    {
+      name: 'aaaaaaa',
+    },
+    {
+      name: 'bbbbbbb',
+    },
+    {
+      name: 'ccccccc',
+    },
+  ],
+}
+</script>
+
 <template>
   <div class="flow-editor">
     <div class="canvas">
@@ -24,25 +43,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-// import {flowStore} from '/@/stores/flow';
-
-// const store = flowStore();
-const editData = {
-  program: [
-    {
-      name: 'aaaaaaa',
-    },
-    {
-      name: 'bbbbbbb',
-    },
-    {
-      name: 'ccccccc',
-    },
-  ],
-};
-</script>
 
 <style scoped>
 .flow-blocks {

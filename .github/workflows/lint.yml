@@ -7,20 +7,19 @@ on:
       - '**.js'
       - '**.ts'
       - '**.vue'
-      - 'package-lock.json'
-      - '.github/workflows/lint.yml'
+      - package-lock.json
+      - .github/workflows/lint.yml
   pull_request:
     paths:
       - '**.js'
       - '**.ts'
       - '**.vue'
-      - 'package-lock.json'
-      - '.github/workflows/lint.yml'
-
+      - package-lock.json
+      - .github/workflows/lint.yml
 
 defaults:
   run:
-    shell: 'bash'
+    shell: bash
 
 jobs:
   eslint:
@@ -31,7 +30,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16 # Need for npm >=7.7
-          cache: 'yarn'
+          cache: yarn
 
       # TODO: Install not all dependencies, but only those required for this workflow
       - name: Install dependencies

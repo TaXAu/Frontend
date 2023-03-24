@@ -1,3 +1,40 @@
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { addPrj } from '/@/utils/prjDb'
+
+defineProps({ isShow: Boolean })
+const emit = defineEmits(['update:isShow'])
+
+const prjName = ref('')
+const prjDescription = ref('')
+
+const checkNameInput = () => {
+  return true
+}
+
+const checkDescriptionInput = () => {
+  return true
+}
+
+const clearForm = () => {
+  prjName.value = ''
+  prjDescription.value = ''
+}
+
+const submit = () => {
+  if (checkNameInput() && checkDescriptionInput()) {
+    addPrj(prjName.value, prjDescription.value)
+    emit('update:isShow', false)
+    clearForm()
+  }
+}
+
+const cancel = () => {
+  emit('update:isShow', false)
+  clearForm()
+}
+</script>
+
 <template>
   <MyDialog v-show="isShow">
     <template #header>
@@ -43,43 +80,6 @@
     </template>
   </MyDialog>
 </template>
-
-<script lang="ts" setup>
-import {ref} from 'vue';
-import {addPrj} from '/@/utils/prjDb';
-
-defineProps({isShow: Boolean});
-const emit = defineEmits(['update:isShow']);
-
-const prjName = ref('');
-const prjDescription = ref('');
-
-const checkNameInput = () => {
-  return true;
-};
-
-const checkDescriptionInput = () => {
-  return true;
-};
-
-const clearForm = () => {
-  prjName.value = '';
-  prjDescription.value = '';
-};
-
-const submit = () => {
-  if (checkNameInput() && checkDescriptionInput()) {
-    addPrj(prjName.value, prjDescription.value);
-    emit('update:isShow', false);
-    clearForm();
-  }
-};
-
-const cancel = () => {
-  emit('update:isShow', false);
-  clearForm();
-};
-</script>
 
 <style lang="scss" scoped>
 .body-grid {

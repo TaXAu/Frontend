@@ -1,3 +1,7 @@
+<script lang="ts" setup>
+const prop = defineProps({ size: String })
+</script>
+
 <template>
   <div
     class="button items-center"
@@ -10,10 +14,6 @@
     <slot />
   </div>
 </template>
-
-<script lang="ts" setup>
-const prop = defineProps({size: String});
-</script>
 
 <style lang="scss" scoped>
 $buttonSize: v-bind('prop.size');
