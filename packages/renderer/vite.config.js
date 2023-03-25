@@ -1,15 +1,15 @@
 /* eslint-env node */
 
-import {chrome} from '../../.electron-vendors.cache.json';
-import {join} from 'path';
-import vue from '@vitejs/plugin-vue';
-import {renderer} from 'unplugin-auto-expose';
-import WindiCSS from 'vite-plugin-windicss';
-import Components from 'unplugin-vue-components/vite';
-import AutoImport from 'unplugin-auto-import/vite';
-import svgLoader from 'vite-svg-loader';
+import { join } from 'node:path'
+import vue from '@vitejs/plugin-vue'
+import { renderer } from 'unplugin-auto-expose'
+import WindiCSS from 'vite-plugin-windicss'
+import Components from 'unplugin-vue-components/vite'
+import AutoImport from 'unplugin-auto-import/vite'
+import svgLoader from 'vite-svg-loader'
+import { chrome } from '../../.electron-vendors.cache.json'
 
-const PACKAGE_ROOT = __dirname;
+const PACKAGE_ROOT = __dirname
 
 /**
  * @type {import('vite').UserConfig}
@@ -20,7 +20,7 @@ const config = {
   root: PACKAGE_ROOT,
   resolve: {
     alias: {
-      '/@/': join(PACKAGE_ROOT, 'src') + '/',
+      '/@/': `${join(PACKAGE_ROOT, 'src')}/`,
     },
   },
   base: '',
@@ -105,7 +105,7 @@ const config = {
         globalsPropValue: true, // Default `true`, (true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
       },
     }),
-    svgLoader({defaultImport: 'component'}),
+    svgLoader({ defaultImport: 'component' }),
   ],
 
   css: {
@@ -116,6 +116,6 @@ const config = {
       },
     },
   },
-};
+}
 
-export default config;
+export default config

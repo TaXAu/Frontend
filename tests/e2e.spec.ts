@@ -1,9 +1,8 @@
-import { expect, test } from 'vitest';
+import { expect, test } from 'vitest'
 
-test('test', ()=> {
-  expect(true,'test1').toBeTruthy();
-});
-
+test('test', () => {
+  expect(true, 'test1').toBeTruthy()
+})
 
 // import type {ElectronApplication} from 'playwright';
 // import {_electron as electron} from 'playwright';
@@ -47,7 +46,6 @@ test('test', ()=> {
 //   expect(windowState.isVisible, 'Main window was not visible').toBeTruthy();
 //   expect(windowState.isDevToolsOpened, 'DevTools was opened').toBeFalsy();
 // });
-
 
 // test('Main window web content', async () => {
 //   const page = await electronApp.firstWindow();

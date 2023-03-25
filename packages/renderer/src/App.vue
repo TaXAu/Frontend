@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 </script>
 
-
 <template>
   <MyNotification />
   <router-view />

@@ -1,3 +1,11 @@
+<script lang="ts" setup>
+import { notificationInstances as notifications } from '/@/components/common/notification/index'
+import Info from '@material-design-icons/svg/round/info.svg'
+import Warning from '@material-design-icons/svg/round/warning.svg'
+import Error from '@material-design-icons/svg/round/error.svg'
+import Success from '@material-design-icons/svg/round/verified.svg'
+</script>
+
 <template>
   <div
     class="bkg pointer-events-none"
@@ -10,10 +18,12 @@
     <div
       v-for="item in notifications"
       :key="item.id"
-      :class="{'info': item.type === 'info',
-               'error': item.type === 'error',
-               'success': item.type === 'success',
-               'warning': item.type === 'warning'}"
+      :class="{
+        info: item.type === 'info',
+        error: item.type === 'error',
+        success: item.type === 'success',
+        warning: item.type === 'warning',
+      }"
       class="notification"
       flex="~ items-center gap-2"
       m="y-2"
@@ -22,10 +32,10 @@
       shadow="lg"
     >
       <div class="notification-icon">
-        <Success v-if="item.type==='success'" />
-        <Info v-if="item.type==='info'" />
-        <Warning v-if="item.type==='warning'" />
-        <Error v-if="item.type==='error'" />
+        <Success v-if="item.type === 'success'" />
+        <Info v-if="item.type === 'info'" />
+        <Warning v-if="item.type === 'warning'" />
+        <Error v-if="item.type === 'error'" />
       </div>
       <div class="notification-msg">
         {{ item.message }}
@@ -33,13 +43,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import {notificationInstances as notifications} from '/@/components/common/notification/index';
-import Info from '@material-design-icons/svg/round/info.svg';
-import Warning from '@material-design-icons/svg/round/warning.svg';
-import Error from '@material-design-icons/svg/round/error.svg';
-import Success from '@material-design-icons/svg/round/verified.svg';</script>
 
 <style lang="scss" scoped>
 .notification {
@@ -106,5 +109,4 @@ import Success from '@material-design-icons/svg/round/verified.svg';</script>
     @apply fill-red-500;
   }
 }
-
 </style>

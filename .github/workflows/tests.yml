@@ -6,18 +6,18 @@ on:
     paths:
       - 'packages/**'
       - 'tests/**'
-      - 'package-lock.json'
-      - '.github/workflows/tests.yml'
+      - package-lock.json
+      - .github/workflows/tests.yml
   pull_request:
     paths:
       - 'packages/**'
       - 'tests/**'
-      - 'package-lock.json'
-      - '.github/workflows/tests.yml'
+      - package-lock.json
+      - .github/workflows/tests.yml
 
 defaults:
   run:
-    shell: 'bash'
+    shell: bash
 
 jobs:
 
@@ -28,10 +28,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'yarn'
+          cache: yarn
       - run: yarn
       - run: yarn test:main
-
 
   preload:
     runs-on: ubuntu-latest
@@ -40,10 +39,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'yarn'
+          cache: yarn
       - run: yarn
       - run: yarn test:preload
-
 
   renderer:
     runs-on: ubuntu-latest
@@ -52,10 +50,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'yarn'
+          cache: yarn
       - run: yarn
       - run: yarn test:renderer
-
 
 #  e2e:
 #    strategy:

@@ -18,6 +18,6 @@ const config = {
     testTimeout: 300_000,
     hookTimeout: 300_000,
   },
-};
+}
 
-export default config;
+export default config

@@ -1,3 +1,7 @@
+<script lang="ts" setup>
+defineProps({ filename: String, url: String })
+</script>
+
 <template>
   <div
     border="1 zinc-400"
@@ -30,10 +34,6 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-defineProps({filename: String, url: String});
-</script>
-
 <style lang="scss" scoped>
 .card-name {
   p {
@@ -46,5 +46,4 @@ defineProps({filename: String, url: String});
 img {
   object-fit: cover;
 }
-
 </style>

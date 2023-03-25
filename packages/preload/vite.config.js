@@ -1,7 +1,7 @@
-import {chrome} from '../../.electron-vendors.cache.json';
-import {preload} from 'unplugin-auto-expose';
+import { preload } from 'unplugin-auto-expose'
+import { chrome } from '../../.electron-vendors.cache.json'
 
-const PACKAGE_ROOT = __dirname;
+const PACKAGE_ROOT = __dirname
 
 /**
  * @type {import('vite').UserConfig}
@@ -33,6 +33,6 @@ const config = {
   plugins: [
     preload.vite(),
   ],
-};
+}
 
-export default config;
+export default config

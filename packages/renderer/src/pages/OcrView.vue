@@ -1,3 +1,6 @@
+<script lang="ts" setup>
+</script>
+
 <template>
   <div
     class="ocr"
@@ -20,9 +23,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-</script>
 
 <style lang="scss" scoped>
 .nav {
