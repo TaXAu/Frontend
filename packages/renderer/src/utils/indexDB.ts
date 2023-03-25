@@ -3,7 +3,7 @@ import Dexie from 'dexie'
 
 // Image set database
 
-const imgDBVersion = 1
+const imgDBVersion = 2
 export const imgDbName = 'imgDB'
 export const imgInfoStoreName = 'prj'
 
@@ -18,6 +18,7 @@ export interface img {
   blob?: Blob
   dataUrl?: string
   url?: string
+  result?: string
 }
 
 export interface prjInfo {
@@ -36,7 +37,7 @@ export class myImgDexie extends Dexie {
     super(imgDbName)
     this.version(imgDBVersion).stores({
       prj: '&id, *name, description, createdTime, lastModifiedTime',
-      img: '&id, *prjId, *filename, size, filetype, createdTime, lastModifiedTime, path, blob, dataUrl, url',
+      img: '&id, *prjId, *filename, size, filetype, createdTime, lastModifiedTime, path, blob, dataUrl, url, result',
     })
     this.prj = this.table('prj')
     this.img = this.table('img')
@@ -84,10 +85,13 @@ export class myImgDexie extends Dexie {
   }
 
   async updateImg(img: img | Array<img>): Promise<void> {
-    if (Array.isArray(img))
-      await this.img.bulkPut(img)
-    else
-      await this.img.put(img)
+    if (Array.isArray(img)) {
+      for (const i of img)
+        await this.img.update(i.id, i)
+    }
+    else {
+      await this.img.update(img.id, img)
+    }
   }
 
   async deleteImg(imgId: string | Array<string>): Promise<void> {

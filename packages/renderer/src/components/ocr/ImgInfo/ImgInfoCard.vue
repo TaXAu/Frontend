@@ -22,15 +22,10 @@ onMounted(() => {
 
 <template>
   <div
-    bg="light-400"
-    h="full"
-    rounded="lg"
+    bg="light-400" class="overflow-y-auto" h="full" rounded="lg"
   >
     <div
-      v-if="imgInfo !== undefined"
-      class="info-grid"
-      grid="~ cols-2"
-      p="4"
+      v-if="imgInfo !== undefined" class="info-grid" grid="~ cols-2" p="4"
     >
       <p>文件名</p>
       <p>{{ imgInfo?.filename }}</p>

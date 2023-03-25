@@ -20,6 +20,7 @@
       rounded="lg"
       select="none"
       shadow="sm"
+      overflow="clip"
     >
       <OcrBreadCrumb />
       <div flex="auto" />

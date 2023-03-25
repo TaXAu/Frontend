@@ -21,5 +21,5 @@ export async function compressImage(file: Buffer): Promise<any> {
   }
 
   await image.encode(encodeOptions)
-  return image.encodedWith.webp
+  return image.encodedWith.mozjpeg
 }

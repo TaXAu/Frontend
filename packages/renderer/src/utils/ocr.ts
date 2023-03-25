@@ -1,5 +1,5 @@
-interface OCRResult {
-  data: Record<string, any>
+export interface OCRResult {
+  data: Array<Array<any>>
   bbox: [number, number, number, number]
 }
 
