@@ -30,18 +30,27 @@ export class OCRClient {
     }
   }
 
-  async recognize(imageBase64: string): Promise<OCRResult | null> {
-    const result = await fetch(`${this.URL}/api`, {
-      method: 'POST',
-      redirect: 'follow',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ base64str: imageBase64 }),
-    })
-    if (result.ok)
-      return result.json()
-    else
+  async recognize(imageBase64: string, timeout = 30): Promise<OCRResult | null> {
+    try {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), timeout * 1000)
+      const result = await fetch(`${this.URL}/api`, {
+        method: 'POST',
+        redirect: 'follow',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ base64str: imageBase64 }),
+      })
+      clearTimeout(timeoutId)
+      if (result.ok)
+        return result.json()
+      else
+        return null
+    }
+    catch (error) {
+      console.error(error)
       return null
+    }
   }
 }

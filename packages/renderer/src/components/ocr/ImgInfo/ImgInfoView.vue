@@ -8,12 +8,17 @@ const displayState = ref(0)
 // signals
 const recognizeMsg = ref(0)
 const saveTableMsg = ref(0)
+const tableDataExportMsg = ref(0)
 
 const updateRecoginzeMsgSignal = () => {
   recognizeMsg.value++
 }
 const updateSaveTableMsgSignal = () => {
   saveTableMsg.value++
+}
+
+const updateTableDataExportMsgSignal = () => {
+  tableDataExportMsg.value++
 }
 </script>
 
@@ -28,7 +33,12 @@ const updateSaveTableMsgSignal = () => {
         <div class="divider flex-auto" />
         <div class="right flex-initial">
           <ImgInfoCard v-if="displayState === 0" />
-          <OcrImgData v-if="displayState === 1" :recognize-msg="recognizeMsg" :save-msg="saveTableMsg" />
+          <OcrImgData
+            v-if="displayState === 1"
+            :data-export-msg="tableDataExportMsg"
+            :recognize-msg="recognizeMsg"
+            :save-msg="saveTableMsg"
+          />
         </div>
       </div>
       <div class="toolbar mt-2 flex overflow-y-auto">
@@ -46,6 +56,9 @@ const updateSaveTableMsgSignal = () => {
           </button>
           <button @click="displayState = 0">
             图片信息
+          </button>
+          <button @click="updateTableDataExportMsgSignal()">
+            数据导出
           </button>
         </div>
       </div>

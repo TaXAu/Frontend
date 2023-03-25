@@ -4,10 +4,12 @@ import { openImgSelectorDialog } from '/@/electron/api'
 import Folder from '@material-design-icons/svg/round/folder.svg'
 import Image from '@material-design-icons/svg/round/image.svg'
 import Delete from '@material-design-icons/svg/round/delete.svg'
+import Refresh from '@material-design-icons/svg/round/refresh.svg'
 import { useRouter } from 'vue-router'
 import { stateStore } from '/@/stores/state'
 import type { img as imgDBType } from '/@/utils/indexDB'
 import { myImgDB as db } from '/@/utils/indexDB'
+import { notify } from '/@/components/common/notification'
 
 defineProps({ prjId: String })
 const router = useRouter()
@@ -116,6 +118,13 @@ function clickImg(id: string) {
 // into img info page
 const intoImgInfoPage = (id: string) =>
   router.push({ name: 'ocr-project-image-detail', params: { imgId: id } })
+
+const refreshState = ref(0)
+const refresh = () => {
+  refreshState.value += 1
+  getImgData()
+  notify('刷新成功', 'success')
+}
 </script>
 
 <template>
@@ -128,6 +137,7 @@ const intoImgInfoPage = (id: string) =>
     </div>
   </OcrTopBar>
   <div
+    ref="refreshState"
     :key="prjId"
     class="img-view"
     grid="~ <sm:cols-1 sm:<md:cols-2 md:<lg:cols-3 lg:<xl:cols-4 xl:<2xl:cols-5 2xl:cols-6"
@@ -185,6 +195,17 @@ const intoImgInfoPage = (id: string) =>
     space="x-4"
     z="10"
   >
+    <RoundedButton
+      bg="blue-200"
+      size="3rem"
+      @click="refresh()"
+    >
+      <Refresh
+        class="transform"
+        fill="blue-500"
+        scale="100"
+      />
+    </RoundedButton>
     <RoundedButton
       bg="blue-200"
       size="3rem"

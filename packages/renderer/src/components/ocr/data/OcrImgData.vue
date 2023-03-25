@@ -5,10 +5,12 @@ import type { img } from '/@/utils/indexDB'
 import { myImgDB as db } from '/@/utils/indexDB'
 import { OCRClient } from '/@/utils/ocr'
 import { notify } from '/@/components/common/notification'
+import { writeTextFile } from '/@/electron/api'
 
 const props = defineProps({
   recognizeMsg: Number,
   saveMsg: Number,
+  dataExportMsg: Number,
 })
 const state = stateStore()
 const imgData = ref(null as img | null)
@@ -49,15 +51,16 @@ const ocrRecognize = async () => {
     console.log('clickRecoginze')
     notify('开始识别', 'info')
     const imgBase64 = imgData.value!.dataUrl?.split(',')[1]
-    const result = await client.value.recognize(imgBase64).catch((err) => {
-      notify('识别失败', 'error')
-      // eslint-disable-next-line no-console
-      console.log(err)
-    })
+    const result = await client.value.recognize(imgBase64)
     if (result) {
       notify('识别成功', 'success')
       imgData.value!.result = JSON.stringify(result)
       await db.updateImg(imgData.value!)
+    }
+    else {
+      notify('识别失败', 'error')
+      // eslint-disable-next-line no-console
+      console.log('识别失败')
     }
   }
 }
@@ -85,7 +88,7 @@ const length = computed(() => {
   return 0
 })
 
-const save = async () => {
+const saveToDB = async () => {
   if (imgData.value?.result) {
     const result = JSON.parse(imgData.value.result)
     result.data = data.value
@@ -97,7 +100,21 @@ const save = async () => {
 watch(() => props.saveMsg, () => {
   // eslint-disable-next-line no-console
   console.log('Save Table Data', props.saveMsg)
-  save()
+  saveToDB()
+})
+
+const dataExport = async () => {
+  if (imgData.value?.result) {
+    const result = JSON.parse(imgData.value.result)
+    if (result.data)
+      await writeTextFile(null, JSON.stringify(result.data), 'json')
+  }
+}
+
+watch(() => props.dataExportMsg, () => {
+  // eslint-disable-next-line no-console
+  console.log('Export Table Data', props.dataExportMsg)
+  dataExport()
 })
 </script>
 
