@@ -3,30 +3,32 @@ import { Menu } from 'electron'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { BrowserWindow } = require('electron')
 
-const menuTemplate = [{
-  label: '主页',
-  click: () => changeRoute('/'),
-}, {
-  label: 'OCR',
-  click: () => changeRoute('/ocr'),
-}, {
-  label: 'RPA',
-  click: () => changeRoute('/rpa'),
-},
+const menuTemplate = [
 //   {
-//   label: '设置',
-//   click: () => changeRoute('/settings'),
+//   label: '主页',
+//   click: () => changeRoute('/'),
 // },
-{
-  label: '更多',
-  submenu: [
-    {
-      label: '打开调试窗口',
-      accelerator: 'f12',
-      click: () => openDevTools(),
-    },
-  ],
-}]
+  {
+    label: 'OCR',
+    click: () => changeRoute('/ocr'),
+  }, {
+    label: 'RPA',
+    click: () => changeRoute('/rpa'),
+  },
+  //   {
+  //   label: '设置',
+  //   click: () => changeRoute('/settings'),
+  // },
+  {
+    label: '更多',
+    submenu: [
+      {
+        label: '打开调试窗口',
+        accelerator: 'f12',
+        click: () => openDevTools(),
+      },
+    ],
+  }]
 
 function changeMenu() {
   switch (process.platform) {
