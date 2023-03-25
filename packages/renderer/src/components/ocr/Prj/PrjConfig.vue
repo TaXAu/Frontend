@@ -128,7 +128,7 @@ function submitEdit() {
         </div>
       </InfoCard>
 
-      <InfoCard header="OCR配置" />
+      <InfoCard v-if="false" header="OCR配置" />
     </div>
 
     <!--    hover buttons -->
