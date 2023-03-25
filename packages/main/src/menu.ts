@@ -12,10 +12,12 @@ const menuTemplate = [{
 }, {
   label: 'RPA',
   click: () => changeRoute('/rpa'),
-}, {
-  label: '设置',
-  click: () => changeRoute('/settings'),
-}, {
+},
+//   {
+//   label: '设置',
+//   click: () => changeRoute('/settings'),
+// },
+{
   label: '更多',
   submenu: [
     {
